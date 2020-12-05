@@ -3,23 +3,22 @@ package engine.graphics;
 import org.lwjgl.opengl.GL30;
 
 import engine.GameObject;
-import main.Objects;
 
 /**
- * Renders objects
+ * Renders GameObject.allObjects
  * 
  * @author Bailey
  */
 
 public class Renderer {	
 	/**
-	 * Renders all of the objects defined in the class Objects.
-	 * @see Objects
+	 * Renders all of the GameObject.allObjects defined in the class GameObject.allObjects.
+	 * @see GameObject.allObjects
 	 */
 	public static void render() {
 		Loader loader = new Loader();
 		
-		TexturedModel[] texturedModels = new TexturedModel[Objects.li.size()];
+		TexturedModel[] texturedModels = new TexturedModel[GameObject.allObjects.size()];
 		
 		//Order to connect them
       	int[] indices = { //Starts at 0 not 1;
@@ -28,7 +27,7 @@ public class Renderer {
       	};
 		
       	int i = 0;
-      	for (GameObject object : Objects.li) {
+      	for (GameObject object : GameObject.allObjects) {
       		float[] vertexColor = new float[] {
       			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, 
       			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, 

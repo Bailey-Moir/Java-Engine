@@ -1,11 +1,13 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
+import engine.io.Input;
 import engine.io.Window;
 import engine.maths.Vector2f;
 import engine.maths.Vector3f;
-import main.Objects;
 
 /**
  * Represents a game object.
@@ -14,10 +16,12 @@ import main.Objects;
  */
 
 public class GameObject {
+	public static List<GameObject> allObjects = new ArrayList<GameObject>();
+	
 	public Transform transform;	
 	public spriteRenderer spriteRenderer;
 	
-	private ArrayList<Object> components = new ArrayList<Object>();
+	protected Input input;
 	
 	/**
 	 * Constructor.
@@ -34,23 +38,14 @@ public class GameObject {
 		this.spriteRenderer.color = color;
 		this.spriteRenderer.image = "null";
 		
-		this.spriteRenderer.window = window;	
-		components.add(this.spriteRenderer);
-		components.add(this.transform);
+		this.spriteRenderer.window = window;
 		
-		Objects.li.add(this);
+		this.input = window.input;
+		
+		allObjects.add(this);
 	}
 	
-	/**
-	 * Runs the update function in every component.
-	 */
-	public void update() {
-		
-	}
-	
-	public void getComponent(Class<Object> type) {
-		
-	}
+	public Consumer<Integer> StartFunc, UpdateFunc;
 	
 	/**
 	 * Size, positions, movement, rotation, etc.

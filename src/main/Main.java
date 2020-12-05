@@ -2,12 +2,14 @@ package main;
 
 import org.lwjgl.glfw.GLFW;
 
-import engine.components.*;
+import engine.GameObject;
 import engine.graphics.Renderer;
 import engine.graphics.Shader;
 import engine.io.Window;
 import engine.maths.Vector2f;
-import engine.maths.Vector3f;
+import engine.maths.Vector3f;
+import main.objects.Player;
+import main.objects.TempPlatform;
 /**
  * The starting off point.
  * 
@@ -19,7 +21,7 @@ public class Main implements Runnable {
 	private Thread game;
 	
 	private static Main instance;
-	protected static Window window;
+	public static Window window;
 	private Shader shader;
 	
 	private final int WIDTH = 1280, HEIGHT = 720;
@@ -30,10 +32,8 @@ public class Main implements Runnable {
 		game = new Thread(this, "game");
 		game.start(); //Runs the runs function, using Runnable
 	}
-
-	private Rigidbody rb;
 	
-	private void init() {		
+	private void init() {
 		window = new Window(WIDTH, HEIGHT, TITLE);
 		shader = new Shader("/shaders/mainVertex.glsl", "/shaders/mainFragment.glsl");
 		
@@ -50,8 +50,14 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 		
-		rb = new Rigidbody(Objects.player);
-		//Objects.player.getComponent(Rigidbody.class);
+		new Player();
+		new TempPlatform(new Vector2f(-3, -1.5), new Vector3f(1, 0, 0));
+		new TempPlatform(new Vector2f(0, -3), new Vector3f(0, 1, 0));
+		new TempPlatform(new Vector2f(3, -1.5), new Vector3f(0, 0, 1));
+		
+		for (GameObject object : GameObject.allObjects) {
+			object.StartFunc.accept(0);
+		}
 	}
 	
 	public void run() {
@@ -66,14 +72,10 @@ public class Main implements Runnable {
 	
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
-		if (window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
-			rb.net.set(0, 0);
-			Objects.player.transform.position.set(0, 0);
+				
+		for (GameObject object : GameObject.allObjects) {
+			object.UpdateFunc.accept(0);
 		}
-		
-		rb.addForce(new Vector2f(window.input.getAxisRaw("Horizontal"), window.input.getAxisRaw("Vertical")));
-		rb.update();
-		//Objects.player.transform.translate(new Vector2f(window.input.getAxisRaw("Horizontal"), window.input.getAxisRaw("Vertical")));
 		
 		window.update();
 		window.time.update();
