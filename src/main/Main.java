@@ -50,10 +50,10 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 		
-		new Player();
-		new TempPlatform(new Vector2f(-3, -1.5), new Vector3f(1, 0, 0));
-		new TempPlatform(new Vector2f(0, -3), new Vector3f(0, 1, 0));
-		new TempPlatform(new Vector2f(3, -1.5), new Vector3f(0, 0, 1));
+		new Player(new Vector2f(0, -1));
+		new TempPlatform(new Vector2f(-3, -2.5), new Vector2f(2, 0.5));
+		new TempPlatform(new Vector2f(0, -2), new Vector2f(1, 1));
+		new TempPlatform(new Vector2f(3, -1.5), new Vector2f(0.5, 1));
 		
 		for (GameObject object : GameObject.allObjects) {
 			object.StartFunc.accept(0);

@@ -39,7 +39,7 @@ public class Loader {
 	public VAO loadToVAO(float[] positions, float[] vertexColors, int[] indices) {		
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(0, 2, positions);
 		storeDataInAttributeList(1, 3, 	vertexColors);
 		return new VAO(vaoID, indices.length);
 	}

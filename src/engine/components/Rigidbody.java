@@ -1,12 +1,14 @@
 package engine.components;
 
 import engine.GameObject;
-import engine.io.Window;
 import engine.maths.Vector2f;
-import engine.maths.Vector3f;
 
 public class Rigidbody {
 	private GameObject object;
+	
+	public float gravityModifier = 0.5f;
+	
+	public Vector2f net, velocity;
 	
 	public boolean isGravity;
 	
@@ -43,18 +45,23 @@ public class Rigidbody {
 		}
 		
 		if (isGravity) {
-			net.y -= 0.75;
+			addForce(new Vector2f(0, -gravityModifier));
 		}
 			
 	}
-	
-	public Vector2f net, velocity;
-	
+		
 	/**
 	 * Adds a force to the object.
 	 * @param force
 	 */
 	public void addForce(Vector2f force) {
 		net = net.plus(force);
+	}
+
+	/**
+	 * Makes the object stop falling.
+	 */
+	public void stopFalling() {
+		if (net.y < 0) net.y = 0;
 	}
 }

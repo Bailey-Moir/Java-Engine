@@ -52,7 +52,9 @@ public class GameObject {
 	 * 
 	 * @author Bailey
 	 */
-	public class Transform {		
+	public class Transform {
+		public float rotation;
+		
 		public Vector2f position, size;
 
 		/**
@@ -60,7 +62,7 @@ public class GameObject {
 		 * @param delta How much it is going to change by.
 		 */
 		public void translate(Vector2f delta) {
-			position = position.plus(delta.times((1 * (spriteRenderer.getWindow().time.deltaTimeSec + 0.001)) * spriteRenderer.getWindow().time.deltaTime));
+			position = position.plus(delta.times(1 / spriteRenderer.getWindow().time.deltaTime));
 		}
 		
 		/**
@@ -69,10 +71,10 @@ public class GameObject {
 		 */
 		public float[] calculateVertices() {
 			float[] vertices = {
-					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0f, //Top Left
-					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0f, //Bottom Left
-					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0f, //Top Right
-					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0f //Bottom Right
+					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}
