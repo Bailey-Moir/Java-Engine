@@ -5,7 +5,12 @@ import java.util.List;
 
 import engine.GameObject;
 import engine.GameObject.Transform;
-import engine.maths.Vector2f;
+
+/**
+ * The collider of an object.
+ * 
+ * @author Bailey
+ */
 
 public class Collider {
 	private GameObject object;
@@ -26,7 +31,7 @@ public class Collider {
 	}
 	
 	/**
-	 * Acts upon the member variables, e.g. isColliding.
+	 * Acts upon the member variables, e.g. <code>isColliding</code>.
 	 */
 	public void update() {
 		if (!isStatic) {

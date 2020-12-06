@@ -74,7 +74,9 @@ public class Main implements Runnable {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
 		for (GameObject object : GameObject.allObjects) {
+			if (object.UpdateFunc != null) {
 			object.UpdateFunc.accept(0);
+			}
 		}
 		
 		window.update();

@@ -3,6 +3,12 @@ package engine.components;
 import engine.GameObject;
 import engine.maths.Vector2f;
 
+/**
+ * Handles the physics of an object.
+ * 
+ * @author Bailey
+ */
+
 public class Rigidbody {
 	private GameObject object;
 	
@@ -23,7 +29,9 @@ public class Rigidbody {
 	}
 	
 	/**
-	 * Acts upon the member variables, e.g. net, velocity. To be run every frame.
+	 * Acts upon the member variables, e.g. <code>net</code>, or <code>velocity</code>. 
+	 * </br></br>
+	 * <b>To be run every frame.<b>
 	 */
 	public void update() {
 		velocity = net.times(object.spriteRenderer.getWindow().time.deltaTime).times(0.005); //F = a
@@ -52,7 +60,7 @@ public class Rigidbody {
 		
 	/**
 	 * Adds a force to the object.
-	 * @param force
+	 * @param force The force to add to the net force of the object.
 	 */
 	public void addForce(Vector2f force) {
 		net = net.plus(force);

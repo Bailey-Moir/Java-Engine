@@ -45,7 +45,8 @@ public class GameObject {
 		allObjects.add(this);
 	}
 	
-	public Consumer<Integer> StartFunc, UpdateFunc;
+	public Consumer<Integer> StartFunc = null;
+	public Consumer<Integer> UpdateFunc = null;
 	
 	/**
 	 * Size, positions, movement, rotation, etc.

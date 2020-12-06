@@ -7,7 +7,6 @@ import engine.maths.Vector3f;
 import main.Main;
 
 public class TempPlatform extends GameObject {	
-	private Collider col;
 	
 	/**
 	 * The constructor.
@@ -19,21 +18,21 @@ public class TempPlatform extends GameObject {
 		StartFunc = (Integer uselessInt) -> {
 			Start();
 		};
-		UpdateFunc = (Integer uselessInt) -> {
+		/*UpdateFunc = (Integer uselessInt) -> {
 			Update();
-		};
+		};*/
 	}
 
 	/**
 	 * Runs once when the window is created.
 	 */
 	private void Start() {
-		col = new Collider(this, true);
+		new Collider(this, true);
 	}
 	
 	/**
 	 * Runs every frame.
 	 */
-	private void Update() {
-	}
+	/*private void Update() {
+	}*/
 }
