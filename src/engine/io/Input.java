@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 import engine.maths.Vector2f;
 
 /**
- * Manages input, i.e. mouse position, mouse buttons, scroll, and keyboard keys
+ * Manages input, i.e. mouse position, mouse buttons, scroll, and keyboard keys.
  * 
  * @author Bailey
  */

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL33;
 import engine.utils.FileUtils;
 
 /**
- * Manages shaders
+ * Manages shaders.
  * 
  * @author Bailey
  */

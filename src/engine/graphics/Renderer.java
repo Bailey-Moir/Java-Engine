@@ -1,3 +1,4 @@
+
 package engine.graphics;
 
 import org.lwjgl.opengl.GL30;
@@ -5,7 +6,7 @@ import org.lwjgl.opengl.GL30;
 import engine.GameObject;
 
 /**
- * Renders GameObject.allObjects
+ * Renders GameObject.
  * 
  * @author Bailey
  */

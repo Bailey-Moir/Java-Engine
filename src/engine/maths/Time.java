@@ -1,7 +1,7 @@
 package engine.maths;
 
 /**
- * Manages time
+ * Manages time.
  * 
  * @author Bailey
  */

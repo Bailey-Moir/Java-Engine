@@ -12,6 +12,12 @@ import org.lwjgl.opengl.GL14;
 import engine.maths.Time;
 import engine.maths.Vector3f;
 
+/**
+ * For a computer window.
+ * 
+ * @author Bailey
+ */
+
 public class Window {
 	
 	private int WIDTH, HEIGHT;
