@@ -34,7 +34,17 @@ public class Vector3f {
 	}
 	
 	/**
-	 * Sets the values of x, y, and z without setting it to a whole new Vector3f.
+	 * Creates a Vector3f with all of the values equal to b.	
+	 * @param b The value of each dimension.
+	 * @return The new Vector3f.
+	 */
+	public static Vector3f square(double b) {
+		return new Vector3f(b, b, b);
+		
+	}
+	
+	/**
+	 * Sets the values of x and y without setting it to a whole new Vector3f.
 	 * @param x The new x value.
 	 * @param y The new y value.
 	 * @param z The new z value.
@@ -46,7 +56,7 @@ public class Vector3f {
 	}
 
 	/**
-	 * Sets the values of x, y, and z without setting it to a whole new Vector3f; uses doubles instead of floats.
+	 * Sets the values of x and y without setting it to a whole new Vector3f; uses doubles instead of floats.
 	 * @param x The new x value.
 	 * @param y The new y value.
 	 * @param z The new z value.
@@ -59,59 +69,66 @@ public class Vector3f {
 	
 	/**
 	 * Returns a string for debugging purposes.
-	 * @return a string containing the values of x, y, and z, in the format of "{x}, {y}, {z}".
+	 * @return a string containing the values of <code>x</code>, <code>y</code>, and <code>z</code>, in the format of "<b>x, y, z<b>".
 	 */
 	public String toString() {
 		return x + ", " + y + ", " + z;
 	}
 	
 	/**
-	 * Adds a Vector3f to the current Vector3f.
+	 * Adds a Vector3f to the current Vector3f and returns the sum.
 	 * @param b The Vector3f you want to add to the current.
+	 * @return the sum.
 	 */
-	public void plus(Vector3f b) {
-		this.set(this.x + b.x, this.y + b.y, this.z + b.z);
+	public Vector3f plus(Vector3f b) {
+		return new Vector3f(this.x + b.x, this.y + b.y, this.z + b.y);
 	}
 
 	/**
-	 * Adds values to the current Vector3f's values.
+	 * Adds values to the current Vector3f's values and returns the new Vector3f.
 	 * @param x What you want to add to the local x.
 	 * @param y What you want to add to the local y.
 	 * @param z What you want to add to the local z.
+	 * @return the sum.
 	 */
-	public void plus(float x, float y, float z) {
-		this.x += x;
-		this.y += y;
-		this.z += z;
+	public Vector3f plus(float x, float y, float z) {
+		return new Vector3f(this.x + x, this.y + y, this.z + z);
 	}
 	
 	/**
-	 * Times the current Vector3f by another.
+	 * Minus a Vector3f from the current and returns the new Vector3f;
+	 * @param b The Vector to minus by.
+	 * @return The new Vector3f.
+	 */
+	public Vector3f minus(Vector3f b) {
+		return new Vector3f(this.x - b.x, this.y - b.y, this.z - b.z);
+	}
+	
+	/**
+	 * Times the current Vector3f by another and return the product.
 	 * @param b The Vector3f you want to times the current by.
+	 * @return the product.
 	 */
-	public void times(Vector3f b) {
-		this.x *= b.x;
-		this.y *= b.y;
-		this.z *= b.z;
+	public Vector3f times(Vector3f b) {
+		return new Vector3f(this.x * b.x, this.y * b.y, this.y * b.y);
 	}
 	
 	/**
-	 * Times the current Vector3f by a value.
+	 * Times the current Vector3f by a value and returns the product.
 	 * @param b The value you want to times the current Vector3f by.
+	 * @return the product.
 	 */
-	public void times(float b) {
-		this.x *= b;
-		this.y *= b;
-		this.z *= b;
+	public Vector3f times(float b) {
+		return new Vector3f(this.x * b, this.y * b, this.z * b);
 	}
 	
 	/**
-	 * Times the current Vector3f by a value. Uses double instead of float.
+	 * Times the current Vector3f by a value and returns the product. Uses double instead of float.
 	 * @param b The value you want to times the current Vector3f by.
+	 * @return the product.
 	 */
-	public void times(double b) {
-		this.x *= b;
-		this.y *= b;
-		this.z *= b;
+	public Vector3f times(double b) {
+		return new Vector3f(this.x * b, this.y * b, this.z * b);
 	}
+
 }

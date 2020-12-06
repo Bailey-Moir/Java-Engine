@@ -29,6 +29,11 @@ public class Vector2f {
 		this.y = (float) y;
 	}
 	
+	/**
+	 * Creates a Vector2f with all of the values equal to b.	
+	 * @param b The value of each dimension.
+	 * @return The new Vector2f.
+	 */
 	public static Vector2f square(double b) {
 		return new Vector2f(b, b);
 		
@@ -56,14 +61,14 @@ public class Vector2f {
 	
 	/**
 	 * Returns a string for debugging purposes.
-	 * @return a string containing the values of x and y, in the format of "{x}, {y}".
+	 * @return a string containing the values of <code>x</code> and <code>y</code>, in the format of "<b>x, y<b>".
 	 */
 	public String toString() {
 		return x + ", " + y;
 	}
 	
 	/**
-	 * Adds a Vector2f to the current Vector2f.
+	 * Adds a Vector2f to the current Vector2f and returns the sum.
 	 * @param b The Vector2f you want to add to the current.
 	 * @return the sum.
 	 */
@@ -72,7 +77,7 @@ public class Vector2f {
 	}
 
 	/**
-	 * Adds values to the current Vector2f's values.
+	 * Adds values to the current Vector2f's values and returns the sum.
 	 * @param x What you want to add to the local x.
 	 * @param y What you want to add to the local y.
 	 * @return the sum.
@@ -81,12 +86,17 @@ public class Vector2f {
 		return new Vector2f(this.x + x, this.y + y);
 	}
 	
+	/**
+	 * Minus a Vector2f from the current and returns the new Vector2f;
+	 * @param b The Vector to minus by.
+	 * @return The new Vector2f.
+	 */
 	public Vector2f minus(Vector2f b) {
 		return new Vector2f(this.x - b.x, this.y - b.y);
 	}
 	
 	/**
-	 * Times the current Vector2f by another.
+	 * Times the current Vector2f by another and return the product.
 	 * @param b The Vector2f you want to times the current by.
 	 * @return the product.
 	 */
@@ -95,7 +105,7 @@ public class Vector2f {
 	}
 	
 	/**
-	 * Times the current Vector2f by a value.
+	 * Times the current Vector2f by a value and return the product.
 	 * @param b The value you want to times the current Vector2f by.
 	 * @return the product.
 	 */
@@ -104,7 +114,7 @@ public class Vector2f {
 	}
 	
 	/**
-	 * Times the current Vector2f by a value. Uses double instead of float.
+	 * Times the current Vector2f by a value. Uses double instead of float and return the product.
 	 * @param b The value you want to times the current Vector2f by.
 	 * @return the product.
 	 */
