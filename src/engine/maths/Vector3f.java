@@ -22,29 +22,17 @@ public class Vector3f {
 	}
 	
 	/**
-	 * Contructor for types of double instead of float. Defines the members.
-	 * @param x What you want x to be.
-	 * @param y What you want y to be.
-	 * @param z What you want z to be.
-	 */
-	public Vector3f(double x, double y, double z) {
-		this.x = (float) x;
-		this.y = (float) y;
-		this.z = (float) z;
-	}
-	
-	/**
 	 * Creates a Vector3f with all of the values equal to b.	
 	 * @param b The value of each dimension.
 	 * @return The new Vector3f.
 	 */
-	public static Vector3f square(double b) {
+	public static Vector3f square(float b) {
 		return new Vector3f(b, b, b);
 		
 	}
 	
 	/**
-	 * Sets the values of x and y without setting it to a whole new Vector3f.
+	 * Sets the values of <code>x</code>, <code>y</code>, and <code>z</code> without setting it to a whole new Vector3f.
 	 * @param x The new x value.
 	 * @param y The new y value.
 	 * @param z The new z value.
@@ -53,18 +41,6 @@ public class Vector3f {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-	}
-
-	/**
-	 * Sets the values of x and y without setting it to a whole new Vector3f; uses doubles instead of floats.
-	 * @param x The new x value.
-	 * @param y The new y value.
-	 * @param z The new z value.
-	 */
-	public void set(double x, double y, double z) {
-		this.x = (float) x;
-		this.y = (float) y;
-		this.z = (float) z;
 	}
 	
 	/**
@@ -121,14 +97,4 @@ public class Vector3f {
 	public Vector3f times(float b) {
 		return new Vector3f(this.x * b, this.y * b, this.z * b);
 	}
-	
-	/**
-	 * Times the current Vector3f by a value and returns the product. Uses double instead of float.
-	 * @param b The value you want to times the current Vector3f by.
-	 * @return the product.
-	 */
-	public Vector3f times(double b) {
-		return new Vector3f(this.x * b, this.y * b, this.z * b);
-	}
-
 }

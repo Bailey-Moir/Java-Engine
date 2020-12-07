@@ -72,7 +72,7 @@ public class Input extends Window {
 		
 		mouseScroll = new GLFWScrollCallback() {
 			public void invoke(long window, double offsetX, double offsetY) {
-				scroll = new Vector2f(offsetX, offsetY);
+				scroll = new Vector2f((float) offsetX, (float)offsetY);
 			}			
 		};
 	}

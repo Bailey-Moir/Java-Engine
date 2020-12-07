@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import engine.io.Input;
 import engine.io.Window;
 import engine.maths.Vector2f;
-import engine.maths.Vector3f;
+import engine.maths.Vector4f;
 
 /**
  * Represents a game object.
@@ -29,7 +29,7 @@ public class GameObject {
 	 * @param size The starting size of the game object.
 	 * @param image The image to be displayed on the game object.
 	 */
-	public GameObject(Vector2f position, Vector2f size, Window window, Vector3f color, String image) {
+	public GameObject(Vector2f position, Vector2f size, Window window, Vector4f color, String image) {
 		this.transform = new Transform();
 		this.spriteRenderer = new spriteRenderer();	
 		
@@ -63,7 +63,7 @@ public class GameObject {
 		 * @param delta How much it is going to change by.
 		 */
 		public void translate(Vector2f delta) {
-			position = position.plus(delta.times(1 / spriteRenderer.getWindow().time.deltaTime));
+			position = position.plus(delta.times((float) (1 / spriteRenderer.getWindow().time.deltaTime)));
 		}
 		
 		/**
@@ -91,7 +91,7 @@ public class GameObject {
 		
 		public String image;
 		public int layer;		
-		public Vector3f color;
+		public Vector4f color;
 		
 		public Window getWindow() {
 			return window;

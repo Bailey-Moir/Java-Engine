@@ -40,7 +40,7 @@ public class Loader {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, 2, positions);
-		storeDataInAttributeList(1, 3, 	vertexColors);
+		storeDataInAttributeList(1, 4, 	vertexColors);
 		return new VAO(vaoID, indices.length);
 	}
 	

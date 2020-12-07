@@ -34,7 +34,7 @@ public class Rigidbody {
 	 * <b>To be run every frame.<b>
 	 */
 	public void update() {
-		velocity = net.times(object.spriteRenderer.getWindow().time.deltaTime).times(0.005); //F = a
+		velocity = net.times((float) object.spriteRenderer.getWindow().time.deltaTime).times(0.005f); //F = a
 		
 		object.transform.position = object.transform.position.plus(velocity);
 		net = net.minus(velocity.times(2)); //Two is the modifier of friction.

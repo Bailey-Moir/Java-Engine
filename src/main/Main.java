@@ -8,8 +8,8 @@ import engine.graphics.Shader;
 import engine.io.Window;
 import engine.maths.Vector2f;
 import engine.maths.Vector3f;
-import main.objects.Player;
-import main.objects.TempPlatform;
+import main.instances.Player;
+import main.instances.TempPlatform;
 /**
  * The starting off point.
  * 
@@ -51,12 +51,12 @@ public class Main implements Runnable {
 		});
 		
 		new Player(new Vector2f(0, -1));
-		new TempPlatform(new Vector2f(-3, -2.5), new Vector2f(2, 0.5));
-		new TempPlatform(new Vector2f(0, -2), new Vector2f(1, 1));
-		new TempPlatform(new Vector2f(3, -1.5), new Vector2f(0.5, 1));
+		new TempPlatform(new Vector2f(-3, -2.5f), new Vector2f(2, 0.5f));
+		new TempPlatform(new Vector2f(0, -2f), new Vector2f(1, 1));
+		new TempPlatform(new Vector2f(3, -1.5f), new Vector2f(0.5f, 1));
 		
 		for (GameObject object : GameObject.allObjects) {
-			object.StartFunc.accept(0);
+			if (object.StartFunc != null) object.StartFunc.accept(0);
 		}
 	}
 	
@@ -74,9 +74,7 @@ public class Main implements Runnable {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
 		for (GameObject object : GameObject.allObjects) {
-			if (object.UpdateFunc != null) {
-			object.UpdateFunc.accept(0);
-			}
+			if (object.UpdateFunc != null) object.UpdateFunc.accept(0);
 		}
 		
 		window.update();
