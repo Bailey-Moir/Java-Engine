@@ -15,7 +15,7 @@ import engine.maths.Vector4f;
  * @author Bailey
  */
 
-public class GameObject {
+public abstract class GameObject {
 	public static List<GameObject> allObjects = new ArrayList<GameObject>();
 	
 	public Transform transform;	
@@ -45,8 +45,8 @@ public class GameObject {
 		allObjects.add(this);
 	}
 	
-	public Consumer<Integer> StartFunc = null;
-	public Consumer<Integer> UpdateFunc = null;
+	public abstract void Start();
+	public abstract void Update();
 	
 	/**
 	 * Size, positions, movement, rotation, etc.
@@ -76,6 +76,21 @@ public class GameObject {
 					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
 					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
 					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+			};
+			return vertices;
+		}
+
+
+		/**
+		 * Calculates the position of the vertices using known variables. Used for rendering.
+		 * @return the vertices.
+		 */
+		public float[] calculateVertices(Vector2f offset) {
+			float[] vertices = {
+					(position.x - offset.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.x - offset.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.x - offset.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.x - offset.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}

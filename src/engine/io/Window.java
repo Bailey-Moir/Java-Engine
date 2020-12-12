@@ -55,7 +55,7 @@ public class Window {
 		time = new Time();
 		input = new Input(WIDTH, HEIGHT, TITLE);
 		
-		window = GLFW.glfwCreateWindow(WIDTH, HEIGHT, TITLE, isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0, 0); // ? = If true, do this. : = If false, do this
+		window = GLFW.glfwCreateWindow(WIDTH, HEIGHT, TITLE, isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
 		if (window == 0) throw new RuntimeException("Failed to create the GLFW window");
 		
 		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
@@ -72,7 +72,7 @@ public class Window {
 		
 		GLFW.glfwSwapInterval(1); //Limts to 60fps
 	}
-		
+	
 	/**
 	 * Creates/initializes the callbacks.
 	 */

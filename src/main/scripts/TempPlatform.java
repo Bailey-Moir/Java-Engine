@@ -1,4 +1,4 @@
-package main.instances;
+package main.scripts;
 
 import engine.GameObject;
 import engine.components.*;
@@ -12,21 +12,17 @@ public class TempPlatform extends GameObject {
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
-	public TempPlatform(Vector2f position, Vector2f size) {
-		super(position, size, Main.window, new Vector4f(0.5f, 0.5f, 0.5f, 1), "ground");
-		
-		StartFunc = (Integer uselessInt) -> {
-			Start();
-		};
-		/*UpdateFunc = (Integer uselessInt) -> {
-			Update();
-		};*/
+	public TempPlatform(Vector2f position, Vector2f size, Vector4f color) {
+		super(position, size, Main.window, color, "ground");
 	}
 
 	/**
 	 * Runs once when the window is created.
 	 */
-	private void Start() {
-		new Collider(this, true);
+	public void Start() {
+		new Collider(this);
+	}
+	
+	public void Update() {
 	}
 }

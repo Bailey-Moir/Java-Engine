@@ -3,8 +3,8 @@ package engine.graphics;
 
 import org.lwjgl.opengl.GL30;
 
+import engine.Camera;
 import engine.GameObject;
-import engine.ui.Frame;
 
 /**
  * Renders GameObject.
@@ -13,14 +13,16 @@ import engine.ui.Frame;
  */
 
 public class Renderer {	
+	public static Camera currentCamera;
+	
 	/**
 	 * Renders all of the GameObject.allObjects defined in the class GameObject.allObjects.
 	 * @see GameObject.allObjects
 	 */
-	public static void render() {
+	public static void render() {		
 		Loader loader = new Loader();
 		
-		TexturedModel[] texturedModels = new TexturedModel[GameObject.allObjects.size() + Frame.allObjects.size()];
+		TexturedModel[] texturedModels = new TexturedModel[GameObject.allObjects.size()];
 		
 		//Order to connect them
       	int[] indices = { //Starts at 0 not 1;
@@ -37,19 +39,7 @@ public class Renderer {
       			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a
       		};
       		
-          	texturedModels[i] = new TexturedModel(loader.loadToVAO(object.transform.calculateVertices(), vertexColor, indices), loader.loadTexture(object.spriteRenderer.image));
-          	i++;
-      	}
-      	i = 0;
-      	for (Frame object : Frame.allObjects) {
-      		float[] vertexColor = new float[] {
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a
-      		};
-      		
-          	texturedModels[i] = new TexturedModel(loader.loadToVAO(object.transform.calculateVertices(), vertexColor, indices), loader.loadTexture(object.spriteRenderer.image));
+          	texturedModels[i] = new TexturedModel(loader.loadToVAO(object.transform.calculateVertices(currentCamera.position), vertexColor, indices), loader.loadTexture(object.spriteRenderer.image));
           	i++;
       	}
 		
@@ -65,7 +55,7 @@ public class Renderer {
 			GL30.glActiveTexture(GL30.GL_TEXTURE0); //Tells OpenGL what texture to render.
 			GL30.glBindTexture(GL30.GL_TEXTURE_2D, texturedModel.getTextureID());
 			GL30.glDrawElements(GL30.GL_TRIANGLES, model.getVertexCount(), GL30.GL_UNSIGNED_INT, 0); //Params = (mode, indices, type, startPoint)
-						
+			
 			GL30.glDisableVertexAttribArray(0); //Disables attrib lists
 			GL30.glDisableVertexAttribArray(1);
 			GL30.glBindVertexArray(0); //Unbinds current VAO

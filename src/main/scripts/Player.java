@@ -1,4 +1,4 @@
-package main.instances;
+package main.scripts;
 
 
 import org.lwjgl.glfw.GLFW;
@@ -11,7 +11,7 @@ import main.Main;
 
 public class Player extends GameObject {
 	private Rigidbody rb;
-	private Collider col;
+	private Collider col, gravCol;
 	
 	private Vector2f startPos;
 	
@@ -23,34 +23,36 @@ public class Player extends GameObject {
 		super(startPos, new Vector2f(1, 1), Main.window, new Vector4f(1, 1, 1, 1), "player");
 				
 		this.startPos = startPos;
-		
-		StartFunc = (Integer uselessInt) -> {
-			Start();
-		};
-		UpdateFunc = (Integer uselessInt) -> {
-			Update();
-		};
 	}
-
+ 
 	/**
 	 * Runs once when the window is created.
 	 */
-	private void Start() {
+	public void Start() {
 		rb = new Rigidbody(this);
-		col = new Collider(this, false);
+		col = new Collider(this, rb);
+		gravCol = new Collider(this, rb);
+		
+		gravCol.offset = new Vector2f(0, -transform.size.y * 0.95f / 2);
+		gravCol.size = new Vector2f(transform.size.x * 0.9f, transform.size.y * 0.1f);
+		gravCol.isTrigger = true;
 	}
 	
 	/**
 	 * Runs every frame.
 	 */
-	private void Update() {
+	public void Update() {
 		if (input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
 			rb.net.set(0, 0);
 			transform.position = startPos;
 		}
-
+		
+		rb.update();
 		col.update();
-		rb.isGravity = !col.isColliding;
+		
+		gravCol.update();
+		
+		rb.isGravity = !gravCol.isColliding;
 		rb.addForce(new Vector2f(input.getAxisRaw("Horizontal"), input.getAxisRaw("Vertical")).times(0.5f));
 		if (col.isColliding) {
 			//Stops falling
@@ -61,6 +63,5 @@ public class Player extends GameObject {
 				rb.addForce(new Vector2f(0, 7.5f));
 			}
 		}
-		rb.update();
 	}
 }

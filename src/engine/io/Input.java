@@ -34,7 +34,7 @@ public class Input extends Window {
 		public int[] keys;
 	}
 	
-	private int[] keys = new int[GLFW.GLFW_KEY_LAST]; //The int length is the amount of keys
+	private int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
 	private int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
 	private Vector2f mousePos;
 	private Vector2f scroll;
@@ -173,14 +173,14 @@ public class Input extends Window {
 	 * @return the position of the mouse relative to the window.
 	 */
 	public Vector2f getMousePos() {
-		return mousePos;
+		return (mousePos ==  null ? new Vector2f(0, 0) : mousePos);
 	}
 
 	/**
 	 * @return the scroll offset relative to that at window creation.
 	 */
 	public Vector2f getScroll() {
-		return scroll;
+		return (scroll ==  null ? new Vector2f(0, 0) : scroll);
 	}
 	
 	/**

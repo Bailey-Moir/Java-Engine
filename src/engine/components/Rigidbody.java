@@ -4,13 +4,13 @@ import engine.GameObject;
 import engine.maths.Vector2f;
 
 /**
- * Handles the physics of an object.
+ * Handles the physics of an obj.
  * 
  * @author Bailey
  */
 
 public class Rigidbody {
-	private GameObject object;
+	private GameObject obj;
 	
 	public float gravityModifier = 0.5f;
 	
@@ -20,10 +20,10 @@ public class Rigidbody {
 	
 	/**
 	 * The constructor.
-	 * @param object The object that the component belongs to.
+	 * @param obj The obj that the component belongs to.
 	 */
-	public Rigidbody(GameObject object) {
-		this.object = object;
+	public Rigidbody(GameObject object) {		
+		this.obj = object;
 		net = new Vector2f(0, 0);
 		this.isGravity = true;
 	}
@@ -33,10 +33,14 @@ public class Rigidbody {
 	 * </br></br>
 	 * <b>To be run every frame.<b>
 	 */
-	public void update() {
-		velocity = net.times((float) object.spriteRenderer.getWindow().time.deltaTime).times(0.005f); //F = a
+	public void update() {		
+		if (isGravity) {
+			addForce(new Vector2f(0, -gravityModifier));
+		}
 		
-		object.transform.position = object.transform.position.plus(velocity);
+		velocity = net.times((float) obj.spriteRenderer.getWindow().time.deltaTime).times(0.005f); //F = a
+		
+		obj.transform.position = obj.transform.position.plus(velocity);
 		net = net.minus(velocity.times(2)); //Two is the modifier of friction.
 		
 		if (net.x <= 0.1 && net.x >= -0.1) {
@@ -51,23 +55,19 @@ public class Rigidbody {
 		if (velocity.y <= 0.1 && velocity.y >= -0.1) {
 			velocity.y = 0;
 		}
-		
-		if (isGravity) {
-			addForce(new Vector2f(0, -gravityModifier));
-		}
 			
 	}
 		
 	/**
-	 * Adds a force to the object.
-	 * @param force The force to add to the net force of the object.
+	 * Adds a force to the obj.
+	 * @param force The force to add to the net force of the obj.
 	 */
 	public void addForce(Vector2f force) {
 		net = net.plus(force);
 	}
 
 	/**
-	 * Makes the object stop falling.
+	 * Makes the obj stop falling.
 	 */
 	public void stopFalling() {
 		if (net.y < 0) net.y = 0;

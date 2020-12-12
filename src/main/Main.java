@@ -2,14 +2,16 @@ package main;
 
 import org.lwjgl.glfw.GLFW;
 
+import engine.Camera;
 import engine.GameObject;
 import engine.graphics.Renderer;
 import engine.graphics.Shader;
 import engine.io.Window;
 import engine.maths.Vector2f;
 import engine.maths.Vector3f;
-import main.instances.Player;
-import main.instances.TempPlatform;
+import engine.maths.Vector4f;
+import main.scripts.Player;
+import main.scripts.TempPlatform;
 /**
  * The starting off point.
  * 
@@ -28,6 +30,8 @@ public class Main implements Runnable {
 	private final String TITLE = "big boy";
 	private Vector3f background = new Vector3f(0.1f, 0.1f, 0.1f);
 	
+	private GameObject player;
+
 	private void start() {
 		game = new Thread(this, "game");
 		game.start(); //Runs the runs function, using Runnable
@@ -39,7 +43,7 @@ public class Main implements Runnable {
 		
 		window.setBackgroundColour(new Vector3f(background.x, background.y, background.z));
 		window.init();
-		shader.create();		
+		shader.create();
 		
 		window.input.createAxis("Horizontal", new int[] {
 				GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_D,
@@ -50,14 +54,18 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 		
-		new Player(new Vector2f(0, -1));
-		new TempPlatform(new Vector2f(-3, -2.5f), new Vector2f(2, 0.5f));
-		new TempPlatform(new Vector2f(0, -2f), new Vector2f(1, 1));
-		new TempPlatform(new Vector2f(3, -1.5f), new Vector2f(0.5f, 1));
+		player = new Player(new Vector2f(0, -1));
+		new TempPlatform(new Vector2f(-3, -2.5f), new Vector2f(2, 0.5f), new Vector4f(1, 0.5f, 0, 1));
+		new TempPlatform(new Vector2f(0, -2f), new Vector2f(1, 1), new Vector4f(0.5f, 0.25f, 0, 1));
+		new TempPlatform(new Vector2f(3, -1.5f), new Vector2f(2, 5), new Vector4f(0.1f, 0.05f, 0, 1));
 		
 		for (GameObject object : GameObject.allObjects) {
-			if (object.StartFunc != null) object.StartFunc.accept(0);
+			object.Start();
 		}
+		
+		Renderer.currentCamera = new Camera(window.input.getMousePos());
+		
+		//window.setFullscreen(true);
 	}
 	
 	public void run() {
@@ -70,12 +78,18 @@ public class Main implements Runnable {
 		close();
 	}
 	
+	boolean cameraToggle = true;
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
 		for (GameObject object : GameObject.allObjects) {
-			if (object.UpdateFunc != null) object.UpdateFunc.accept(0);
+			object.Update();
 		}
+		
+		if (window.input.isKeyPressed(GLFW.GLFW_KEY_0)) cameraToggle = !cameraToggle;
+		
+		if (cameraToggle) Renderer.currentCamera.position = new Vector2f(window.input.getMousePos().x * -1, window.input.getMousePos().y).times(0.025f);
+		else Renderer.currentCamera.position = player.transform.position;
 		
 		window.update();
 		window.time.update();
