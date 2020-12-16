@@ -11,7 +11,8 @@ import engine.maths.Vector2f;
 import engine.maths.Vector3f;
 import engine.maths.Vector4f;
 import main.scripts.Player;
-import main.scripts.TempPlatform;
+import main.scripts.TempPlatform;
+
 /**
  * The starting off point.
  * 
@@ -26,7 +27,7 @@ public class Main implements Runnable {
 	public static Window window;
 	private Shader shader;
 	
-	private final int WIDTH = 1280, HEIGHT = 720;
+	private final int WIDTH = 1280, HEIGHT = 720;	
 	private final String TITLE = "big boy";
 	private Vector3f background = new Vector3f(0.1f, 0.1f, 0.1f);
 	
