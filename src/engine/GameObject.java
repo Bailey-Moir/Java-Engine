@@ -2,12 +2,10 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import engine.io.Input;
 import engine.io.Window;
-import engine.maths.Vector2f;
-import engine.maths.Vector4f;
+import engine.maths.Vector;
 
 /**
  * Represents a game object.
@@ -22,26 +20,26 @@ public abstract class GameObject {
 	public spriteRenderer spriteRenderer;
 	
 	protected Input input;
-	
+
 	/**
 	 * Constructor.
 	 * @param position The starting position of the game object.
 	 * @param size The starting size of the game object.
 	 * @param image The image to be displayed on the game object.
 	 */
-	public GameObject(Vector2f position, Vector2f size, Window window, Vector4f color, String image) {
+	public GameObject(Vector position, Vector size, Window window, Vector color, String image) {
 		this.transform = new Transform();
-		this.spriteRenderer = new spriteRenderer();	
-		
+		this.spriteRenderer = new spriteRenderer();
+
 		this.transform.position = position;
 		this.transform.size = size;
 		this.spriteRenderer.color = color;
 		this.spriteRenderer.image = "null";
-		
+
 		this.spriteRenderer.window = window;
-		
+
 		this.input = window.input;
-		
+
 		allObjects.add(this);
 	}
 	
@@ -55,14 +53,14 @@ public abstract class GameObject {
 	 */
 	public class Transform {
 		public float rotation;
-		
-		public Vector2f position, size;
+
+		public Vector position, size;
 
 		/**
 		 * Moves the object, including delta time.
 		 * @param delta How much it is going to change by.
 		 */
-		public void translate(Vector2f delta) {
+		public void translate(Vector delta) {
 			position = position.plus(delta.times((float) (1 / spriteRenderer.getWindow().time.deltaTime)));
 		}
 		
@@ -72,10 +70,10 @@ public abstract class GameObject {
 		 */
 		public float[] calculateVertices() {
 			float[] vertices = {
-					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(position.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(position.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+					(position.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}
@@ -85,12 +83,12 @@ public abstract class GameObject {
 		 * Calculates the position of the vertices using known variables. Used for rendering.
 		 * @return the vertices.
 		 */
-		public float[] calculateVertices(Vector2f offset) {
+		public float[] calculateVertices(Vector offset) {
 			float[] vertices = {
-					(position.x - offset.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(position.x - offset.x - size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(position.x - offset.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y + size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(position.x - offset.x + size.x / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.y - offset.y - size.y / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+					(position.dimensions.get(0) - offset.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.dimensions.get(0) - offset.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.dimensions.get(0) - offset.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.dimensions.get(0) - offset.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}
@@ -105,8 +103,8 @@ public abstract class GameObject {
 		private Window window;
 		
 		public String image;
-		public int layer;		
-		public Vector4f color;
+		public int layer;
+		public Vector color;
 		
 		public Window getWindow() {
 			return window;

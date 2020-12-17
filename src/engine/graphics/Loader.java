@@ -31,7 +31,7 @@ public class Loader {
 	/**
 	 * Loads attributes to a new VAO
 	 * @param positions The position of each vertex.
-	 * @param textureCoords The texture cords.
+	 * @param vertexColors The color of each vertex.
 	 * @param indices The order at which you connect the positions (vertices).
 	 * @return A new VAO.
 	 * @see VAO

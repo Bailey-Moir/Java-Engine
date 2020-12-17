@@ -16,8 +16,7 @@ public class Renderer {
 	public static Camera currentCamera;
 	
 	/**
-	 * Renders all of the GameObject.allObjects defined in the class GameObject.allObjects.
-	 * @see GameObject.allObjects
+	 * Renders all of GameObject.allObjects.
 	 */
 	public static void render() {		
 		Loader loader = new Loader();
@@ -33,10 +32,10 @@ public class Renderer {
       	int i = 0;
       	for (GameObject object : GameObject.allObjects) {
       		float[] vertexColor = new float[] {
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a,
-      			object.spriteRenderer.color.x, object.spriteRenderer.color.y, object.spriteRenderer.color.z, object.spriteRenderer.color.a
+      			object.spriteRenderer.color.dimensions.get(0), object.spriteRenderer.color.dimensions.get(1), object.spriteRenderer.color.dimensions.get(2), object.spriteRenderer.color.dimensions.get(3),
+      			object.spriteRenderer.color.dimensions.get(0), object.spriteRenderer.color.dimensions.get(1), object.spriteRenderer.color.dimensions.get(2), object.spriteRenderer.color.dimensions.get(3),
+      			object.spriteRenderer.color.dimensions.get(0), object.spriteRenderer.color.dimensions.get(1), object.spriteRenderer.color.dimensions.get(2), object.spriteRenderer.color.dimensions.get(3),
+      			object.spriteRenderer.color.dimensions.get(0), object.spriteRenderer.color.dimensions.get(1), object.spriteRenderer.color.dimensions.get(2), object.spriteRenderer.color.dimensions.get(3)
       		};
       		
           	texturedModels[i] = new TexturedModel(loader.loadToVAO(object.transform.calculateVertices(currentCamera.position), vertexColor, indices), loader.loadTexture(object.spriteRenderer.image));

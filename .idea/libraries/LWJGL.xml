@@ -1,13 +1,30 @@
 <component name="libraryTable">
   <library name="LWJGL">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../Libraries/LWJGL" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-glfw-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-glfw.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-jawt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengles-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengles.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/slick-util3.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-glfw-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-jawt-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengl-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengles-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../../../Libraries/LWJGL" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-glfw-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-jawt-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-opengles-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../Libraries/LWJGL/lwjgl-sources.jar!/" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../../../Libraries/LWJGL" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../Libraries/LWJGL" recursive="false" type="SOURCES" />
   </library>
 </component>

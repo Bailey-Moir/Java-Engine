@@ -1,6 +1,6 @@
 package engine;
 
-import engine.maths.Vector2f;
+import engine.maths.Vector;
 
 /**
  * Represents a game camera.
@@ -9,13 +9,13 @@ import engine.maths.Vector2f;
  */
 
 public class Camera {
-	public Vector2f position;
+	public Vector position;
 
 	/**
 	 * The default constructor.
 	 * @param pos The start position of the camera
 	 */
-	public Camera(Vector2f pos) {
+	public Camera(Vector pos) {
 		this.position = pos;
 	}
 }

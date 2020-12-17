@@ -2,13 +2,12 @@ package engine.io;
 
 import java.util.ArrayList;
 
+import engine.maths.Vector;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-
-import engine.maths.Vector2f;
 
 /**
  * Manages input, i.e. mouse position, mouse buttons, scroll, and keyboard keys.
@@ -36,8 +35,8 @@ public class Input extends Window {
 	
 	private int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
 	private int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
-	private Vector2f mousePos;
-	private Vector2f scroll;
+	private Vector mousePos;
+	private Vector scroll;
 	
 	private ArrayList<Axis> axes = new ArrayList<Axis>();
 	
@@ -60,7 +59,7 @@ public class Input extends Window {
 		
 		mouseMove = new GLFWCursorPosCallback() {
 			public void invoke(long window, double x, double y) {
-				mousePos = new Vector2f((float) x - getWIDTH() / 2, (float) y - getHEIGHT() / 2);
+				mousePos = new Vector(new float[]{(float) x - getWIDTH() / 2, (float) y - getHEIGHT() / 2});
 			}
 		};
 		
@@ -72,7 +71,7 @@ public class Input extends Window {
 		
 		mouseScroll = new GLFWScrollCallback() {
 			public void invoke(long window, double offsetX, double offsetY) {
-				scroll = new Vector2f((float) offsetX, (float)offsetY);
+				scroll = new Vector(new float[]{(float) offsetX, (float)offsetY});
 			}			
 		};
 	}
@@ -125,7 +124,8 @@ public class Input extends Window {
 		
 	/**
 	 * Gives you the value of an axis.
-	 * @exception If the axis you named doesn't exist.
+	 * @exception StringIndexOutOfBoundsException If the axis you named doesn't exist.
+	 * @exception IndexOutOfBoundsException If the number of keys in the given axis are odd.
 	 * @param a_axis The name of the axis.
 	 * @return The value of the axis.
 	 */
@@ -133,7 +133,7 @@ public class Input extends Window {
 		try {
 			for (Axis axis : axes) {
 				if (axis.keys.length % 2 != 0) {
-					throw new Exception("Odd number of keys given.");
+					throw new IndexOutOfBoundsException("Odd number of keys given.");
 				}
 				
 				if (axis.name == a_axis) {
@@ -150,8 +150,8 @@ public class Input extends Window {
 					return positive - negative;
 				}
 			}
-			throw new Exception("\"" + a_axis + "\" is not a valid axis.");
-		} catch (Exception e) {
+			throw new StringIndexOutOfBoundsException("\"" + a_axis + "\" is not a valid axis.");
+		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return 0;
 		}
@@ -172,15 +172,29 @@ public class Input extends Window {
 	/**
 	 * @return the position of the mouse relative to the window.
 	 */
-	public Vector2f getMousePos() {
-		return (mousePos ==  null ? new Vector2f(0, 0) : mousePos);
+	public Vector getMousePos() {
+		return (mousePos ==  null ? new Vector(new float[]{0, 0}) : mousePos);
+	}
+
+	/**
+	 * @return the position of the mouse relative to the window.
+	 */
+	public float getMouseX() {
+		return (mousePos == null ? 0f : mousePos.dimensions.get(0));
+	}
+
+	/**
+	 * @return the position of the mouse relative to the window.
+	 */
+	public float getMouseY() {
+		return (mousePos == null ? 0f : mousePos.dimensions.get(1));
 	}
 
 	/**
 	 * @return the scroll offset relative to that at window creation.
 	 */
-	public Vector2f getScroll() {
-		return (scroll ==  null ? new Vector2f(0, 0) : scroll);
+	public Vector getScroll() {
+		return (scroll ==  null ? new Vector(new float[]{0, 0}) : scroll);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package engine.io;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 
+import engine.maths.Vector;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -10,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
 import engine.maths.Time;
-import engine.maths.Vector3f;
 
 /**
  * For a computer window.
@@ -97,10 +97,10 @@ public class Window {
 	 * Sets the window color.
 	 * @param color The color to set the window to.
 	 */
-	public void setBackgroundColour(Vector3f color) {
-		bgR = color.x;
-		bgG = color.y;
-		bgB = color.z;
+	public void setBackgroundColour(Vector color) {
+		bgR = color.dimensions.get(0);
+		bgG = color.dimensions.get(1);
+		bgB = color.dimensions.get(2);
 	}
 	
 	/**
@@ -181,7 +181,7 @@ public class Window {
 
 	/**
 	 * Sets if the window is fullscreen or not.
-	 * @param isFullscreenTo un-fullscreen or to fullscreen.
+	 * @param isFullscreen un-fullscreen or to fullscreen.
 	 */
 	public void setFullscreen(boolean isFullscreen) {
 		this.isFullscreen = isFullscreen;

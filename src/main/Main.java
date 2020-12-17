@@ -1,5 +1,6 @@
 package main;
 
+import engine.maths.Vector;
 import org.lwjgl.glfw.GLFW;
 
 import engine.Camera;
@@ -7,9 +8,6 @@ import engine.GameObject;
 import engine.graphics.Renderer;
 import engine.graphics.Shader;
 import engine.io.Window;
-import engine.maths.Vector2f;
-import engine.maths.Vector3f;
-import engine.maths.Vector4f;
 import main.scripts.Player;
 import main.scripts.TempPlatform;
 
@@ -29,7 +27,7 @@ public class Main implements Runnable {
 	
 	private final int WIDTH = 1280, HEIGHT = 720;	
 	private final String TITLE = "big boy";
-	private Vector3f background = new Vector3f(0.1f, 0.1f, 0.1f);
+	private Vector background = new Vector(new float[]{0.1f, 0.1f, 0.1f});
 	
 	private GameObject player;
 
@@ -42,7 +40,7 @@ public class Main implements Runnable {
 		window = new Window(WIDTH, HEIGHT, TITLE);
 		shader = new Shader("/shaders/mainVertex.glsl", "/shaders/mainFragment.glsl");
 		
-		window.setBackgroundColour(new Vector3f(background.x, background.y, background.z));
+		window.setBackgroundColour(background);
 		window.init();
 		shader.create();
 		
@@ -55,11 +53,11 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 		
-		player = new Player(new Vector2f(0, -1));
-		new TempPlatform(new Vector2f(-3, -2.5f), new Vector2f(2, 0.5f), new Vector4f(1, 0.5f, 0, 1));
-		new TempPlatform(new Vector2f(0, -2f), new Vector2f(1, 1), new Vector4f(0.5f, 0.25f, 0, 1));
-		new TempPlatform(new Vector2f(3, -1.5f), new Vector2f(2, 5), new Vector4f(0.1f, 0.05f, 0, 1));
-		
+		player = new Player(new Vector(new float[]{0, -1}));
+		new TempPlatform(new Vector(new float[]{-3, -2.5f}), new Vector(new float[]{2, 0.5f}), new Vector(new float[]{1, 0.5f, 0, 1}));
+		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{1, 1}), new Vector(new float[]{0.5f, 0.25f, 0, 1}));
+		new TempPlatform(new Vector(new float[]{3, -1.5f}), new Vector(new float[]{2, 5}), new Vector(new float[]{0.1f, 0.05f, 0, 1}));
+
 		for (GameObject object : GameObject.allObjects) {
 			object.Start();
 		}
@@ -89,7 +87,7 @@ public class Main implements Runnable {
 		
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_0)) cameraToggle = !cameraToggle;
 		
-		if (cameraToggle) Renderer.currentCamera.position = new Vector2f(window.input.getMousePos().x * -1, window.input.getMousePos().y).times(0.025f);
+		if (cameraToggle) Renderer.currentCamera.position = new Vector(new float[]{window.input.getMouseX() * -1, window.input.getMouseY()}).times(0.025f);
 		else Renderer.currentCamera.position = player.transform.position;
 		
 		window.update();
