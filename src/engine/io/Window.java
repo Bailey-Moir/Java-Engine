@@ -98,9 +98,9 @@ public class Window {
 	 * @param color The color to set the window to.
 	 */
 	public void setBackgroundColour(Vector color) {
-		bgR = color.dimensions.get(0);
-		bgG = color.dimensions.get(1);
-		bgB = color.dimensions.get(2);
+		bgR = color.getAxis(0);
+		bgG = color.getAxis(1);
+		bgB = color.getAxis(2);
 	}
 	
 	/**

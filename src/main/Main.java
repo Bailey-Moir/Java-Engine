@@ -18,7 +18,6 @@ import main.scripts.TempPlatform;
  */
 
 public class Main implements Runnable {
-	
 	private Thread game;
 	
 	private static Main instance;

@@ -180,14 +180,14 @@ public class Input extends Window {
 	 * @return the position of the mouse relative to the window.
 	 */
 	public float getMouseX() {
-		return (mousePos == null ? 0f : mousePos.dimensions.get(0));
+		return (mousePos == null ? 0f : mousePos.getAxis(0));
 	}
 
 	/**
 	 * @return the position of the mouse relative to the window.
 	 */
 	public float getMouseY() {
-		return (mousePos == null ? 0f : mousePos.dimensions.get(1));
+		return (mousePos == null ? 0f : mousePos.getAxis(1));
 	}
 
 	/**

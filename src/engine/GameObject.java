@@ -70,10 +70,10 @@ public abstract class GameObject {
 		 */
 		public float[] calculateVertices() {
 			float[] vertices = {
-					(position.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(position.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(position.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(position.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+					(position.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}
@@ -85,10 +85,10 @@ public abstract class GameObject {
 		 */
 		public float[] calculateVertices(Vector offset) {
 			float[] vertices = {
-					(position.dimensions.get(0) - offset.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(position.dimensions.get(0) - offset.dimensions.get(0) - size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(position.dimensions.get(0) - offset.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) + size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(position.dimensions.get(0) - offset.dimensions.get(0) + size.dimensions.get(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.dimensions.get(1) - offset.dimensions.get(1) - size.dimensions.get(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
+					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
+					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
+					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
 			};
 			return vertices;
 		}

@@ -196,5 +196,11 @@ public class Vector {
         return new Vector(localArr);
     }
 
+    public float getAxis(int index) {
+        return dimensions.get(index);
+    }
 
+    public void setAxis(int index, float value) {
+        dimensions.set(index, value);
+    }
 }

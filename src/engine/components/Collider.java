@@ -65,10 +65,10 @@ public class Collider {
 			for (Collider col : allColliders) {		
 				if (col.object == this.object) continue;
 				if (col.isStatic) {
-					if ((rb.velocity.dimensions.get(0) + offset.dimensions.get(0) + size.dimensions.get(0) / 2 < col.object.transform.position.dimensions.get(0) + col.offset.dimensions.get(0) - col.size.dimensions.get(0) / 2
-						|| rb.velocity.dimensions.get(0) + offset.dimensions.get(0) - size.dimensions.get(0) / 2 > col.object.transform.position.dimensions.get(0) + col.offset.dimensions.get(0) + col.size.dimensions.get(0) / 2)
-						|| (rb.velocity.dimensions.get(1) + offset.dimensions.get(1) + size.dimensions.get(1) / 2 < col.object.transform.position.dimensions.get(1) + col.offset.dimensions.get(1) - col.size.dimensions.get(1) / 2
-						|| rb.velocity.dimensions.get(1) + offset.dimensions.get(1) - size.dimensions.get(1) / 2 > col.object.transform.position.dimensions.get(1) + col.offset.dimensions.get(1) + col.size.dimensions.get(1) / 2)) {
+					if ((rb.velocity.getAxis(0) + offset.getAxis(0) + size.getAxis(0) / 2 < col.object.transform.position.getAxis(0) + col.offset.getAxis(0) - col.size.getAxis(0) / 2
+						|| rb.velocity.getAxis(0) + offset.getAxis(0) - size.getAxis(0) / 2 > col.object.transform.position.getAxis(0) + col.offset.getAxis(0) + col.size.getAxis(0) / 2)
+						|| (rb.velocity.getAxis(1) + offset.getAxis(1) + size.getAxis(1) / 2 < col.object.transform.position.getAxis(1) + col.offset.getAxis(1) - col.size.getAxis(1) / 2
+						|| rb.velocity.getAxis(1) + offset.getAxis(1) - size.getAxis(1) / 2 > col.object.transform.position.getAxis(1) + col.offset.getAxis(1) + col.size.getAxis(1) / 2)) {
 						//Not-Intercepting
 					} else {
 						System.out.println("thing");
@@ -89,10 +89,10 @@ public class Collider {
 					 *  top side is further down the the subject's bottom side
 					 *  bottom side is further up than the subject's top side
 					 */
-					if ((rb.velocity.dimensions.get(0) + offset.dimensions.get(0) + size.dimensions.get(0) / 2 < col.rb.velocity.dimensions.get(0) + col.offset.dimensions.get(0) - col.size.dimensions.get(0) / 2
-						|| rb.velocity.dimensions.get(0) + offset.dimensions.get(0) - size.dimensions.get(0) / 2 > col.rb.velocity.dimensions.get(0) + col.offset.dimensions.get(0) + col.size.dimensions.get(0) / 2)
-						|| (rb.velocity.dimensions.get(1) + offset.dimensions.get(1) + size.dimensions.get(1) / 2 < col.rb.velocity.dimensions.get(1) + col.offset.dimensions.get(1) - col.size.dimensions.get(1) / 2
-						|| rb.velocity.dimensions.get(1) + offset.dimensions.get(1) - size.dimensions.get(1) / 2 > col.rb.velocity.dimensions.get(1) + col.offset.dimensions.get(1) + col.size.dimensions.get(1) / 2)) {
+					if ((rb.velocity.getAxis(0) + offset.getAxis(0) + size.getAxis(0) / 2 < col.rb.velocity.getAxis(0) + col.offset.getAxis(0) - col.size.getAxis(0) / 2
+						|| rb.velocity.getAxis(0) + offset.getAxis(0) - size.getAxis(0) / 2 > col.rb.velocity.getAxis(0) + col.offset.getAxis(0) + col.size.getAxis(0) / 2)
+						|| (rb.velocity.getAxis(1) + offset.getAxis(1) + size.getAxis(1) / 2 < col.rb.velocity.getAxis(1) + col.offset.getAxis(1) - col.size.getAxis(1) / 2
+						|| rb.velocity.getAxis(1) + offset.getAxis(1) - size.getAxis(1) / 2 > col.rb.velocity.getAxis(1) + col.offset.getAxis(1) + col.size.getAxis(1) / 2)) {
 						//Not-Intercepting
 					} else {
 						System.out.println("thing2");

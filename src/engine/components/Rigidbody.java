@@ -44,17 +44,17 @@ public class Rigidbody {
 		obj.transform.position = obj.transform.position.plus(velocity);
 		net = net.minus(velocity.times(2)); //Two is the modifier of friction.
 		
-		if (net.dimensions.get(0) <= 0.1 && net.dimensions.get(0) >= -0.1) {
-			net.dimensions.set(0, 0f);
+		if (net.getAxis(0) <= 0.1 && net.getAxis(0) >= -0.1) {
+			net.setAxis(0, 0f);
 		}
-		if (net.dimensions.get(1) <= 0.1 && net.dimensions.get(1) >= -0.1) {
-			net.dimensions.set(1, 0f);
+		if (net.getAxis(1) <= 0.1 && net.getAxis(1) >= -0.1) {
+			net.setAxis(1, 0f);
 		}
-		if (velocity.dimensions.get(0) <= 0.1 && velocity.dimensions.get(0) >= -0.1) {
-			velocity.dimensions.set(0, 0f);
+		if (velocity.getAxis(0) <= 0.1 && velocity.getAxis(0) >= -0.1) {
+			velocity.setAxis(0, 0f);
 		}
-		if (velocity.dimensions.get(1) <= 0.1 && velocity.dimensions.get(1) >= -0.1) {
-			velocity.dimensions.set(1, 0f);
+		if (velocity.getAxis(1) <= 0.1 && velocity.getAxis(1) >= -0.1) {
+			velocity.setAxis(1, 0f);
 		}
 			
 	}
@@ -71,6 +71,6 @@ public class Rigidbody {
 	 * Makes the obj stop falling.
 	 */
 	public void stopFalling() {
-		if (net.dimensions.get(1) < 0) net.dimensions.set(1, 0f);
+		if (net.getAxis(1) < 0) net.setAxis(1, 0f);
 	}
 }

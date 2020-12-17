@@ -31,8 +31,8 @@ public class Player extends GameObject {
 		col = new Collider(this, rb);
 		gravCol = new Collider(this, rb);
 		
-		gravCol.offset = new Vector(new float[]{0, -transform.size.dimensions.get(1) * 0.95f / 2});
-		gravCol.size = new Vector(new float[]{transform.size.dimensions.get(0) * 0.9f, transform.size.dimensions.get(1) * 0.1f});
+		gravCol.offset = new Vector(new float[]{0, -transform.size.getAxis(1) * 0.95f / 2});
+		gravCol.size = new Vector(new float[]{transform.size.getAxis(0) * 0.9f, transform.size.getAxis(1) * 0.1f});
 		gravCol.isTrigger = true;
 	}
 	
