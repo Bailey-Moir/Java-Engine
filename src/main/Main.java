@@ -52,7 +52,7 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 		
-		player = new Player(new Vector(new float[]{0, -1}));
+		player = new Player(new Vector(new float[]{0, 1}));
 		new TempPlatform(new Vector(new float[]{-3, -2.5f}), new Vector(new float[]{2, 0.5f}), new Vector(new float[]{1, 0.5f, 0, 1}));
 		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{1, 1}), new Vector(new float[]{0.5f, 0.25f, 0, 1}));
 		new TempPlatform(new Vector(new float[]{3, -1.5f}), new Vector(new float[]{2, 5}), new Vector(new float[]{0.1f, 0.05f, 0, 1}));

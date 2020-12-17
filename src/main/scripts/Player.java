@@ -49,11 +49,11 @@ public class Player extends GameObject {
 		col.update();
 		gravCol.update();
 		
-		rb.isGravity = !gravCol.isColliding;
+		//rb.isGravity = !gravCol.isColliding;
 		rb.addForce(new Vector(new float[]{input.getAxisRaw("Horizontal"), input.getAxisRaw("Vertical")}).times(0.5f));
-		if (col.isColliding) {
+		if (gravCol.isColliding) {
 			//Stops falling
-			rb.stopFalling();
+			//rb.stopFalling();
 			
 			//Can jump
 			if (input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
