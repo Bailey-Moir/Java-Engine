@@ -1,146 +1,149 @@
 package engine.graphics;
 
+import engine.graphics.models.RawModel;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-
 /**
  * Loads models into memory.
- * 
+ *
  * @author Bailey
  */
 
+@SuppressWarnings("unused")
 public class Loader {
-	
-	private List<Integer> vaos = new ArrayList<Integer>();
-	private List<Integer> vbos = new ArrayList<Integer>();
-	public List<Integer> textures = new ArrayList<Integer>();
-	
-	/**
-	 * Loads attributes to a new VAO
-	 * @param positions The position of each vertex.
-	 * @param vertexColors The color of each vertex.
-	 * @param indices The order at which you connect the positions (vertices).
-	 * @return A new VAO.
-	 * @see VAO
-	 */
-	public VAO loadToVAO(float[] positions, float[] vertexColors, int[] indices, float[] texCoords) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 2, positions);
-		storeDataInAttributeList(1, 4, vertexColors);
-		storeDataInAttributeList(2, 2, texCoords);
-		return new VAO(vaoID, indices.length);
-	}
-	
-	/**
-	 * Creates a texture
-	 * @param fileName the file name or file path of the png relative to resources
-	 * @return The texture's id.
-	 */
-	public Texture loadTexture(String fileName) {
-		Texture texture = null;
-		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("resources/" + fileName + ".png"), GL11.GL_NEAREST);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		textures.add(texture.getTextureID());
-		return texture;
-	}
-	
-	/**
-	 * Deletes VAOs, VBOs, and textures.
-	 */
-	public void cleanUp() {
-		for (int vao:vaos) {
-			GL30.glDeleteVertexArrays(vao);
-		}
-		for (int vbo:vbos) {
-			GL15.glDeleteBuffers(vbo);
-		}
-		for (int texture:textures) {
-			GL11.glDeleteTextures(texture);
-		}
-	}
-	
-	/**
-	 * Creates a VAO and returns the VAO's id.
-	 * @return The VAO id.
-	 */
-	private int createVAO() {
-		int vaoID = GL30.glGenVertexArrays(); // Creates a empty VAO, returns id.
-		vaos.add(vaoID);
-		GL30.glBindVertexArray(vaoID);
-		return vaoID;
-	}
-	
-	/**
-	 * Creates an VBO (Vertex Buffer Object) in the VAO (Vertex Array Object).
-	 * @param attributeNumber The attribute identifier, e.g. 1, 2, 3, etc.
-	 * @param coordSize How many cords are in each vertex thing.
-	 * @param data The information you are storing in the attribute.
-	 */
-	private void storeDataInAttributeList(int attributeNumber, int coordSize, float[] data) {
-		int vboID = GL15.glGenBuffers(); // Creates empty VBO, returns id.
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		FloatBuffer buffer = storeDataInFloatBuffer(data);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		//Parameters: (numberOfAttribList, lengtOfEachVertice, typeOfData, isNormalized, distanceBetweenVertices, dataOffset)
-		GL20.glVertexAttribPointer(attributeNumber, coordSize, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-	
-	/**
-	 * Binds the indices to a VBO.
-	 * @param indices The indices to bind
-	 */
-	private void bindIndicesBuffer(int[] indices) {
-		int vboID = GL15.glGenBuffers(); // Creates empty VBO, returns id.
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
-		IntBuffer buffer = storeDataInIntBuffer(indices);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-	}
-	
-	/**
-	 * Stores data in an integer buffer.
-	 * @param data The data to store.
-	 * @return The integer buffer.
-	 */
-	private IntBuffer storeDataInIntBuffer(int[] data) {
-		IntBuffer buffer = BufferUtils.createIntBuffer(data.length); // Creates empty int buffer.
-		buffer.put(data); // Puts data into int buffer.
-		buffer.flip(); // Prepares buffer to be read from, flip() means it knows we are done.
-		return buffer;
-	}
+    static private List<Integer> vaos = new ArrayList<>();
+    static private List<Integer> vbos = new ArrayList<>();
+    static private List<Integer> textures = new ArrayList<>();
 
-	/**
-	 * Stores data in a float buffer.
-	 * @param data The data to store.
-	 * @return The float buffer.
-	 */
-	private FloatBuffer storeDataInFloatBuffer(float[] data) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length); // Creates empty float buffer.
-		buffer.put(data); // Puts data into float buffer.
-		buffer.flip(); // Prepares buffer to be read from, flip() means it knows we are done.
-		return buffer;
-		
-	}
-} 
+    /**
+     * Takes in position of the model's vertices, loads that data into a vao, and returns info about the vao as a raw model object.
+     * @param positions The positions of each vertex.
+     * @param indices The order at which to connect the vertices.
+     * @return The information about the model.
+     */
+    static public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
+        int vaoID = createVAO();
+        bindIndicesBuffer(indices);
+        storeDataInAttributeList(0, 3, positions);
+        storeDataInAttributeList(1, 2, textureCoords);
+        unbindVAO();
+        return new RawModel(vaoID, indices.length);
+    }
+
+    /**
+     * Creates a id for a texture.
+     * @param fileName The location of the image.
+     * @return The id of the image.
+     */
+    static public int loadTexture(String fileName) {
+        Texture texture = null;
+        try {
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int textureID = texture.getTextureID();
+        textures.add(textureID);
+        return textureID;
+    }
+
+    /**
+     * Deletes all of the VAOs and VBOs from memory
+     */
+    static public void clear() {
+        for (int vao : vaos) {
+            GL30.glDeleteVertexArrays(vao);
+        }
+        for (int vbo : vbos) {
+            GL30.glDeleteBuffers(vbo);
+        }
+        for (int texture : textures) {
+            GL30.glDeleteTextures(texture);
+        }
+    }
+
+    /**
+     * Creates a vao and returns the id of said vao, as well as binding the vao.
+     *
+     * @return
+     */
+    static private int createVAO() {
+        int vaoID = GL30.glGenVertexArrays(); //Creats an empty VAO.
+        vaos.add(vaoID);
+        GL30.glBindVertexArray(vaoID);
+        return vaoID;
+    }
+
+    /**
+     * Stores data in one of the attribute lists of the VAO.
+     * @param index The index of the attribute.
+     * @param coordinateSize The vector size.
+     * @param data  the data to store in the vao.
+     */
+    static private void storeDataInAttributeList(int index, int coordinateSize, float[] data) {
+        int vboID = GL30.glGenBuffers();
+        vbos.add(vboID);
+        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboID);
+        FloatBuffer buffer = storeDataInFloatBuffer(data);
+        GL30.glBufferData(GL30.GL_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
+
+        GL30.glVertexAttribPointer(index, coordinateSize, GL30.GL_FLOAT , false, 0, 0);
+
+        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
+    }
+    
+    /**
+     * Unbinds the VAO.
+     */
+    static private void unbindVAO() {
+        GL30.glBindVertexArray(0);
+    }
+
+    /**
+     * Binds indices buffer to the VAO.
+     */
+    static private void bindIndicesBuffer(int[] indices) {
+        int vboID = GL30.glGenBuffers();
+        vbos.add(vboID);
+        GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, vboID);
+        IntBuffer buffer = storeDataInIntBuffer(indices);
+        GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
+    }
+
+    /**
+     * Stores data in a float buffer.
+     * @param data The data to store.
+     * @return The buffer with the data in it.
+     */
+    static private FloatBuffer storeDataInFloatBuffer(float[] data) {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
+        buffer.put(data);
+        buffer.flip(); //Swaps from writing mode to reading mode.
+        return buffer;
+    }
+
+
+    /**
+     * Stores data in an int buffer.
+     * @param data The data to store.
+     * @return The buffer with the data in it.
+     */
+    static private IntBuffer storeDataInIntBuffer(int[] data) {
+        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+        buffer.put(data);
+        buffer.flip(); //Swaps from writing mode to reading mode.
+        return buffer;
+    }
+
+}

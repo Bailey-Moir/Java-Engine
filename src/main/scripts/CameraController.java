@@ -25,7 +25,7 @@ public class CameraController extends Camera implements Script {
     }
 
     public void Start() {
-        Renderer.currentCamera = this;
+        Renderer.camera = this;
     }
 
     public void Update() {

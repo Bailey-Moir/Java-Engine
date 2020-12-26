@@ -1,6 +1,11 @@
 package main;
 
 import engine.Script;
+import engine.graphics.Loader;
+import engine.graphics.models.RawModel;
+import engine.graphics.models.TexturedModel;
+import engine.graphics.shaders.StaticShader;
+import engine.graphics.textures.ModelTexture;
 import engine.maths.Vector;
 import main.scripts.CameraController;
 import main.scripts.Gate;
@@ -8,7 +13,6 @@ import org.lwjgl.glfw.GLFW;
 
 import engine.GameObject;
 import engine.graphics.Renderer;
-import engine.graphics.Shader;
 import engine.io.Window;
 import main.scripts.Player;
 import main.scripts.TempPlatform;
@@ -24,7 +28,8 @@ public class Main implements Runnable {
 	
 	static Main instance;
 	public static Window window;
-	Shader shader;
+
+	StaticShader shader;
 	
 	final int WIDTH = 1280, HEIGHT = 720;
 	final String TITLE = "big boy";
@@ -37,11 +42,10 @@ public class Main implements Runnable {
 	
 	private void init() {
 		window = new Window(WIDTH, HEIGHT, TITLE);
-		shader = new Shader("/shaders/mainVertex.glsl", "/shaders/mainFragment.glsl");
-		
 		window.setBackgroundColour(background);
 		window.init();
-		shader.create();
+
+		shader = new StaticShader();
 		
 		window.input.createAxis("Horizontal", new int[] {
 				GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_D,
@@ -87,16 +91,36 @@ public class Main implements Runnable {
 	}
 	
 	private void render() {
-		shader.bind();
-		Renderer.render();
-		
+		shader.start();
+		int[] indices = {
+				0, 1, 3,
+				3, 1, 2
+		};
+
+		float[] textureCoords = {
+				0, 0, //V0
+				0, 1, //V1
+				1, 1, //V2
+				1, 0  //V3
+		};
+
+		for (GameObject object : GameObject.allObjects) {
+			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera.position), textureCoords, indices);
+			ModelTexture texture = new ModelTexture(Loader.loadTexture("player"));
+			TexturedModel texturedModel = new TexturedModel(model, texture);
+
+			Renderer.render(texturedModel);
+		}
+
+		shader.stop();
+
 		window.swapBuffers();
-		shader.unbind();
 	}
 	
 	private void close() {
 		window.destroy();
-		shader.destroy();
+		Loader.clear();
+		shader.cleanUp();
 	}
 	
 	public static void main(String[] args) {

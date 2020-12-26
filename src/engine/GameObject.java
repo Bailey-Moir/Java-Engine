@@ -82,10 +82,10 @@ public abstract class GameObject {
 		 */
 		public float[] calculateVertices(Vector offset) {
 			return new float[] {
-					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
+					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0, //Top Left
+					(position.getAxis(0) - offset.getAxis(0) - size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0, //Bottom Left
+					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) - size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0, //Top Right
+					(position.getAxis(0) - offset.getAxis(0) + size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (position.getAxis(1) - offset.getAxis(1) + size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, 0  //Bottom Right
 			};
 		}
 	}
