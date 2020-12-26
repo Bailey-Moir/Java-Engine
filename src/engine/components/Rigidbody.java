@@ -1,6 +1,7 @@
 package engine.components;
 
 import engine.GameObject;
+import engine.Component;
 import engine.maths.Vector2f;
 
 /**
@@ -9,7 +10,7 @@ import engine.maths.Vector2f;
  * @author Bailey
  */
 
-public class Rigidbody {
+public class Rigidbody extends Component{
 	private GameObject obj;
 	
 	public float gravityModifier = 0.5f;
@@ -22,7 +23,8 @@ public class Rigidbody {
 	 * The constructor.
 	 * @param obj The obj that the component belongs to.
 	 */
-	public Rigidbody(GameObject object) {		
+	public Rigidbody(GameObject object) {
+                super(object);		
 		this.obj = object;
 		net = new Vector2f(0, 0);
 		this.isGravity = true;
