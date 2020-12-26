@@ -3,6 +3,7 @@ package engine.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.Component
 import engine.GameObject;
 import engine.GameObject.Transform;
 import engine.maths.Vector2f;
@@ -13,7 +14,7 @@ import engine.maths.Vector2f;
  * @author Bailey
  */
 
-public class Collider {
+public class Collider extends Component {
 	private GameObject object;
 	public Rigidbody rb;
 	
@@ -28,7 +29,8 @@ public class Collider {
 	 * The constructor for static colliders.
 	 * @param object The object that the component belongs to.
 	 */
-	public Collider(GameObject object) {		
+	public Collider(GameObject object) {
+                super(object);		
 		isStatic = true;
 		isTrigger = false;
 		this.object = object;
@@ -44,7 +46,8 @@ public class Collider {
 	 * @param object The object that the component belongs to.
 	 */
 	public Collider(GameObject object, Rigidbody rb) {
-		isStatic = false;
+		super(object);
+                isStatic = false;
 		isTrigger = false;
 		this.object = object;
 		this.rb = rb;
