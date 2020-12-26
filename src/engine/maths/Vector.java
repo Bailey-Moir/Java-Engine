@@ -1,7 +1,6 @@
 package engine.maths;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Used for to represent dimensional math, e.g. position, sizes, colors, etc.
@@ -9,8 +8,9 @@ import java.util.List;
  * @author Bailey
  */
 
+@SuppressWarnings("unused")
 public class Vector {
-    public ArrayList<Float> dimensions = new ArrayList<Float>();
+    public ArrayList<Float> dimensions = new ArrayList<>();
 
     /**
      * The default constructor. Defines the members.
@@ -90,6 +90,7 @@ public class Vector {
      * @param b The dimensions you want to add to the current vector.
      * @return the sum.
      */
+    @SuppressWarnings("unused")
     public Vector plus(float[] b) {
         try {
             if (b.length != dimensions.size()) {
@@ -196,10 +197,20 @@ public class Vector {
         return new Vector(localArr);
     }
 
+    /**
+     * Gets the value of the axis of <code>index</code>.
+     * @param index The index of the value that you are checking
+     * @return The value of the index.
+     */
     public float getAxis(int index) {
         return dimensions.get(index);
     }
 
+    /**
+     * Sets the value of index <code>index</code>.
+     * @param index The index of which you want to change the value.
+     * @param value The value to change to.
+     */
     public void setAxis(int index, float value) {
         dimensions.set(index, value);
     }

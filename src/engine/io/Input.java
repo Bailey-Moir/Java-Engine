@@ -15,6 +15,7 @@ import org.lwjgl.glfw.GLFWScrollCallback;
  * @author Bailey
  */
 
+@SuppressWarnings("unused")
 public class Input extends Window {
 	//Turn buttons to int and make it 0-2
 	
@@ -33,17 +34,17 @@ public class Input extends Window {
 		public int[] keys;
 	}
 	
-	private int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
-	private int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
+	private final int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
+	private final int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
 	private Vector mousePos;
 	private Vector scroll;
 	
-	private ArrayList<Axis> axes = new ArrayList<Axis>();
+	private final ArrayList<Axis> axes = new ArrayList<>();
 	
-	private GLFWKeyCallback keyboard;
-	private GLFWCursorPosCallback mouseMove;
-	private GLFWMouseButtonCallback mouseButtons;
-	private GLFWScrollCallback mouseScroll;
+	private final GLFWKeyCallback keyboard;
+	private final GLFWCursorPosCallback mouseMove;
+	private final GLFWMouseButtonCallback mouseButtons;
+	private final GLFWScrollCallback mouseScroll;
 	
 	/**
 	 * The default constructor, sets input callback functions.
@@ -59,7 +60,7 @@ public class Input extends Window {
 		
 		mouseMove = new GLFWCursorPosCallback() {
 			public void invoke(long window, double x, double y) {
-				mousePos = new Vector(new float[]{(float) x - getWIDTH() / 2, (float) y - getHEIGHT() / 2});
+				mousePos = new Vector(new float[]{(float) x - getWIDTH() / (float) 2, (float) y - getHEIGHT() / (float) 2});
 			}
 		};
 		
@@ -136,7 +137,7 @@ public class Input extends Window {
 					throw new IndexOutOfBoundsException("Odd number of keys given.");
 				}
 				
-				if (axis.name == a_axis) {
+				if (axis.name.equals(a_axis)) {
 					int positive = 0;
 					int negative = 0;
 					for (int i = 0; i < axis.keys.length; i += 2) {

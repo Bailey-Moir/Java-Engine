@@ -1,9 +1,11 @@
 package main;
 
+import engine.Script;
 import engine.maths.Vector;
+import main.scripts.CameraController;
+import main.scripts.Gate;
 import org.lwjgl.glfw.GLFW;
 
-import engine.Camera;
 import engine.GameObject;
 import engine.graphics.Renderer;
 import engine.graphics.Shader;
@@ -18,17 +20,15 @@ import main.scripts.TempPlatform;
  */
 
 public class Main implements Runnable {
-	private Thread game;
+	Thread game;
 	
-	private static Main instance;
+	static Main instance;
 	public static Window window;
-	private Shader shader;
+	Shader shader;
 	
-	private final int WIDTH = 1280, HEIGHT = 720;	
-	private final String TITLE = "big boy";
-	private Vector background = new Vector(new float[]{0.1f, 0.1f, 0.1f});
-	
-	private GameObject player;
+	final int WIDTH = 1280, HEIGHT = 720;
+	final String TITLE = "big boy";
+	Vector background = new Vector(new float[]{0.1f, 0.1f, 0.12f});
 
 	private void start() {
 		game = new Thread(this, "game");
@@ -51,17 +51,16 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_W,
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
-		
-		player = new Player(new Vector(new float[]{0, 1}));
-		new TempPlatform(new Vector(new float[]{-3, -2.5f}), new Vector(new float[]{2, 0.5f}), new Vector(new float[]{1, 0.5f, 0, 1}));
-		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{1, 1}), new Vector(new float[]{0.5f, 0.25f, 0, 1}));
-		new TempPlatform(new Vector(new float[]{3, -1.5f}), new Vector(new float[]{2, 5}), new Vector(new float[]{0.1f, 0.05f, 0, 1}));
 
-		for (GameObject object : GameObject.allObjects) {
-			object.Start();
+		new Gate(new Vector(new float[]{4.5f, 0.75f}), new Vector(new float[]{1, 1.5f}), new Vector(new float []{0.95f, 0.95f, 1, 0.5f}));
+		new TempPlatform(new Vector(new float[]{-4, -2.5f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
+		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
+		new TempPlatform(new Vector(new float[]{4, -1.5f}), new Vector(new float[]{2, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
+		new CameraController(new Player(new Vector(new float[]{0, 2})), window);
+
+		for (Script script : GameObject.allScripts) {
+			script.Start();
 		}
-		
-		Renderer.currentCamera = new Camera(window.input.getMousePos());
 		
 		//window.setFullscreen(true);
 	}
@@ -75,19 +74,13 @@ public class Main implements Runnable {
 		}
 		close();
 	}
-	
-	boolean cameraToggle = true;
+
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
-		for (GameObject object : GameObject.allObjects) {
+		for (Script object : GameObject.allScripts) {
 			object.Update();
 		}
-		
-		if (window.input.isKeyPressed(GLFW.GLFW_KEY_0)) cameraToggle = !cameraToggle;
-		
-		if (cameraToggle) Renderer.currentCamera.position = new Vector(new float[]{window.input.getMouseX() * -1, window.input.getMouseY()}).times(0.025f);
-		else Renderer.currentCamera.position = player.transform.position;
 		
 		window.update();
 		window.time.update();

@@ -1,5 +1,7 @@
 package engine.graphics;
 
+import org.newdawn.slick.opengl.Texture;
+
 /**
  * A VAO with a texture.
  * @see VAO
@@ -10,16 +12,16 @@ package engine.graphics;
 public class TexturedModel {
 	
 	private VAO VAO;
-	private int textureID;
+	private Texture texture;
 	
 	/**
 	 * The default constructor.
 	 * @param model The VAO (class not id).
 	 * @param textureID the texture id.
 	 */
-	public TexturedModel(VAO model, int textureID) {
+	public TexturedModel(VAO model, Texture textureID) {
 		this.VAO = model;
-		this.textureID = textureID;
+		this.texture = textureID;
 	}
 
 	/**
@@ -33,7 +35,19 @@ public class TexturedModel {
 	 * @return the id of the texture.
 	 */
 	public int getTextureID() {
-		return textureID;
+		return texture.getTextureID();
+	}
+
+	public byte[] getTextureData() {
+		return texture.getTextureData();
+	}
+
+	public int getTextureWidth() {
+		return texture.getTextureWidth();
+	}
+
+	public int getTextureHeight() {
+		return texture.getTextureWidth();
 	}
 	
 }

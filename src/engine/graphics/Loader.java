@@ -36,11 +36,12 @@ public class Loader {
 	 * @return A new VAO.
 	 * @see VAO
 	 */
-	public VAO loadToVAO(float[] positions, float[] vertexColors, int[] indices) {		
+	public VAO loadToVAO(float[] positions, float[] vertexColors, int[] indices, float[] texCoords) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, 2, positions);
-		storeDataInAttributeList(1, 4, 	vertexColors);
+		storeDataInAttributeList(1, 4, vertexColors);
+		storeDataInAttributeList(2, 2, texCoords);
 		return new VAO(vaoID, indices.length);
 	}
 	
@@ -49,7 +50,7 @@ public class Loader {
 	 * @param fileName the file name or file path of the png relative to resources
 	 * @return The texture's id.
 	 */
-	public int loadTexture(String fileName) {
+	public Texture loadTexture(String fileName) {
 		Texture texture = null;
 		try {
 			texture = TextureLoader.getTexture("PNG", new FileInputStream("resources/" + fileName + ".png"), GL11.GL_NEAREST);
@@ -58,10 +59,9 @@ public class Loader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		int textureID = texture.getTextureID();
-		textures.add(textureID);
-		return textureID;
+
+		textures.add(texture.getTextureID());
+		return texture;
 	}
 	
 	/**

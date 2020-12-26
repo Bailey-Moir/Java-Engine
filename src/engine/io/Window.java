@@ -7,8 +7,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL30;
 
 import engine.maths.Time;
 
@@ -18,14 +17,16 @@ import engine.maths.Time;
  * @author Bailey
  */
 
+@SuppressWarnings("unused")
 public class Window {
-	
 	private int WIDTH, HEIGHT;
 	private int windowPosX, windowPosY;
-	private String TITLE;
+	private final String TITLE;
 	private float bgR, bgG, bgB;
 	
 	private long window;
+
+	public boolean shouldClose;
 	
 	public Input input;
 	public Time time;
@@ -64,13 +65,13 @@ public class Window {
 		GLFW.glfwSetWindowPos(window, windowPosX, windowPosY);		
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities(); //Adds the ability to render to the window in 
-		GL14.glEnable(GL11.GL_DEPTH_TEST);
+		GL30.glEnable(GL30.GL_DEPTH_TEST);
 		
 		createCallbacks();
 		
 		GLFW.glfwShowWindow(window);
 		
-		GLFW.glfwSwapInterval(1); //Limts to 60fps
+		GLFW.glfwSwapInterval(1); //Limits to 60fps
 	}
 	
 	/**
@@ -108,12 +109,12 @@ public class Window {
 	 */
 	public void update() {
 		if (isResized) {
-			GL14.glViewport(0, 0, WIDTH, HEIGHT);
+			GL30.glViewport(0, 0, WIDTH, HEIGHT);
 			isResized = false;
 		}
 		//Clears the screen and sets the background color
-		GL14.glClearColor(bgR, bgG, bgB, 1f);
-		GL14.glClear(GL14.GL_COLOR_BUFFER_BIT | GL14.GL_DEPTH_BUFFER_BIT); //Or bit
+		GL30.glClearColor(bgR, bgG, bgB, 1f);
+		GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT); //Or bit
 		
 		GLFW.glfwPollEvents(); //Gets all the callbacks connected to the window.
 	}
@@ -122,14 +123,22 @@ public class Window {
 	 * @return If the window should close.
 	 */
 	public boolean shouldClose() {
-		return GLFW.glfwWindowShouldClose(window);
+		return GLFW.glfwWindowShouldClose(window) || shouldClose;
 	}
-	
+
+	/**
+	 * Closes the window.
+	 */
+	public void close() {
+		//GLFW.glfwSetWindowShouldClose(window, true);
+		shouldClose = true;
+	}
+
 	/**
 	 * Swaps the buffers of window, you should know what a buffer is.
 	 */
 	public void swapBuffers() {
-		GLFW.glfwSwapBuffers(window); //Swaps the bufferes of the window, and colours it correctly.
+		GLFW.glfwSwapBuffers(window); //Swaps the buffers of the window, and colours it correctly.
 	}
 	
 	/**

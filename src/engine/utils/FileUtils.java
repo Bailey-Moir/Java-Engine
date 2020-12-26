@@ -18,8 +18,8 @@ public class FileUtils {
 	 */
 	public static String loadAsString(String path) {
 		StringBuilder result = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(Class.class.getResourceAsStream(path)))) { //Makes a reader for a the resources, from inputed file.
-			String line = "";
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(Class.class.getResourceAsStream(path)))) { //Makes a reader for a the resources, from inputted file.
+			String line;
 			while ((line = reader.readLine()) != null) {
 				result.append(line).append("\n");
 			}
@@ -27,5 +27,5 @@ public class FileUtils {
 			System.err.println("Couldn't find the file at " + path);
 		}
 		return result.toString();
-	};
+	}
 }
