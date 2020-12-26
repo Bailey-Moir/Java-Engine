@@ -8,5 +8,12 @@ uniform sampler2D textureSampler;
 
 void main()
 {
-    out_Color = texture(textureSampler, pass_textureCoords);
+    vec4 textureColor = texture(textureSampler, pass_textureCoords);
+
+    //Allows for transparent backgrounds
+    if (textureColor.a < 0.5) {
+        discard;
+    }
+
+    out_Color = textureColor;
 }

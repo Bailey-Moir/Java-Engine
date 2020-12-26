@@ -106,7 +106,7 @@ public class Main implements Runnable {
 
 		for (GameObject object : GameObject.allObjects) {
 			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera.position), textureCoords, indices);
-			ModelTexture texture = new ModelTexture(Loader.loadTexture("player"));
+			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.image));
 			TexturedModel texturedModel = new TexturedModel(model, texture);
 
 			Renderer.render(texturedModel);

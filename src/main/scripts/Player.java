@@ -19,7 +19,7 @@ public class Player extends GameObject implements Script {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(startPos, new Vector(new float[]{1, 1}), Main.window, new Vector(new float[]{0.95f, 0.95f, 1, 0.9f}), "null");
+		super(startPos, new Vector(new float[]{1, 1}), Main.window, new Vector(new float[]{0.95f, 0.95f, 1, 0.9f}), "player");
 		GameObject.allScripts.add(this);
 	}
  

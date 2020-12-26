@@ -15,7 +15,7 @@ public class Gate extends GameObject implements Script {
      * The only thing you should touch in here are the variables in super().
      */
     public Gate(Vector position, Vector size, Vector color) {
-        super(position, size, Main.window, color, "icon16");
+        super(position, size, Main.window, color, "null");
         GameObject.allScripts.add(this);
     }
 
