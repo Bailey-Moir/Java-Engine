@@ -2,12 +2,12 @@ package engine.components;
 
 import engine.GameObject;
 
-class Component {
+public class Component {
    abstract private GameObject obj;
    
    abstract public Class classType'
    
-   Component(GameObject object) {
+   public Component(GameObject object) {
       obj = Object
    }
 }
