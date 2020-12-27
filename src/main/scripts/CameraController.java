@@ -35,7 +35,5 @@ public class CameraController extends Camera implements Script {
 
         //camPos = camPos + (plyPos - camPos) / modifier
         position = position.plus(player.transform.position.minus(position).times(1/ modifier));
-        System.out.println("Camera: " + position);
-        System.out.println("Player: " + player.transform.position);
     }
 }

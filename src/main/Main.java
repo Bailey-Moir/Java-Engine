@@ -60,7 +60,7 @@ public class Main implements Runnable {
 		new TempPlatform(new Vector(new float[]{-4, -2.5f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
 		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
 		new TempPlatform(new Vector(new float[]{4, -1.5f}), new Vector(new float[]{2, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
-		new CameraController(new Player(new Vector(new float[]{0, 2})), window);
+		new CameraController(new Player(new Vector(new float[]{0, -1})), window);
 
 		for (Script script : GameObject.allScripts) {
 			script.Start();
@@ -97,16 +97,9 @@ public class Main implements Runnable {
 				3, 1, 2
 		};
 
-		float[] textureCoords = {
-				0, 0, //V0
-				0, 1, //V1
-				1, 1, //V2
-				1, 0  //V3
-		};
-
 		for (GameObject object : GameObject.allObjects) {
-			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera.position), textureCoords, indices);
-			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.image));
+			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera.position), object.spriteRenderer.sprite.texCoords, indices);
+			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.sprite.image));
 			TexturedModel texturedModel = new TexturedModel(model, texture);
 
 			Renderer.render(texturedModel);

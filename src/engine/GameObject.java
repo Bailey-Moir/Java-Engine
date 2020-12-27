@@ -3,9 +3,11 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.graphics.Sprite;
 import engine.io.Input;
 import engine.io.Window;
 import engine.maths.Vector;
+import engine.components.Rigidbody;
 
 /**
  * Represents a game object.
@@ -36,7 +38,7 @@ public abstract class GameObject {
 		this.transform.position = position;
 		this.transform.size = size;
 		this.spriteRenderer.color = color;
-		this.spriteRenderer.image = image;
+		this.spriteRenderer.sprite = new Sprite(image);
 
 		this.spriteRenderer.window = window;
 
@@ -96,9 +98,10 @@ public abstract class GameObject {
 	 * @author Bailey
 	 */
 	public class SpriteRenderer {
+		public Sprite sprite;
+
 		private Window window;
 
-		public String image;
 		public int layer;
 		public Vector color;
 

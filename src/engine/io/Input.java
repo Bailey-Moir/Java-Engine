@@ -54,7 +54,7 @@ public class Input extends Window {
 
 		keyboard = new GLFWKeyCallback() {
 			public void invoke(long window, int key, int scanCode, int action, int mods) {
-				keys[key] = action;
+				if (key > 0) keys[key] = action;
 			}
 		};
 		

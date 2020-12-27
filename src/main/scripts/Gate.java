@@ -28,7 +28,6 @@ public class Gate extends GameObject implements Script {
     }
 
     public void Update() {
-        rb.update();
         col.update();
 
         if (col.isColliding) {
