@@ -31,7 +31,7 @@ public class Main implements Runnable {
 
 	StaticShader shader;
 	
-	final int WIDTH = 1280, HEIGHT = 720;
+	final int WIDTH = 2560, HEIGHT = 1440;
 	final String TITLE = "big boy";
 	Vector background = new Vector(new float[]{0.1f, 0.1f, 0.12f});
 
@@ -56,10 +56,10 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 
-		new Gate(new Vector(new float[]{4.5f, 0.75f}), new Vector(new float[]{1, 1.5f}), new Vector(new float []{0.95f, 0.95f, 1, 0.5f}));
-		new TempPlatform(new Vector(new float[]{-4, -2.5f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
-		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{3, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
-		new TempPlatform(new Vector(new float[]{4, -1.5f}), new Vector(new float[]{2, 1}), new Vector(new float[]{0.95f, 0.95f, 1, 1}));
+		new Gate(new Vector(new float[]{4.5f, 0.75f}), new Vector(new float[]{1, 1.5f}));
+		new TempPlatform(new Vector(new float[]{-4, -2.5f}), new Vector(new float[]{3, 1}));
+		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{3, 1}));
+		new TempPlatform(new Vector(new float[]{4, -1.5f}), new Vector(new float[]{2, 1}));
 		new CameraController(new Player(new Vector(new float[]{0, -1})), window);
 
 		for (Script script : GameObject.allScripts) {
@@ -98,7 +98,7 @@ public class Main implements Runnable {
 		};
 
 		for (GameObject object : GameObject.allObjects) {
-			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera.position), object.spriteRenderer.sprite.texCoords, indices);
+			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera), object.spriteRenderer.getTextureCoords(), object.spriteRenderer.getColorCoords(), indices);
 			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.sprite.image));
 			TexturedModel texturedModel = new TexturedModel(model, texture);
 

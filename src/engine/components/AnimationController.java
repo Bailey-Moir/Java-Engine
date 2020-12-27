@@ -151,10 +151,6 @@ public class AnimationController extends Component {
             new NullPointerException("Parameter does not exist.").printStackTrace();
         }
 
-        System.out.println(anim1.get().name);
-        System.out.println(anim2.get().name);
-        System.out.println(paramClass.get().name);
-
         transitions.add(new Transition(anim1.get(), anim2.get(), paramClass.get(), value));
     }
 }

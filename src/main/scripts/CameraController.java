@@ -19,7 +19,7 @@ public class CameraController extends Camera implements Script {
     final float modifier = 10;
 
     public CameraController(Player player, Window window) {
-        super(new Vector(new float[]{0, 0}), window);
+        super(new Vector(new float[]{0, 0}), 1.5f, window);
         GameObject.allScripts.add(this);
         this.player = player;
     }

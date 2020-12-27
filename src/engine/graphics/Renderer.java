@@ -20,6 +20,7 @@ public class Renderer {
         GL30.glBindVertexArray(model.getVaoID());
         GL30.glEnableVertexAttribArray(0);
         GL30.glEnableVertexAttribArray(1);
+        GL30.glEnableVertexAttribArray(2);
 
         GL30.glActiveTexture(GL30.GL_TEXTURE0); //What texture bank.
         GL30.glBindTexture(GL30.GL_TEXTURE_2D, texturedModel.getTexture().getID());
@@ -29,6 +30,7 @@ public class Renderer {
 
         GL30.glDisableVertexAttribArray(0);
         GL30.glDisableVertexAttribArray(1);
+        GL30.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }
 }

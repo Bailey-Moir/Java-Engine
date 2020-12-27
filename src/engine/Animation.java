@@ -61,11 +61,11 @@ public class Animation {
      * Plays the animation
      */
     public void play() {
+        status = Status.PLAYING;
         //Creates new thread for this animation
         new Thread(new Runnable() {
             public void run()
             {
-                status = Status.PLAYING;
                 long start = System.currentTimeMillis();
                 frames.forEach((frame) -> {
                     try {

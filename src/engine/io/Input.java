@@ -111,7 +111,12 @@ public class Input extends Window {
 	 * @return If the button is being held down or not.
 	 */
 	public boolean isButtonDown(int button) {
-		return (this.buttons[button] == 2 || this.buttons[button] == 1);
+		try {
+			return (this.buttons[button] == 2 || this.buttons[button] == 1);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/**

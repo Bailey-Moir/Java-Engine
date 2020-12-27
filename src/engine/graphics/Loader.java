@@ -32,11 +32,12 @@ public class Loader {
      * @param indices The order at which to connect the vertices.
      * @return The information about the model.
      */
-    static public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
+    static public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] colors, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0, 3, positions);
         storeDataInAttributeList(1, 2, textureCoords);
+        storeDataInAttributeList(2, 4, colors);
         unbindVAO();
         return new RawModel(vaoID, indices.length);
     }

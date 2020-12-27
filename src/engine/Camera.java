@@ -13,13 +13,15 @@ import engine.maths.Vector;
 public class Camera {
 	public Window window;
 	public Vector position;
+	public float scale;
 
 	/**
 	 * The default constructor.
 	 * @param pos The start position of the camera
 	 */
-	public Camera(Vector pos, Window window) {
+	public Camera(Vector pos, float scale, Window window) {
 		this.position = pos;
 		this.window = window;
+		this.scale = scale;
 	}
 }

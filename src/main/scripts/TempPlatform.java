@@ -12,8 +12,8 @@ public class TempPlatform extends GameObject implements Script {
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
-	public TempPlatform(Vector position, Vector size, Vector color) {
-		super(position, size, Main.window, color, "ground");
+	public TempPlatform(Vector position, Vector size) {
+		super(position, size, Main.window, new Vector(new float[]{1, 1, 1, 1}), "ground");
 		GameObject.allScripts.add(this);
 	}
 
