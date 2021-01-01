@@ -60,6 +60,22 @@ public class Loader {
     }
 
     /**
+     * Creates a texture.
+     * @param fileName The location of the image.
+     * @return The image.
+     */
+    static public Texture createTexture(String fileName) {
+        Texture texture = null;
+        try {
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        textures.add(texture.getTextureID());
+        return texture;
+    }
+
+    /**
      * Deletes all of the VAOs and VBOs from memory
      */
     static public void clear() {

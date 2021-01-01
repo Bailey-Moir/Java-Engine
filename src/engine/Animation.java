@@ -1,6 +1,7 @@
 package engine;
 
-import engine.graphics.Sprite;
+import engine.objects.Sprite;
+import engine.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,8 @@ public class Animation {
     private GameObject object;
     public Status status;
 
+    private Thread animThread;
+
     /**
      * The constructor for an animation.
      * @param speed The speed that the animation plays at, default 1.
@@ -63,11 +66,11 @@ public class Animation {
     public void play() {
         status = Status.PLAYING;
         //Creates new thread for this animation
-        new Thread(new Runnable() {
+        animThread = new Thread(new Runnable() {
             public void run()
             {
                 long start = System.currentTimeMillis();
-                frames.forEach((frame) -> {
+                frames.forEach(frame -> {
                     try {
                         long diff = (long) start + (long) frame.time - System.currentTimeMillis();
                         if (diff > 0) Thread.sleep(diff);
@@ -78,6 +81,14 @@ public class Animation {
                 });
                 status = Status.STOPPED;
             }
-        }).start();
+        });
+        animThread.start();
+    }
+
+    /**
+     * Stops the animation, regardless of where it is through the animation;
+     */
+    public void stop() {
+        if (animThread != null) animThread.stop();
     }
 }

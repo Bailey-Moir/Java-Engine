@@ -1,6 +1,8 @@
 package engine.maths;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Used for to represent dimensional math, e.g. position, sizes, colors, etc.
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class Vector {
-    public ArrayList<Float> dimensions = new ArrayList<>();
+    public List<Float> dimensions = new ArrayList<>();
 
     /**
      * The default constructor. Defines the members.
@@ -61,6 +63,16 @@ public class Vector {
         return toPrint.substring(0, toPrint.length() - 2);
     }
 
+    public float toDistance() {
+        AtomicReference<Float> distance = new AtomicReference<>((float) 0);
+        dimensions.stream().map(dimension -> {
+            return Math.pow(dimension, 2);
+        }).forEach(dimension -> {
+            distance.updateAndGet(v -> new Float(v + dimension));
+        });
+        return (float) Math.sqrt(distance.get());
+    }
+
     /**
      * Adds a Vector to the current Vector and returns the sum.
      * @param b The Vector you want to add to the current.
@@ -90,7 +102,6 @@ public class Vector {
      * @param b The dimensions you want to add to the current vector.
      * @return the sum.
      */
-    @SuppressWarnings("unused")
     public Vector plus(float[] b) {
         try {
             if (b.length != dimensions.size()) {
@@ -195,6 +206,20 @@ public class Vector {
         }
 
         return new Vector(localArr);
+    }
+
+    /**
+     * Gets the value of largest of the axis, exclusive of positive of negatives.
+     * @return Value of largest axis.
+     */
+    public float largest() {
+        AtomicReference<Float> highest = new AtomicReference<>((float) 0);
+        dimensions.forEach((dim) -> {
+            if (dim * dim > highest.get() * highest.get()) {
+                highest.set(dim);
+            }
+        });
+        return highest.get();
     }
 
     /**

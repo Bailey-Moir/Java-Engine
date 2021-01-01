@@ -7,19 +7,18 @@ import engine.graphics.models.TexturedModel;
 import engine.graphics.shaders.StaticShader;
 import engine.graphics.textures.ModelTexture;
 import engine.maths.Vector;
-import main.scripts.CameraController;
-import main.scripts.Gate;
 import org.lwjgl.glfw.GLFW;
 
-import engine.GameObject;
+import engine.objects.GameObject;
 import engine.graphics.Renderer;
 import engine.io.Window;
-import main.scripts.Player;
-import main.scripts.TempPlatform;
+import main.scripts.*;
 
 /**
  * The starting off point.
- * 
+ *
+ * TODO Create lighting, e.g. light for the portal.
+ *
  * @author Bailey
  */
 
@@ -56,10 +55,10 @@ public class Main implements Runnable {
 				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
 		});
 
-		new Gate(new Vector(new float[]{4.5f, 0.75f}), new Vector(new float[]{1, 1.5f}));
-		new TempPlatform(new Vector(new float[]{-4, -2.5f}), new Vector(new float[]{3, 1}));
-		new TempPlatform(new Vector(new float[]{0, -2f}), new Vector(new float[]{3, 1}));
-		new TempPlatform(new Vector(new float[]{4, -1.5f}), new Vector(new float[]{2, 1}));
+		new Gate(new Vector(new float[]{9.5f, 1}));
+		new Platform(new Vector(new float[]{-5.5f, -4f}));
+		new Platform(new Vector(new float[]{0, -2f}));
+		new Platform(new Vector(new float[]{5.5f, -1.5f}));
 		new CameraController(new Player(new Vector(new float[]{0, -1})), window);
 
 		for (Script script : GameObject.allScripts) {
@@ -98,7 +97,7 @@ public class Main implements Runnable {
 		};
 
 		for (GameObject object : GameObject.allObjects) {
-			RawModel model = Loader.loadToVAO(object.transform.calculateVertices(Renderer.camera), object.spriteRenderer.getTextureCoords(), object.spriteRenderer.getColorCoords(), indices);
+			RawModel model = Loader.loadToVAO(object.spriteRenderer.calculateVertices(Renderer.camera), object.spriteRenderer.calculateTextureCoords(), object.spriteRenderer.calculateColorCoords(), indices);
 			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.sprite.image));
 			TexturedModel texturedModel = new TexturedModel(model, texture);
 

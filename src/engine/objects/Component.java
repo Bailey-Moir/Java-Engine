@@ -1,4 +1,4 @@
-package engine;
+package engine.objects;
 
 /**
  * The abstract class for a component of an object.

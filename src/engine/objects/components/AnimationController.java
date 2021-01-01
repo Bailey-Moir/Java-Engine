@@ -1,13 +1,14 @@
-package engine.components;
+package engine.objects.components;
 
 import engine.Animation;
 import engine.Animation.*;
-import engine.Component;
-import engine.GameObject;
+import engine.objects.Component;
+import engine.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * Component that controls animations.
@@ -34,14 +35,14 @@ public class AnimationController extends Component {
      */
     public static class Transition {
         public final Animation state1, state2;
-        public final Parameter param;
-        public final boolean value;
+        public final Parameter[] params;
+        public final boolean[] values;
 
-        public Transition(Animation state1, Animation state2, Parameter param, boolean value) {
+        public Transition(Animation state1, Animation state2, Parameter[] params, boolean[] values) {
             this.state1 = state1;
             this.state2 = state2;
-            this.param = param;
-            this.value = value;
+            this.params = params;
+            this.values = values;
         }
     }
 
@@ -65,12 +66,17 @@ public class AnimationController extends Component {
      * To be run every frame, checks for transitions, etc.
      */
     public void update() {
-        transitions.forEach((transition -> {
-           if (transition.state1 == current && transition.value == transition.param.value) {
+        transitions.forEach(transition -> {
+            boolean paramsPassed = true;
+            for (int i = 0; i < transition.params.length; i++) {
+                if (transition.values[i] != transition.params[i].value) paramsPassed = false;
+            }
+            if (transition.state1 == current && paramsPassed) {
+                current.stop();
                 current = transition.state2;
                 current.play();
-           }
-        }));
+            }
+        });
         if (current.loop == true && current.status == Status.STOPPED) {
             current.play();
         }
@@ -117,40 +123,54 @@ public class AnimationController extends Component {
     }
 
     /**
+     * Allows you to see the value of a parameter.
+     * @param name The name of the parameter.
+     * @return The value of the parameter.
+     */
+    public boolean checkParam(String name) {
+        AtomicReference<Boolean> toReturn = new AtomicReference<>(false);
+        parameters.forEach((parameter) -> {
+            if (parameter.name == name) {
+                toReturn.set(parameter.value);
+            }
+        });
+        return toReturn.get();
+    }
+    /**
      * Adds a transition between two animations/states.
      * @param state1 The state starting state.
      * @param state2 The finishing state.
-     * @param param The dependent variable, parameter.
+     * @param localParams The dependent variable, the parameters.
      * @param value The value that the parameter needs to be inorder for a transition to occur.
      */
-    public void addTransition(String state1, String state2, String param, boolean value) {
-        AtomicReference<Animation> anim1 = new AtomicReference<>();
-        AtomicReference<Animation> anim2 = new AtomicReference<>();
-        AtomicReference<Parameter> paramClass = new AtomicReference<>();
-        animations.forEach((animation) -> {
+    public void addTransition(String state1, String state2, String[] localParams, boolean[] value) {
+        AtomicReference<Animation> anim1 = new AtomicReference<>(null);
+        AtomicReference<Animation> anim2 = new AtomicReference<>(null);
+        AtomicReference<List<Parameter>> params = new AtomicReference<>(new ArrayList<>());
+        animations.forEach(animation -> {
             if (animation.name == state1) {
                 anim1.set(animation);
             } else if (animation.name == state2) {
                 anim2.set(animation);
             }
         });
-        parameters.forEach((parameter) -> {
-            if (parameter.name == param) {
-                paramClass.set(parameter);
-            }
-        });
+        parameters.forEach(parameterObj -> { Stream.of(localParams).forEach(parameterStr -> {
+                if (parameterObj.name == parameterStr) {
+                    params.get().add(parameterObj);
+                }
+        });});
 
         //Accounting for typos.
-        if (anim1.get() == null) {
+        if (anim1 == null) {
             new NullPointerException("First animation does not exist.").printStackTrace();
         }
-        if (anim2.get() == null) {
+        if (anim2 == null) {
             new NullPointerException("Second animation does not exist.").printStackTrace();
         }
-        if (paramClass.get() == null) {
-            new NullPointerException("Parameter does not exist.").printStackTrace();
+        if (params == null) {
+            new NullPointerException("At least one of the parameters do not exist.").printStackTrace();
         }
 
-        transitions.add(new Transition(anim1.get(), anim2.get(), paramClass.get(), value));
+        transitions.add(new Transition(anim1.get(), anim2.get(), params.get().toArray(new Parameter[0]), value));
     }
 }

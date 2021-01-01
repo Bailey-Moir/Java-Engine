@@ -1,19 +1,19 @@
 package main.scripts;
 
-import engine.GameObject;
+import engine.objects.GameObject;
 import engine.Script;
-import engine.components.*;
+import engine.objects.components.*;
 import engine.maths.Vector;
 import main.Main;
 
-public class TempPlatform extends GameObject implements Script {
+public class Platform extends GameObject implements Script {
 	
 	/**
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
-	public TempPlatform(Vector position, Vector size) {
-		super(position, size, Main.window, new Vector(new float[]{1, 1, 1, 1}), "ground");
+	public Platform(Vector position) {
+		super(position, new Vector(new float[]{4, 2}), Main.window, new Vector(new float[]{1, 1, 1, 1}), "ground");
 		GameObject.allScripts.add(this);
 	}
 

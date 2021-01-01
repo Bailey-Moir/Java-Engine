@@ -1,15 +1,23 @@
 package engine.io;
 
-import static org.lwjgl.glfw.GLFW.glfwInit;
-
 import engine.maths.Vector;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
-
 import engine.maths.Time;
+import org.lwjgl.system.MemoryUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * For a computer window.
@@ -51,7 +59,7 @@ public class Window {
 	 * Initializes (in a non-literal sense) the window.
 	 */
 	public void init() {
-		if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
+		if (!GLFW.glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
 		
 		time = new Time();
 		input = new Input(WIDTH, HEIGHT, TITLE);
@@ -64,7 +72,8 @@ public class Window {
 		windowPosY = (videoMode.height() - HEIGHT) / 2;
 		GLFW.glfwSetWindowPos(window, windowPosX, windowPosY);		
 		GLFW.glfwMakeContextCurrent(window);
-		GL.createCapabilities(); //Adds the ability to render to the window in 
+
+		GL.createCapabilities(); //Adds the ability to render to the window in
 		GL30.glEnable(GL30.GL_DEPTH_TEST);
 		
 		createCallbacks();
@@ -73,7 +82,7 @@ public class Window {
 		
 		GLFW.glfwSwapInterval(1); //Limits to 60fps
 	}
-	
+
 	/**
 	 * Creates/initializes the callbacks.
 	 */
