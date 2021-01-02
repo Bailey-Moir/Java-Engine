@@ -54,10 +54,10 @@ public class Vector {
      * @return a string containing the values of each dimension in the format of "<b>x, y, z, w, ...<b>".
      */
     public String toString() {
-        String toPrint = "";
+        StringBuilder toPrint = new StringBuilder();
 
         for (float character : dimensions) {
-            toPrint += character + ", ";
+            toPrint.append(character).append(", ");
         }
 
         return toPrint.substring(0, toPrint.length() - 2);
@@ -65,11 +65,7 @@ public class Vector {
 
     public float toDistance() {
         AtomicReference<Float> distance = new AtomicReference<>((float) 0);
-        dimensions.stream().map(dimension -> {
-            return Math.pow(dimension, 2);
-        }).forEach(dimension -> {
-            distance.updateAndGet(v -> new Float(v + dimension));
-        });
+        dimensions.stream().map(dimension -> Math.pow(dimension, 2)).forEach(dimension -> distance.updateAndGet(v -> (float) (v + dimension)));
         return (float) Math.sqrt(distance.get());
     }
 

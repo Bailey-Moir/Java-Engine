@@ -1,23 +1,10 @@
 package engine.io;
 
 import engine.maths.Vector;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import engine.maths.Time;
-import org.lwjgl.system.MemoryUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * For a computer window.
@@ -68,6 +55,7 @@ public class Window {
 		if (window == 0) throw new RuntimeException("Failed to create the GLFW window");
 		
 		GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		assert videoMode != null;
 		windowPosX = (videoMode.width() - WIDTH) / 2;
 		windowPosY = (videoMode.height() - HEIGHT) / 2;
 		GLFW.glfwSetWindowPos(window, windowPosX, windowPosY);		

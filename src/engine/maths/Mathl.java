@@ -1,11 +1,9 @@
 package engine.maths;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * Handles custom math operations.
  *
- * TODO Makes Mathl more memory efficent.
+ * TODO Makes Mathl more memory efficient.
  *
  * @author Bailey
  */
@@ -23,7 +21,7 @@ public class Mathl {
             if (item * item > highest * highest) {
                 highest = item;
             }
-        };
+        }
         return highest;
     }
     /**
@@ -37,7 +35,7 @@ public class Mathl {
             if (item * item > highest * highest) {
                 highest = item;
             }
-        };
+        }
         return highest;
     }
     /**
@@ -51,7 +49,7 @@ public class Mathl {
             if (item > highest) {
                 highest = item;
             }
-        };
+        }
         return highest;
     }
     /**
@@ -65,7 +63,7 @@ public class Mathl {
             if (item > highest) {
                 highest = item;
             }
-        };
+        }
         return highest;
     }
 
@@ -80,7 +78,7 @@ public class Mathl {
             if (list[i] * list[i] > list[lowest] * list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -94,7 +92,7 @@ public class Mathl {
             if (list[i] * list[i] > list[lowest] * list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -108,7 +106,7 @@ public class Mathl {
             if (list[i] > list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -122,7 +120,7 @@ public class Mathl {
             if (list[i] > list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
 
@@ -137,7 +135,7 @@ public class Mathl {
             if (item * item < lowest * lowest) {
                 lowest = item;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -151,7 +149,7 @@ public class Mathl {
             if (item * item < lowest * lowest) {
                 lowest = item;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -165,7 +163,7 @@ public class Mathl {
             if (item < lowest) {
                 lowest = item;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -179,7 +177,7 @@ public class Mathl {
             if (item < lowest) {
                 lowest = item;
             }
-        };
+        }
         return lowest;
     }
 
@@ -194,7 +192,7 @@ public class Mathl {
             if (list[i] * list[i] < list[lowest] * list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -208,7 +206,7 @@ public class Mathl {
             if (list[i] * list[i] < list[lowest] * list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -222,7 +220,7 @@ public class Mathl {
             if (list[i] < list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
     /**
@@ -236,7 +234,7 @@ public class Mathl {
             if (list[i] < list[lowest]) {
                 lowest = i;
             }
-        };
+        }
         return lowest;
     }
 

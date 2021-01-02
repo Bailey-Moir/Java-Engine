@@ -8,7 +8,7 @@ package engine.graphics.textures;
 
 @SuppressWarnings("unused")
 public class ModelTexture {
-    private int textureID;
+    private final int textureID;
 
     public ModelTexture(int id) {
         this.textureID = id;

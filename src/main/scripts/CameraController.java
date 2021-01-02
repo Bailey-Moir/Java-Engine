@@ -16,7 +16,6 @@ import org.lwjgl.glfw.GLFW;
 
 public class CameraController extends Camera implements Script {
     private final Player player;
-    private final float moveSpeed = 10f;
 
     public CameraController(Player   player, Window window) {
         super(new Vector(new float[]{0, 0}), 1.5f, window);
@@ -35,7 +34,7 @@ public class CameraController extends Camera implements Script {
         }
 
         //camPos = camPos + (plyPos - camPos) * modifier
-        position = position.plus(player.transform.position.minus(position).times(1/moveSpeed));
+        position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
 
     }
 }

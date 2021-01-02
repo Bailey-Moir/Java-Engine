@@ -3,7 +3,6 @@ package main.scripts;
 import engine.Animation;
 import engine.Animation.*;
 import engine.Script;
-import engine.objects.Sprite;
 import engine.maths.Vector;
 import engine.objects.SpriteSheet;
 import org.lwjgl.glfw.GLFW;
@@ -18,15 +17,13 @@ public class Player extends GameObject implements Script {
 	
 	private Vector startPos;
 
-	Animation customAnim;
-
 	/**
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(startPos, new Vector(new float[]{1.25f, 2.5f}), Main.window, new Vector(new float[]{1, 1, 1, 1}), "player/player");
-        this.spriteRenderer.sprite.texCoords = new float[]{ //Makes it so that the image fits the object correctly.
+		super(startPos, new Vector(new float[]{1.25f, 2.5f}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 0, "player/player");
+        this.spriteRenderer.sprite.texCords = new float[]{ //Makes it so that the image fits the object correctly.
             0, 0, //V0
             0, 0.625f, //V1
             0.625f, 0.625f, //V2
@@ -116,15 +113,11 @@ public class Player extends GameObject implements Script {
 				rb.addForce(new Vector(new float[]{0, 10f}));
 			}
 		} else {
-			if (rb.velocity.getAxis(1) < 0) {
-				animController.setParam("isFalling", true);
-			} else {
-				animController.setParam("isFalling", false);
-			}
+			animController.setParam("isFalling", rb.velocity.getAxis(1) < 0);
 		}
 
 		//Animation
-		animController.setParam("isRunning", (rb.velocity.getAxis(0) > 0.01f || rb.velocity.getAxis(0) < -0.01f) ? true : false);
+		animController.setParam("isRunning", rb.velocity.getAxis(0) > 0.01f || rb.velocity.getAxis(0) < -0.01f);
 		if (input.getAxisRaw("Horizontal") < 0) {
 			spriteRenderer.flipX = true;
 		} else if (input.getAxisRaw("Horizontal") > 0) {

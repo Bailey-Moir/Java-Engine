@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
  * @author Bailey
  */
 
+@SuppressWarnings("unused")
 public class FileUtils {
 	/**
 	 * Loads a file as a string into a string, like the 'cat' command.

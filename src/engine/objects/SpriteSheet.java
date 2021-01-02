@@ -14,7 +14,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class SpriteSheet {
-    private String path;
+    private final String path;
     public Texture sheetTex;
     List<Sprite> generatedSprites = new ArrayList<>();
     int[] settings;
@@ -79,6 +79,6 @@ public class SpriteSheet {
      * @return The sprite of identifier;
      */
     public Sprite getSprite(int identifier) {
-        return generatedSprites.toArray(new Sprite[generatedSprites.size()])[identifier];
+        return generatedSprites.toArray(new Sprite[0])[identifier];
     }
 }

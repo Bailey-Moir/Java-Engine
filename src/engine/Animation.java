@@ -4,6 +4,7 @@ import engine.objects.Sprite;
 import engine.objects.GameObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class Animation {
     public float multiplier;
     public boolean loop;
     public String name;
-    private GameObject object;
+    private final GameObject object;
     public Status status;
 
     private Thread animThread;
@@ -47,7 +48,7 @@ public class Animation {
      * The constructor for an animation.
      * @param speed The speed that the animation plays at, default 1.
      * @param name The name to reference the animation by.
-     * @param object The objeect that the animation acts on.
+     * @param object The object that the animation acts on.
      * @param frames The list of frames in the animation.
      */
     public Animation(float speed, String name, GameObject object, boolean loop, Frame[] frames) {
@@ -57,7 +58,7 @@ public class Animation {
         this.loop = loop;
         this.status = Status.STOPPED;
 
-        for (Frame frame : frames) this.frames.add(frame);
+        Collections.addAll(this.frames, frames);
     }
 
     /**
@@ -66,21 +67,18 @@ public class Animation {
     public void play() {
         status = Status.PLAYING;
         //Creates new thread for this animation
-        animThread = new Thread(new Runnable() {
-            public void run()
-            {
-                long start = System.currentTimeMillis();
-                frames.forEach(frame -> {
-                    try {
-                        long diff = (long) start + (long) frame.time - System.currentTimeMillis();
-                        if (diff > 0) Thread.sleep(diff);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    object.spriteRenderer.sprite = frame.sprite;
-                });
-                status = Status.STOPPED;
-            }
+        animThread = new Thread(() -> {
+            long start = System.currentTimeMillis();
+            frames.forEach(frame -> {
+                try {
+                    long diff = start + (long) frame.time - System.currentTimeMillis();
+                    if (diff > 0) Thread.sleep(diff);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                object.spriteRenderer.sprite = frame.sprite;
+            });
+            status = Status.STOPPED;
         });
         animThread.start();
     }

@@ -14,6 +14,9 @@ import engine.graphics.Renderer;
 import engine.io.Window;
 import main.scripts.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The starting off point.
  *
@@ -96,12 +99,26 @@ public class Main implements Runnable {
 				3, 1, 2
 		};
 
-		for (GameObject object : GameObject.allObjects) {
-			RawModel model = Loader.loadToVAO(object.spriteRenderer.calculateVertices(Renderer.camera), object.spriteRenderer.calculateTextureCoords(), object.spriteRenderer.calculateColorCoords(), indices);
-			ModelTexture texture = new ModelTexture(Loader.loadTexture(object.spriteRenderer.sprite.image));
-			TexturedModel texturedModel = new TexturedModel(model, texture);
+		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
 
-			Renderer.render(texturedModel);
+		for (GameObject.SpriteRenderer sr : GameObject.allRenderers) {
+			try {
+				layers.toArray(new List[0])[sr.layer].add(sr);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				layers.add(new ArrayList<>());
+				layers.toArray(new List[0])[sr.layer].add(sr);
+			}
+
+		}
+
+		for (List<GameObject.SpriteRenderer> layer : layers) {
+			for (GameObject.SpriteRenderer sr : layer) {
+				RawModel model = Loader.loadToVAO(sr.calculateVertices(Renderer.camera), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
+				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.image));
+				TexturedModel texturedModel = new TexturedModel(model, texture);
+
+				Renderer.render(texturedModel);
+			}
 		}
 
 		shader.stop();

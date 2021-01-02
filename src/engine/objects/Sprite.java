@@ -10,26 +10,26 @@ package engine.objects;
 public class Sprite {
     public String image;
     public String name;
-    public float[] texCoords;
+    public float[] texCords;
 
     /**
-     * The constructor for a sprite with special texture coords.
+     * The constructor for a sprite with special texture cords.
      * @param image The file path of the sprite's image, starting from the res folder.
-     * @param texCoords The texture coordinates.
+     * @param texCords The texture coordinates.
      */
-    public Sprite(String image, float[] texCoords) {
+    public Sprite(String image, float[] texCords) {
         this.image = image;
-        this.texCoords = texCoords;
+        this.texCords = texCords;
         this.name = "";
     }
 
     /**
-     * The constructor for a sprite with the default texture coords.
+     * The constructor for a sprite with the default texture cords.
      * @param image The file path of the sprite's image, starting from the res folder.
      */
     public Sprite(String image) {
         this.image = image;
-        this.texCoords = new float[]{
+        this.texCords = new float[]{
                 0, 0, //V0
                 0, 1, //V1
                 1, 1, //V2

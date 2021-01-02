@@ -8,14 +8,13 @@ import main.Main;
 
 public class Gate extends GameObject implements Script {
     private Collider col;
-    private Rigidbody rb;
 
     /**
      * The constructor.
      * The only thing you should touch in here are the variables in super().
      */
     public Gate(Vector position) {
-        super(position, new Vector(new float[]{2, 4}), Main.window, new Vector(new float[]{1, 1, 1, 1}), "null");
+        super(position, new Vector(new float[]{2, 4}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 0, "null");
         GameObject.allScripts.add(this);
     }
 
@@ -23,7 +22,7 @@ public class Gate extends GameObject implements Script {
      * Runs once when the window is created.
      */
     public void Start() {
-        rb = new Rigidbody(this);
+        Rigidbody rb = new Rigidbody(this);
         col = new Collider(this, rb, true, true);
     }
 

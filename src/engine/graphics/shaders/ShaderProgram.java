@@ -15,9 +15,9 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public abstract class ShaderProgram {
 
-    private int programID;
-    private int vertexShaderID;
-    private int fragmentShaderID;
+    private final int programID;
+    private final int vertexShaderID;
+    private final int fragmentShaderID;
 
     /**
      * The constructor.
@@ -43,14 +43,14 @@ public abstract class ShaderProgram {
     }
 
     /**
-     * Stops the shader prgoram
+     * Stops the shader program
      */
     public void stop(){
         GL30.glUseProgram(0);
     }
 
     /**
-     * Delets the shaders out of memory, for memory management.
+     * Deletes the shaders out of memory, for memory management.
      */
     public void cleanUp(){
         stop();

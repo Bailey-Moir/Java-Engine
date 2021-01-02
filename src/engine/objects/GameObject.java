@@ -17,11 +17,8 @@ import engine.maths.Vector;
 
 @SuppressWarnings("unused")
 public abstract class GameObject {
-	public enum RenderMode {
-		SINGLE, SHEET
-	}
 
-	public static List<GameObject> allObjects = new ArrayList<>();
+	public static List<SpriteRenderer> allRenderers = new ArrayList<>();
 	public static List<Script> allScripts = new ArrayList<>();
 
 	public Transform transform;
@@ -35,16 +32,16 @@ public abstract class GameObject {
 	 * @param size The starting size of the game object.
 	 * @param image The image to be displayed on the game object.
 	 */
-	public GameObject(Vector position, Vector size, Window window, Vector color, String image) {
+	public GameObject(Vector position, Vector size, Window window, Vector color, int layer, String image) {
 		this.transform = new Transform();
-		this.spriteRenderer = new SpriteRenderer(color, image, window, this);
+		this.spriteRenderer = new SpriteRenderer(color, image, layer, window, this);
 
 		this.transform.position = position;
 		this.transform.size = size;
 
 		this.input = window.input;
 
-		allObjects.add(this);
+		allRenderers.add(spriteRenderer);
 	}
 
 	/**
@@ -72,25 +69,24 @@ public abstract class GameObject {
 	 * @author Bailey
 	 */
 	public class SpriteRenderer {
-		private GameObject object;
-		private Window window;
+		private final GameObject object;
+		private final Window window;
 
 		public boolean multiple;
 
-		public RenderMode renderMode;
 		public Sprite sprite;
 		public SpriteSheet spriteSheet;
 		public boolean flipX = false, flipY = false;
 		public int layer;
 		public Vector color;
 
-		public SpriteRenderer(Vector color, String image, Window window, GameObject object) {
+		public SpriteRenderer(Vector color, String image, int layer, Window window, GameObject object) {
 			this.color = color;
 			this.sprite = new Sprite(image);
-			this.renderMode = RenderMode.SINGLE;
 			this.window = window;
 			this.object = object;
 			this.multiple = false;
+			this.layer = layer;
 		}
 
 		/**
@@ -122,13 +118,12 @@ public abstract class GameObject {
 		 * @return Texture Coordinates.
 		 */
 		public float[] calculateTextureCoords() {
-			float[] toReturn = {
-					(flipX ? sprite.texCoords[6] : sprite.texCoords[0]), (flipY ? sprite.texCoords[3] : sprite.texCoords[1]), //V0
-					(flipX ? sprite.texCoords[4] : sprite.texCoords[2]), (flipY ? sprite.texCoords[1] : sprite.texCoords[3]), //V1
-					(flipX ? sprite.texCoords[2] : sprite.texCoords[6]), (flipY ? sprite.texCoords[7] : sprite.texCoords[5]), //V2
-					(flipX ? sprite.texCoords[0] : sprite.texCoords[6]), (flipY ? sprite.texCoords[5] : sprite.texCoords[7])  //V3
+			return new float[]{
+					(flipX ? sprite.texCords[6] : sprite.texCords[0]), (flipY ? sprite.texCords[3] : sprite.texCords[1]), //V0
+					(flipX ? sprite.texCords[4] : sprite.texCords[2]), (flipY ? sprite.texCords[1] : sprite.texCords[3]), //V1
+					(flipX ? sprite.texCords[2] : sprite.texCords[6]), (flipY ? sprite.texCords[7] : sprite.texCords[5]), //V2
+					(flipX ? sprite.texCords[0] : sprite.texCords[6]), (flipY ? sprite.texCords[5] : sprite.texCords[7])  //V3
 			};
-			return toReturn;
 		}
 		/**
 		 * Gets the color coordinates used for rendering.

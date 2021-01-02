@@ -46,9 +46,9 @@ public class AnimationController extends Component {
         }
     }
 
-    private List<Parameter> parameters = new ArrayList<>();
-    private List<Transition> transitions = new ArrayList<>();
-    private List<Animation> animations = new ArrayList<>();
+    private final List<Parameter> parameters = new ArrayList<>();
+    private final List<Transition> transitions = new ArrayList<>();
+    private final List<Animation> animations = new ArrayList<>();
 
     private Animation current;
 
@@ -69,7 +69,10 @@ public class AnimationController extends Component {
         transitions.forEach(transition -> {
             boolean paramsPassed = true;
             for (int i = 0; i < transition.params.length; i++) {
-                if (transition.values[i] != transition.params[i].value) paramsPassed = false;
+                if (transition.values[i] != transition.params[i].value) {
+                    paramsPassed = false;
+                    break;
+                }
             }
             if (transition.state1 == current && paramsPassed) {
                 current.stop();
@@ -77,7 +80,7 @@ public class AnimationController extends Component {
                 current.play();
             }
         });
-        if (current.loop == true && current.status == Status.STOPPED) {
+        if (current.loop && current.status == Status.STOPPED) {
             current.play();
         }
     }
@@ -116,7 +119,7 @@ public class AnimationController extends Component {
      */
     public void setParam(String name, boolean value) {
         parameters.forEach((parameter) -> {
-            if (parameter.name == name) {
+            if (parameter.name.equals(name)) {
                 parameter.value = value;
             }
         });
@@ -130,7 +133,7 @@ public class AnimationController extends Component {
     public boolean checkParam(String name) {
         AtomicReference<Boolean> toReturn = new AtomicReference<>(false);
         parameters.forEach((parameter) -> {
-            if (parameter.name == name) {
+            if (parameter.name.equals(name)) {
                 toReturn.set(parameter.value);
             }
         });
@@ -148,28 +151,17 @@ public class AnimationController extends Component {
         AtomicReference<Animation> anim2 = new AtomicReference<>(null);
         AtomicReference<List<Parameter>> params = new AtomicReference<>(new ArrayList<>());
         animations.forEach(animation -> {
-            if (animation.name == state1) {
+            if (animation.name.equals(state1)) {
                 anim1.set(animation);
-            } else if (animation.name == state2) {
+            } else if (animation.name.equals(state2)) {
                 anim2.set(animation);
             }
         });
-        parameters.forEach(parameterObj -> { Stream.of(localParams).forEach(parameterStr -> {
-                if (parameterObj.name == parameterStr) {
+        parameters.forEach(parameterObj -> Stream.of(localParams).forEach(parameterStr -> {
+                if (parameterObj.name.equals(parameterStr)) {
                     params.get().add(parameterObj);
                 }
-        });});
-
-        //Accounting for typos.
-        if (anim1 == null) {
-            new NullPointerException("First animation does not exist.").printStackTrace();
-        }
-        if (anim2 == null) {
-            new NullPointerException("Second animation does not exist.").printStackTrace();
-        }
-        if (params == null) {
-            new NullPointerException("At least one of the parameters do not exist.").printStackTrace();
-        }
+        }));
 
         transitions.add(new Transition(anim1.get(), anim2.get(), params.get().toArray(new Parameter[0]), value));
     }

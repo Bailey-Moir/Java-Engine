@@ -8,7 +8,7 @@ package engine.graphics.models;
 
 @SuppressWarnings("unused")
 public class RawModel {
-    private int vaoID, vertexCount;
+    private final int vaoID, vertexCount;
 
     /**
      * The default constructor.
