@@ -10,7 +10,7 @@ import engine.objects.GameObject;
 import engine.objects.components.*;
 import main.Main;
 
-public class Player extends GameObject implements Script {
+public class Player extends GameObject {
 	private Rigidbody rb;
 	private Collider col, gravCol;
 	private AnimationController animController;
@@ -22,14 +22,8 @@ public class Player extends GameObject implements Script {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(startPos, new Vector(new float[]{1.25f, 2.5f}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 0, "player/player");
-        this.spriteRenderer.sprite.texCords = new float[]{ //Makes it so that the image fits the object correctly.
-            0, 0, //V0
-            0, 0.625f, //V1
-            0.625f, 0.625f, //V2
-            0.625f, 0  //V3
-        };
-		GameObject.allScripts.add(this);
+		super(Vector.square(0, 2), new Vector(new float[]{1.25f, 2.5f}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 2, "player/player");
+		this.startPos = startPos;
 	}
  
 	/**
@@ -42,16 +36,15 @@ public class Player extends GameObject implements Script {
 		});
 
 		rb = new Rigidbody(this);
+		rb.object = this;
 		col = new Collider(this, rb, false, false);
 		gravCol = new Collider(this, rb, false, true);
 		animController = new AnimationController(this, new Animation(1f,"idle",this, true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(0), 0f)
 		}));
 
-		startPos = Vector.square(0, 2);
 		rb.isGravity = true;
-		rb.mass = 1;
-		
+
 		gravCol.offset = new Vector(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
 		gravCol.size = new Vector(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
 
@@ -75,7 +68,7 @@ public class Player extends GameObject implements Script {
 		animController.addTransition("idle", "fall", new String[]{"isFalling"}, new boolean[]{true});
 		animController.addTransition("run", "fall", new String[]{"isFalling"}, new boolean[]{true});
 	}
-	
+
 	/**
 	 * Runs every frame.
 	 */
@@ -92,14 +85,16 @@ public class Player extends GameObject implements Script {
 		}
 		//Crouching
 		if (input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL)) {
-			if (transform.size.getAxis(1) == 2) {
-				transform.position.setAxis(1, transform.position.getAxis(1) - 0.5f);
-				transform.size.setAxis(1, 1);
+			if (transform.size.getAxis(1) == 2.5f) {
+				transform.size.setAxis(1, 1.25f);
+				col.size.setAxis(1, 1.25f);
+				transform.position.setAxis(1, transform.position.getAxis(1) - 0.625f);
 			}
 		} else {
-			if (transform.size.getAxis(1) == 1) {
-				transform.position.setAxis(1, transform.position.getAxis(1) + 0.5f);
-				transform.size.setAxis(1, 2);
+			if (transform.size.getAxis(1) == 1.25f) {
+				transform.size.setAxis(1, 2.5f);
+				col.size.setAxis(1, 2.5f);
+				transform.position.setAxis(1, transform.position.getAxis(1) + 0.625f);
 			}
 		}
 
@@ -113,7 +108,7 @@ public class Player extends GameObject implements Script {
 				rb.addForce(new Vector(new float[]{0, 10f}));
 			}
 		} else {
-			animController.setParam("isFalling", rb.velocity.getAxis(1) < 0);
+			animController.setParam("isFalling", rb.velocity.getAxis(1) < 0f);
 		}
 
 		//Animation

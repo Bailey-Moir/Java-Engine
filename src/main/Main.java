@@ -34,8 +34,8 @@ public class Main implements Runnable {
 	StaticShader shader;
 	
 	final int WIDTH = 2560, HEIGHT = 1440;
-	final String TITLE = "big boy";
-	Vector background = new Vector(new float[]{0.1f, 0.1f, 0.12f});
+	final String TITLE = "Engine";
+	Vector background = new Vector(new float[]{0.1f, 0.1f, 0.12f, 1.0f});
 
 	private void start() {
 		game = new Thread(this, "game");
@@ -48,27 +48,18 @@ public class Main implements Runnable {
 		window.init();
 
 		shader = new StaticShader();
-		
-		window.input.createAxis("Horizontal", new int[] {
-				GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_D,
-				GLFW.GLFW_KEY_LEFT, GLFW.GLFW_KEY_RIGHT
-		});
-		window.input.createAxis("Vertical", new int[] {
-				GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_W,
-				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
-		});
 
-		new Gate(new Vector(new float[]{9.5f, 1}));
+		new Gate(new Vector(new float[]{9.5f, 1.5f}));
+		new GateCover(new Vector(new float[]{10f, 1.5f}));
+		new Color(new Vector(new float[]{10.75f, 1.5f}), new Vector(new float[]{2, 4}), new Vector(background), 1);
 		new Platform(new Vector(new float[]{-5.5f, -4f}));
 		new Platform(new Vector(new float[]{0, -2f}));
-		new Platform(new Vector(new float[]{5.5f, -1.5f}));
-		new CameraController(new Player(new Vector(new float[]{0, -1})), window);
+		new LongPlatform(new Vector(new float[]{7.5f, -1.5f}));
+		new CameraController(new Player(new Vector(new float[]{0, 0.5f})), window);
 
-		for (Script script : GameObject.allScripts) {
+		for (Script script : GameObject.scripts) {
 			script.Start();
 		}
-		
-		//window.setFullscreen(true);
 	}
 	
 	public void run() {
@@ -84,7 +75,7 @@ public class Main implements Runnable {
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
-		for (Script object : GameObject.allScripts) {
+		for (Script object : GameObject.scripts) {
 			object.Update();
 		}
 		
@@ -101,25 +92,22 @@ public class Main implements Runnable {
 
 		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
 
-		for (GameObject.SpriteRenderer sr : GameObject.allRenderers) {
-			try {
-				layers.toArray(new List[0])[sr.layer].add(sr);
-			} catch (ArrayIndexOutOfBoundsException e) {
+		GameObject.spriteRenders.forEach(sr -> {
+			while (sr.layer > layers.size() || sr.layer == layers.size()) {
 				layers.add(new ArrayList<>());
-				layers.toArray(new List[0])[sr.layer].add(sr);
 			}
 
-		}
+			layers.get(sr.layer).add(sr);
+		});
 
-		for (List<GameObject.SpriteRenderer> layer : layers) {
-			for (GameObject.SpriteRenderer sr : layer) {
-				RawModel model = Loader.loadToVAO(sr.calculateVertices(Renderer.camera), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
+		layers.forEach(layer -> { layer.forEach(sr -> {
+				RawModel model = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
 				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.image));
 				TexturedModel texturedModel = new TexturedModel(model, texture);
 
 				Renderer.render(texturedModel);
-			}
-		}
+			});
+		});
 
 		shader.stop();
 

@@ -1,13 +1,16 @@
 package engine.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import engine.Camera;
 import engine.Script;
+import engine.graphics.Renderer;
 import engine.io.Input;
 import engine.io.Window;
 import engine.maths.Vector;
+import engine.objects.components.Rigidbody;
 
 /**
  * Represents a game object.
@@ -16,10 +19,9 @@ import engine.maths.Vector;
  */
 
 @SuppressWarnings("unused")
-public abstract class GameObject {
-
-	public static List<SpriteRenderer> allRenderers = new ArrayList<>();
-	public static List<Script> allScripts = new ArrayList<>();
+public abstract class GameObject implements Script {
+	public static Collection<SpriteRenderer> spriteRenders = new ArrayList<>();
+	public static Collection<Script> scripts = new ArrayList<>();
 
 	public Transform transform;
 	public SpriteRenderer spriteRenderer;
@@ -41,7 +43,8 @@ public abstract class GameObject {
 
 		this.input = window.input;
 
-		allRenderers.add(spriteRenderer);
+		scripts.add(this);
+		spriteRenders.add(spriteRenderer);
 	}
 
 	/**
@@ -88,29 +91,12 @@ public abstract class GameObject {
 			this.multiple = false;
 			this.layer = layer;
 		}
-
-		/**
-		 * Calculates the position of the vertices using known variables. Used for rendering.
-		 * @return the vertices.
-		 */
 		public float[] calculateVertices() {
 			return new float[] {
-					(object.transform.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (object.transform.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Left
-					(object.transform.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (object.transform.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Bottom Left
-					(object.transform.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (object.transform.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160, //Top Right
-					(object.transform.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160, (object.transform.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160 //Bottom Right
-			};
-		}
-		/**
-		 * Calculates the object.transform.position of the vertices using known variables. Used for rendering.
-		 * @return the vertices.
-		 */
-		public float[] calculateVertices(Camera camera) {
-			return new float[] {
-					((object.transform.position.getAxis(0) - camera.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * camera.scale, ((object.transform.position.getAxis(1) - camera.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * camera.scale, 0, //Top Left
-					((object.transform.position.getAxis(0) - camera.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * camera.scale, ((object.transform.position.getAxis(1) - camera.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * camera.scale, 0, //Bottom Left
-					((object.transform.position.getAxis(0) - camera.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * camera.scale, ((object.transform.position.getAxis(1) - camera.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * camera.scale, 0, //Top Right
-					((object.transform.position.getAxis(0) - camera.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * camera.scale, ((object.transform.position.getAxis(1) - camera.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * camera.scale, 0  //Bottom Right
+					((object.transform.position.getAxis(0) - Renderer.camera.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.getAxis(1) - Renderer.camera.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Left
+					((object.transform.position.getAxis(0) - Renderer.camera.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.getAxis(1) - Renderer.camera.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Bottom Left
+					((object.transform.position.getAxis(0) - Renderer.camera.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.getAxis(1) - Renderer.camera.position.getAxis(1) - object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Right
+					((object.transform.position.getAxis(0) - Renderer.camera.position.getAxis(0) + object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.getAxis(1) - Renderer.camera.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0  //Bottom Right
 			};
 		}
 		/**
@@ -134,7 +120,7 @@ public abstract class GameObject {
 				color.getAxis(0), color.getAxis(1), color.getAxis(2), color.getAxis(3),
 				color.getAxis(0), color.getAxis(1), color.getAxis(2), color.getAxis(3),
 				color.getAxis(0), color.getAxis(1), color.getAxis(2), color.getAxis(3),
-				color.getAxis(0), color.getAxis(1), color.getAxis(2), color.getAxis(3)
+				color.getAxis(0), color.getAxis(1), color.getAxis(2), color.getAxis(3),
 			};
 		}
 

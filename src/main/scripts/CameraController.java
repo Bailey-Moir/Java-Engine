@@ -19,7 +19,7 @@ public class CameraController extends Camera implements Script {
 
     public CameraController(Player   player, Window window) {
         super(new Vector(new float[]{0, 0}), 1.5f, window);
-        GameObject.allScripts.add(this);
+        GameObject.scripts.add(this);
         this.player = player;
     }
 
@@ -28,13 +28,16 @@ public class CameraController extends Camera implements Script {
         scale = 2.5f;
     }
 
+    private boolean hasBeenReset = false;
     public void Update() {
         if (window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
             position = Vector.square(0, 2);
+            hasBeenReset = true;
         }
 
-        //camPos = camPos + (plyPos - camPos) * modifier
-        position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
-
+        if (hasBeenReset) {
+            //camPos = camPos + (plyPos - camPos) * modifier
+            position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
+        }
     }
 }

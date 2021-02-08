@@ -3,7 +3,6 @@ package engine.objects.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.objects.Component;
 import engine.objects.GameObject;
 import engine.maths.Mathl;
 import engine.maths.Vector;
@@ -15,7 +14,8 @@ import engine.maths.Vector;
  */
 
 @SuppressWarnings("unused")
-public class Collider extends Component {
+public class Collider {
+	public GameObject object;
 	public Rigidbody rb;
 	
 	private static final List<Collider> allColliders = new ArrayList<>();
@@ -31,13 +31,13 @@ public class Collider extends Component {
 	 * @param object The object that the component belongs to.
 	 */
 	public Collider(GameObject object, Rigidbody rb, boolean isStatic, boolean isTrigger) {
-		super(object);
+		this.object = object;
 		this.isStatic = isStatic;
 		this.isTrigger = isTrigger;
 		this.rb = rb;
 		
 		offset = new Vector(new float[]{0, 0});
-		size = object.transform.size;
+		size = new Vector(object.transform.size);
 		
 		allColliders.add(this);
 	}
@@ -71,15 +71,19 @@ public class Collider extends Component {
 					int indexLargest = Mathl.minI(margins);
 					if (indexLargest == 0) {
 						//To the left
+						if (rb.net.getAxis(0) > 0) rb.net.setAxis(0, 0);
 						object.transform.position.setAxis(0, col.object.transform.position.getAxis(0) + col.offset.getAxis(0) - col.size.getAxis(0) / 2 - size.getAxis(0) / 2 + offset.getAxis(0));
 					} else if (indexLargest == 1) {
 						//To the right
+						if (rb.net.getAxis(0) < 0) rb.net.setAxis(0, 0);
 						object.transform.position.setAxis(0, col.object.transform.position.getAxis(0) + col.offset.getAxis(0) + col.size.getAxis(0) / 2 + size.getAxis(0) / 2 + offset.getAxis(0));
 					} else if (indexLargest == 2) {
 						//Above
+						if (rb.net.getAxis(1) < 0) rb.net.setAxis(1, 0);
 						object.transform.position.setAxis(1, col.object.transform.position.getAxis(1) + col.offset.getAxis(1) + col.size.getAxis(1) / 2 + size.getAxis(1) / 2 + offset.getAxis(1));
 					} else if (indexLargest == 3) {
 						//Below
+						if (rb.net.getAxis(1) > 0) rb.net.setAxis(1, 0);
 						object.transform.position.setAxis(1, col.object.transform.position.getAxis(1) + col.offset.getAxis(1) - col.size.getAxis(1) / 2 - size.getAxis(1) / 2 + offset.getAxis(1));
 					}
 				}

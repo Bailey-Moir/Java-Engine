@@ -25,6 +25,16 @@ public class Vector {
     }
 
     /**
+     * A constructor. For assigning non-reference objects.
+     * @param Vector The vector you are copying.
+     */
+    public Vector(Vector vec) {
+        for (float dimension : vec.dimensions) {
+            dimensions.add(dimension);
+        }
+    }
+
+    /**
      * Creates a Vector with all of the values equal to b.
      * @param b The value of each dimension.
      * @param size The amount of dimensions.

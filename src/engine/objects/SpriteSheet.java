@@ -57,7 +57,7 @@ public class SpriteSheet {
     private void gen() {
         //c = w / (t + m) : Gets count, and takes away the remainder.
         int tilesH = sheetTex.getImageWidth() / (settings[0] + settings[2]);
-        int tilesV = (sheetTex.getImageHeight() + settings[3]) / (settings[1] + settings[3]) - (sheetTex.getImageHeight() + settings[3]) % (settings[1] + settings[3]);
+        int tilesV = sheetTex.getImageHeight() / (settings[1] + settings[3]);
         for (int y = 0; y < tilesV; y++) {
             for (int x = 0; x < tilesH; x++) {
                 float startX = x*(settings[0] + settings[2]);
@@ -65,9 +65,9 @@ public class SpriteSheet {
                 generatedSprites.add(new Sprite(path, new float[]{
                         //x = width / 64; y = height / 32
                         (x * (settings[0] + settings[2])) / 64f, (y * (settings[1] + settings[3])) / 32f,
-                        (x * (settings[0] + settings[2])) / 64f, ((y+1f) * (settings[1] + settings[3])) / 32f,
-                        ((x+1f) * (settings[0] + settings[2])) / 64f, ((y+1f) * (settings[1] + settings[3])) / 32f,
-                        ((x+1f) * (settings[0] + settings[2])) / 64f, (y * (settings[1] + settings[3])) / 32f
+                        (x * (settings[0] + settings[2])) / 64f, ((y+1f) * settings[1] + y * settings[3]) / 32f,
+                        ((x+1f) * settings[0] + x * settings[2]) / 64f, ((y+1f) * settings[1] + y * settings[3]) / 32f,
+                        ((x+1f) * settings[0] + x * settings[2]) / 64f, (y * (settings[1] + settings[3])) / 32f
                 }));
             }
         }

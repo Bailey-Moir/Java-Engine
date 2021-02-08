@@ -1,6 +1,4 @@
 package engine.objects.components;
-
-import engine.objects.Component;
 import engine.objects.GameObject;
 import engine.maths.Vector;
 
@@ -11,7 +9,9 @@ import engine.maths.Vector;
  */
 
 @SuppressWarnings("unused")
-public class Rigidbody extends Component {
+public class Rigidbody {
+	public GameObject object;
+
 	public float gravityModifier = 0.5f;
 	
 	public Vector net, velocity;
@@ -24,9 +24,10 @@ public class Rigidbody extends Component {
 	 * @param object The obj that the component belongs to.
 	 */
 	public Rigidbody(GameObject object) {
-		super(object);
+		this.object = object;
 		net = Vector.square(0, 2);
 		velocity = new Vector(new float[]{0, 0});
+		mass = 1;
 		isGravity = false;
 	}
 	

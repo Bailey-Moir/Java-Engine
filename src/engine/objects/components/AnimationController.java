@@ -2,7 +2,6 @@ package engine.objects.components;
 
 import engine.Animation;
 import engine.Animation.*;
-import engine.objects.Component;
 import engine.objects.GameObject;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.stream.Stream;
  */
 
 @SuppressWarnings("unused")
-public class AnimationController extends Component {
+public class AnimationController {
     /**
      * Represents a parameter.
      */
@@ -46,6 +45,8 @@ public class AnimationController extends Component {
         }
     }
 
+    public GameObject object;
+
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<Transition> transitions = new ArrayList<>();
     private final List<Animation> animations = new ArrayList<>();
@@ -57,7 +58,6 @@ public class AnimationController extends Component {
      * @param object The parent object.
      */
     public AnimationController(GameObject object, Animation defaultState) {
-        super(object);
         animations.add(defaultState);
         current = defaultState;
     }

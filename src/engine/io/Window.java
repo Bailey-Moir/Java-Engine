@@ -65,7 +65,16 @@ public class Window {
 		GL30.glEnable(GL30.GL_DEPTH_TEST);
 		
 		createCallbacks();
-		
+
+		input.createAxis("Horizontal", new int[] {
+				GLFW.GLFW_KEY_A, GLFW.GLFW_KEY_D,
+				GLFW.GLFW_KEY_LEFT, GLFW.GLFW_KEY_RIGHT
+		});
+		input.createAxis("Vertical", new int[] {
+				GLFW.GLFW_KEY_S, GLFW.GLFW_KEY_W,
+				GLFW.GLFW_KEY_DOWN, GLFW.GLFW_KEY_UP
+		});
+
 		GLFW.glfwShowWindow(window);
 		
 		GLFW.glfwSwapInterval(1); //Limits to 60fps
