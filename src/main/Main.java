@@ -63,7 +63,8 @@ public class Main implements Runnable {
 
 		lastFPS = window.time.getTime();
 	}
-	
+
+	@Override
 	public void run() {
 		init();		
 		
