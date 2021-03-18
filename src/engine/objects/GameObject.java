@@ -2,15 +2,11 @@ package engine.objects;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import engine.Camera;
 import engine.Script;
 import engine.graphics.Renderer;
-import engine.io.Input;
+import engine.io.Window.Input;
 import engine.io.Window;
 import engine.maths.Vector;
-import engine.objects.components.Rigidbody;
 
 /**
  * Represents a game object.
@@ -26,22 +22,18 @@ public abstract class GameObject implements Script {
 	public Transform transform;
 	public SpriteRenderer spriteRenderer;
 
-	protected Input input;
-
 	/**
 	 * Constructor.
 	 * @param position The starting position of the game object.
 	 * @param size The starting size of the game object.
 	 * @param image The image to be displayed on the game object.
 	 */
-	public GameObject(Vector position, Vector size, Window window, Vector color, int layer, String image) {
+	public GameObject(Window window, Vector position, Vector size, Vector color, int layer, String image) {
 		this.transform = new Transform();
 		this.spriteRenderer = new SpriteRenderer(color, image, layer, window, this);
 
 		this.transform.position = position;
 		this.transform.size = size;
-
-		this.input = window.input;
 
 		scripts.add(this);
 		spriteRenders.add(spriteRenderer);

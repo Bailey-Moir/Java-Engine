@@ -22,7 +22,7 @@ public class Player extends GameObject {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(Vector.square(0, 2), new Vector(new float[]{1.25f, 2.5f}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 2, "player/player");
+		super(Main.window, Vector.square(0, 2), new Vector(new float[]{1.25f, 2.5f}), new Vector(new float[]{1, 1, 1, 1}), 2, "player");
 		this.startPos = startPos;
 	}
  
@@ -79,12 +79,12 @@ public class Player extends GameObject {
 		animController.update();
 
 		//Teleporting to spawn
-		if (input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
+		if (Main.window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
 			rb.net.set(new float[]{0, 0});
 			transform.position = startPos;
 		}
 		//Crouching
-		if (input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL)) {
+		if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL)) {
 			if (transform.size.getAxis(1) == 2.5f) {
 				transform.size.setAxis(1, 1.25f);
 				col.size.setAxis(1, 1.25f);
@@ -99,12 +99,12 @@ public class Player extends GameObject {
 		}
 
 		//Basic movement
-		rb.addForce(new Vector(new float[]{input.getAxisRaw("Horizontal"), 0}).times(0.5f));
+		rb.addForce(new Vector(new float[]{Main.window.input.getAxisRaw("Horizontal"), 0}).times(0.5f));
 		//Jumping
 		if (gravCol.isColliding) {
 			rb.stopFalling();
 			animController.setParam("isFalling", false);
-			if (input.isKeyDown(GLFW.GLFW_KEY_W) || input.isKeyDown(GLFW.GLFW_KEY_UP) || input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+			if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_W) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_UP) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
 				rb.addForce(new Vector(new float[]{0, 10f}));
 			}
 		} else {
@@ -113,11 +113,11 @@ public class Player extends GameObject {
 
 		//Animation
 		animController.setParam("isRunning", rb.velocity.getAxis(0) > 0.01f || rb.velocity.getAxis(0) < -0.01f);
-		if (input.getAxisRaw("Horizontal") < 0) {
+		if (Main.window.input.getAxisRaw("Horizontal") < 0) {
 			spriteRenderer.flipX = true;
-		} else if (input.getAxisRaw("Horizontal") > 0) {
+		} else if (Main.window.input.getAxisRaw("Horizontal") > 0) {
 			spriteRenderer.flipX = false;
 		}
-		spriteRenderer.flipY = input.isKeyDown(GLFW.GLFW_KEY_S);
+		spriteRenderer.flipY = Main.window.input.isKeyDown(GLFW.GLFW_KEY_S);
 	}
 }

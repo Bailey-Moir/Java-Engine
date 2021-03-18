@@ -15,7 +15,7 @@ public class GateCover extends GameObject {
      * The only thing you should touch in here are the variables in super().
      */
     public GateCover(Vector position) {
-        super(position, new Vector(new float[]{1, 4}), Main.window, new Vector(new float[]{1, 1, 1, 1}), 0, "null");
+        super(Main.window, position, new Vector(new float[]{1, 4}), new Vector(new float[]{1, 1, 1, 1}), 0, "portal");
     }
 
     /**
