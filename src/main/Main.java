@@ -60,6 +60,8 @@ public class Main implements Runnable {
 		for (Script script : GameObject.scripts) {
 			script.Start();
 		}
+
+		lastFPS = window.time.getTime();
 	}
 	
 	public void run() {
@@ -72,6 +74,7 @@ public class Main implements Runnable {
 		close();
 	}
 
+	long lastFPS, fps = 0;
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
@@ -110,6 +113,13 @@ public class Main implements Runnable {
 		});
 
 		shader.stop();
+
+		if (window.time.getTime() - lastFPS > 1000) {
+			window.setTitle("FPS: " + fps);
+			fps = 0; //reset the FPS counter
+			lastFPS += 1000; //add one second
+		}
+		fps++;
 
 		window.swapBuffers();
 	}
