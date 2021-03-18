@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
 public class CameraController extends Camera implements Script {
     private final Player player;
 
-    public CameraController(Player   player, Window window) {
+    public CameraController(Player player, Window window) {
         super(new Vector(new float[]{0, 0}), 1.5f, window);
         GameObject.scripts.add(this);
         this.player = player;
@@ -28,16 +28,12 @@ public class CameraController extends Camera implements Script {
         scale = 2.5f;
     }
 
-    private boolean hasBeenReset = false;
     public void Update() {
         if (window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
             position = Vector.square(0, 2);
-            hasBeenReset = true;
         }
 
-        if (hasBeenReset) {
-            //camPos = camPos + (plyPos - camPos) * modifier
-            position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
-        }
+        //camPos = camPos + (plyPos - camPos) * modifier
+        position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
     }
 }
