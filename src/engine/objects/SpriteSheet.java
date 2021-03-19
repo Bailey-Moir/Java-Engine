@@ -1,6 +1,7 @@
 package engine.objects;
 
 import engine.graphics.Loader;
+import org.lwjglx.opengl.GLContext;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;

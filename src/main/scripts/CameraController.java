@@ -22,12 +22,16 @@ public class CameraController extends Camera implements Script {
         GameObject.scripts.add(this);
         this.player = player;
     }
-
-    public void Start() {
-        Renderer.camera = this;
+    @Override
+    public void StartUpdate() {
         scale = 2.5f;
     }
+    @Override
+    public void StartRender() {
+        Renderer.camera = this;
+    }
 
+    @Override
     public void Update() {
         if (window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
             position = Vector.square(0, 2);

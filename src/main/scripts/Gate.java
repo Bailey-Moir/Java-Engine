@@ -12,10 +12,13 @@ public class Gate extends GameObject {
      * The only thing you should touch in here are the variables in super().
      */
     public Gate(Vector position) {
-        super(Main.window, position, new Vector(new float[]{2, 4}), new Vector(new float[]{1, 1, 1, 1}), 3, "portal");
+        super(Main.instance.window, position, new Vector(new float[]{2, 4}), new Vector(new float[]{1, 1, 1, 1}), 3, "portal");
     }
 
-    public void Start() {}
-
+    @Override
+    public void StartUpdate() {}
+    @Override
+    public void StartRender() {}
+    @Override
     public void Update() {}
 }

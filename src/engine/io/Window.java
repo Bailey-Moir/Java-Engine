@@ -20,7 +20,7 @@ public class Window {
 	private final String TITLE;
 	private float bgR, bgG, bgB;
 	
-	private long window;
+	private long window = 0;
 
 	public boolean shouldClose;
 	

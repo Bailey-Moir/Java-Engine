@@ -12,10 +12,13 @@ public class Color extends GameObject {
      * The only thing you should touch in here are the variables in super().
      */
     public Color(Vector position, Vector size, Vector color, int layer) {
-        super(Main.window, position, size, color, layer, "block");
+        super(Main.instance.window, position, size, color, layer, "block");
     }
 
-    public void Start() {}
-
+    @Override
+    public void StartUpdate() {}
+    @Override
+    public void StartRender() {}
+    @Override
     public void Update() {}
 }

@@ -14,16 +14,19 @@ public class LongPlatform extends GameObject {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public LongPlatform(Vector position) {
-		super(Main.window, position, new Vector(new float[]{8, 2}), new Vector(new float[]{1, 1, 1, 1}), 1, "long ground");
+		super(Main.instance.window, position, new Vector(new float[]{8, 2}), new Vector(new float[]{1, 1, 1, 1}), 1, "long ground");
 	}
 
 	/**
 	 * Runs once when the window is created.
 	 */
-	public void Start() {
+	@Override
+	public void StartUpdate() {
 		new Collider(this, new Rigidbody(this), true, false);
 	}
-
+	@Override
+	public void StartRender() {}
+	@Override
 	public void Update() {
 	}
 }

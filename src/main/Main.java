@@ -2,20 +2,14 @@ package main;
 
 import engine.Script;
 import engine.graphics.Loader;
-import engine.graphics.models.RawModel;
-import engine.graphics.models.TexturedModel;
 import engine.graphics.shaders.StaticShader;
-import engine.graphics.textures.ModelTexture;
 import engine.maths.Vector;
 import org.lwjgl.glfw.GLFW;
 
 import engine.objects.GameObject;
-import engine.graphics.Renderer;
 import engine.io.Window;
 import main.scripts.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.lwjglx.opengl.GLContext;
 
 /**
  * The starting off point.
@@ -26,12 +20,12 @@ import java.util.List;
  */
 
 public class Main implements Runnable {
-	Thread game;
+	static Thread game;
 	
-	static Main instance;
-	public static Window window;
+	public static Main instance;
+	public volatile Window window;
 
-	StaticShader shader;
+	public StaticShader shader;
 	
 	final int WIDTH = 2560, HEIGHT = 1440;
 	final String TITLE = "Engine";
@@ -45,9 +39,6 @@ public class Main implements Runnable {
 	private void init() {
 		window = new Window(WIDTH, HEIGHT, TITLE);
 		window.setBackgroundColour(background);
-		window.init();
-
-		shader = new StaticShader();
 
 		new Gate(new Vector(new float[]{9.5f, 1.5f}));
 		new GateCover(new Vector(new float[]{10f, 1.5f}));
@@ -58,77 +49,30 @@ public class Main implements Runnable {
 		new CameraController(new Player(new Vector(new float[]{0, 0.5f})), window);
 
 		for (Script script : GameObject.scripts) {
-			script.Start();
+			script.StartUpdate();
 		}
 
-		lastFPS = window.time.getTime();
+		//lastFPS = window.time.getTime();
 	}
 
 	@Override
 	public void run() {
 		init();		
-		
-		while (!window.shouldClose() && !window.input.isKeyDown(GLFW.GLFW_KEY_GRAVE_ACCENT)) {
-			update();
-			render();
-		}
+
+		UpdateThread updater = new UpdateThread();
+		RenderThread renderer = new RenderThread();
+
+		Thread updateThread = new Thread(updater, "updating");
+		Thread renderThread = new Thread(renderer, "rendering");
+
+		updateThread.start();
+		renderThread.start();
+
 		close();
-	}
-
-	long lastFPS, fps = 0;
-	private void update() {
-		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
-				
-		for (Script object : GameObject.scripts) {
-			object.Update();
-		}
-		
-		window.update();
-		window.time.update();
-	}
-	
-	private void render() {
-		shader.start();
-		int[] indices = {
-				0, 1, 3,
-				3, 1, 2
-		};
-
-		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
-
-		GameObject.spriteRenders.forEach(sr -> {
-			while (sr.layer > layers.size() || sr.layer == layers.size()) {
-				layers.add(new ArrayList<>());
-			}
-
-			layers.get(sr.layer).add(sr);
-		});
-
-		layers.forEach(layer -> { layer.forEach(sr -> {
-				RawModel model = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
-				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.image));
-				TexturedModel texturedModel = new TexturedModel(model, texture);
-
-				Renderer.render(texturedModel);
-			});
-		});
-
-		shader.stop();
-
-		if (window.time.getTime() - lastFPS > 1000) {
-			window.setTitle("FPS: " + fps);
-			fps = 0; //reset the FPS counter
-			lastFPS += 1000; //add one second
-		}
-		fps++;
-
-		window.swapBuffers();
 	}
 	
 	private void close() {
-		window.destroy();
 		Loader.clear();
-		shader.cleanUp();
 	}
 	
 	public static void main(String[] args) {

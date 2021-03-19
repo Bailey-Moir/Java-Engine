@@ -70,13 +70,13 @@ public class Animation {
         animThread = new Thread(() -> {
             long start = System.currentTimeMillis();
             frames.forEach(frame -> {
-                try {
+                /*try {
                     long diff = start + (long) frame.time - System.currentTimeMillis();
                     if (diff > 0) Thread.sleep(diff);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                object.spriteRenderer.sprite = frame.sprite;
+                object.spriteRenderer.sprite = frame.sprite;*/
             });
             status = Status.STOPPED;
         });
