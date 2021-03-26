@@ -1,0 +1,6 @@
+*.class
+/.gitignore
+.idea/
+.settings/
+.git/
+.bin/
