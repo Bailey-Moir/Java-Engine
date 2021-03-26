@@ -36,7 +36,6 @@ public class Player extends GameObject {
 		});
 
 		rb = new Rigidbody(this);
-		rb.object = this;
 		col = new Collider(this, rb, false, false);
 		gravCol = new Collider(this, rb, false, true);
 		animController = new AnimationController(this, new Animation(1f,"idle",this, true, new Frame[] {
@@ -73,10 +72,7 @@ public class Player extends GameObject {
 	 * Runs every frame.
 	 */
 	public void Update() {
-		rb.update();
-		col.update();
-		gravCol.update();
-		animController.update();
+		updateComponents();
 
 		//Teleporting to spawn
 		if (Main.window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
@@ -88,12 +84,16 @@ public class Player extends GameObject {
 			if (transform.size.getAxis(1) == 2.5f) {
 				transform.size.setAxis(1, 1.25f);
 				col.size.setAxis(1, 1.25f);
+				gravCol.size.set(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
+				gravCol.offset.set(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
 				transform.position.setAxis(1, transform.position.getAxis(1) - 0.625f);
 			}
 		} else {
 			if (transform.size.getAxis(1) == 1.25f) {
 				transform.size.setAxis(1, 2.5f);
 				col.size.setAxis(1, 2.5f);
+				gravCol.size.set(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
+				gravCol.offset.set(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
 				transform.position.setAxis(1, transform.position.getAxis(1) + 0.625f);
 			}
 		}
@@ -102,7 +102,6 @@ public class Player extends GameObject {
 		rb.addForce(new Vector(new float[]{Main.window.input.getAxisRaw("Horizontal"), 0}).times(0.5f));
 		//Jumping
 		if (gravCol.isColliding) {
-			rb.stopFalling();
 			animController.setParam("isFalling", false);
 			if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_W) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_UP) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
 				rb.addForce(new Vector(new float[]{0, 10f}));

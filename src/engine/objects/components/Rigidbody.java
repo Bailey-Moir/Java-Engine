@@ -1,4 +1,5 @@
 package engine.objects.components;
+import engine.objects.Component;
 import engine.objects.GameObject;
 import engine.maths.Vector;
 
@@ -9,42 +10,38 @@ import engine.maths.Vector;
  */
 
 @SuppressWarnings("unused")
-public class Rigidbody {
-	public GameObject object;
-
+public class Rigidbody extends Component {
 	public float gravityModifier = 0.5f;
 	
-	public Vector net, velocity;
-	public float mass;
+	public Vector net = Vector.square(0, 2), velocity = new Vector(new float[]{0, 0});
+	public float mass = 1;
 	
-	public boolean isGravity;
-	
+	public boolean isGravity = false;
+
 	/**
 	 * The constructor.
-	 * @param object The obj that the component belongs to.
+	 * @param parent The obj that the component belongs to.
 	 */
-	public Rigidbody(GameObject object) {
-		this.object = object;
-		net = Vector.square(0, 2);
-		velocity = new Vector(new float[]{0, 0});
-		mass = 1;
-		isGravity = false;
+	public Rigidbody(GameObject parent) {
+		init(parent);
 	}
-	
+
 	/**
 	 * Acts upon the member variables, e.g. <code>net</code>, or <code>velocity</code>. 
 	 * </br></br>
 	 * <b>To be run every frame.<b>
 	 */
-	public void update() {		
+	@Override
+	public void update() {
 		if (isGravity) {
 			addForce(new Vector(new float[]{0, -gravityModifier*mass}));
 		}
 
-		velocity = net.times((float) object.spriteRenderer.getWindow().time.deltaTime).times(0.005f).times(1/mass); //F = a
+		// TODO uncomment this.
+		velocity = net/*.times((float) object.spriteRenderer.getWindow().time.deltaTime)*/.times(0.075f).times(1/mass); //F = a
 		
-		object.transform.position = object.transform.position.plus(velocity);
-		net = net.minus(velocity.times(2)); //Two is the modifier of friction.
+		parent.transform.position = parent.transform.position.plus(velocity);
+		net = net.times(0.8f); //Two is the modifier of friction. TODO Use delta time here
 
 		limZero(net);
 		limZero(velocity);
@@ -66,12 +63,5 @@ public class Rigidbody {
 	 */
 	public void addForce(Vector force) {
 		net = net.plus(force);
-	}
-
-	/**
-	 * Makes the obj stop falling.
-	 */
-	public void stopFalling() {
-		if (net.getAxis(1) < 0) net.setAxis(1, 0f);
 	}
 }

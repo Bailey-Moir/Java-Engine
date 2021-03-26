@@ -22,6 +22,8 @@ public abstract class GameObject implements Script {
 	public Transform transform;
 	public SpriteRenderer spriteRenderer;
 
+	public Collection<Component> components = new ArrayList<>();
+
 	/**
 	 * Constructor.
 	 * @param position The starting position of the game object.
@@ -37,6 +39,15 @@ public abstract class GameObject implements Script {
 
 		scripts.add(this);
 		spriteRenders.add(spriteRenderer);
+	}
+
+	/**
+	 * Updates all of the components of the object.
+	 */
+	public void updateComponents() {
+		components.forEach(component -> {
+			component.update();
+		});
 	}
 
 	/**
@@ -67,22 +78,33 @@ public abstract class GameObject implements Script {
 		private final GameObject object;
 		private final Window window;
 
-		public boolean multiple;
-
 		public Sprite sprite;
 		public SpriteSheet spriteSheet;
 		public boolean flipX = false, flipY = false;
 		public int layer;
 		public Vector color;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param color The 4 dimension color vector.
+		 * @param image The file path of the image (if there is any).
+		 * @param layer The layer to render the sprite on.
+		 * @param window The window to display the sprite on.
+		 * @param object Parent object of the SpriteRenderer.
+		 */
 		public SpriteRenderer(Vector color, String image, int layer, Window window, GameObject object) {
 			this.color = color;
 			this.sprite = new Sprite(image);
 			this.window = window;
 			this.object = object;
-			this.multiple = false;
 			this.layer = layer;
 		}
+
+		/**
+		 * Calculates the vertices for displaying the image.
+		 * @return The vertices.
+		 */
 		public float[] calculateVertices() {
 			return new float[] {
 					((object.transform.position.getAxis(0) - Renderer.camera.position.getAxis(0) - object.transform.size.getAxis(0) / 2) / spriteRenderer.getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.getAxis(1) - Renderer.camera.position.getAxis(1) + object.transform.size.getAxis(1) / 2) / spriteRenderer.getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Left

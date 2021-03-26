@@ -37,9 +37,9 @@ public class GateCover extends GameObject {
     }
 
     public void Update() {
-        col.update();
+        updateComponents();
 
-        col.collidingWith.forEach((colL) -> {
+        col.collidingWith.forEach(colL -> {
             if (!colL.isStatic) {
                 spriteRenderer.getWindow().close();
             }
