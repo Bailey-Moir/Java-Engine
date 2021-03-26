@@ -8,6 +8,8 @@ import engine.io.Window;
 import engine.maths.Vector;
 import org.lwjgl.glfw.GLFW;
 
+import static java.lang.Math.abs;
+
 /**
  * Controls the Camera
  *
@@ -35,5 +37,6 @@ public class CameraController extends Camera implements Script {
 
         //camPos = camPos + (plyPos - camPos) * modifier
         position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
+        //scale = 3f - abs(position.minus(player.transform.position).largest() / 4);
     }
 }

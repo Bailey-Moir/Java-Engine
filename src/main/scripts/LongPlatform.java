@@ -24,6 +24,5 @@ public class LongPlatform extends GameObject {
 		new Collider(this, new Rigidbody(this), true, false);
 	}
 
-	public void Update() {
-	}
+	public void Update() {}
 }
