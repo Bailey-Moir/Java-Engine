@@ -2,8 +2,8 @@ package engine.objects.components;
 
 import engine.Animation;
 import engine.Animation.*;
+import engine.objects.BehaviouralGameObject;
 import engine.objects.Component;
-import engine.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class AnimationController extends Component {
      * The constructor.
      * @param object The parent object.
      */
-    public AnimationController(GameObject object, Animation defaultState) {
+    public AnimationController(BehaviouralGameObject object, Animation defaultState) {
         init(object);
         animations.add(defaultState);
         current = defaultState;
@@ -101,7 +101,7 @@ public class AnimationController extends Component {
      * @param object The objeect that the animation acts on.
      * @param frames The list of frames in the animation.
      */
-    public void addAnim(float speed, String name, GameObject object, boolean loop, Animation.Frame[] frames) {
+    public void addAnim(float speed, String name, BehaviouralGameObject object, boolean loop, Animation.Frame[] frames) {
         this.animations.add(new Animation(speed, name, object, loop, frames));
     }
 

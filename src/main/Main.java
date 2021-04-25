@@ -1,5 +1,6 @@
 package main;
 
+import engine.GlobalStorage;
 import engine.Script;
 import engine.graphics.Loader;
 import engine.graphics.models.RawModel;
@@ -44,20 +45,18 @@ public class Main implements Runnable {
 	
 	private void init() {
 		window = new Window(WIDTH, HEIGHT, TITLE);
+		GlobalStorage.CurrentWindow = window;
 		window.setBackgroundColour(background);
 		window.init();
 
 		shader = new StaticShader();
 
-		new Gate(new Vector(9.5f, 1.5f));
-		new GateCover(new Vector(10f, 1.5f));
-		new Color(new Vector(10.75f, 1.5f), new Vector(2, 4), new Vector(background), 1);
-		new Platform(new Vector(-5.5f, -4f));
-		new Platform(new Vector(0, -2f));
-		new LongPlatform(new Vector(7.5f, -1.5f));
+		//new GateCover(new Vector(10f, 1.5f));
+		new Platform(new Vector(0, -2));
 		new CameraController(new Player(new Vector(0, 0.5f)), window);
+		new Map();
 
-		for (Script script : GameObject.scripts) {
+		for (Script script : GlobalStorage.scripts) {
 			script.Start();
 		}
 
@@ -79,7 +78,7 @@ public class Main implements Runnable {
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
 				
-		for (Script object : GameObject.scripts) {
+		for (Script object : GlobalStorage.scripts) {
 			object.Update();
 		}
 		
@@ -96,7 +95,7 @@ public class Main implements Runnable {
 
 		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
 
-		GameObject.spriteRenders.forEach(sr -> {
+		GlobalStorage.spriteRenders.forEach(sr -> {
 			while (sr.layer > layers.size() || sr.layer == layers.size()) {
 				layers.add(new ArrayList<>());
 			}

@@ -1,7 +1,7 @@
 package main.scripts;
 
 import engine.Camera;
-import engine.objects.GameObject;
+import engine.GlobalStorage;
 import engine.Script;
 import engine.graphics.Renderer;
 import engine.io.Window;
@@ -21,7 +21,7 @@ public class CameraController extends Camera implements Script {
 
     public CameraController(Player player, Window window) {
         super(new Vector(0, 0), 1.5f, window);
-        GameObject.scripts.add(this);
+        GlobalStorage.scripts.add(this);
         this.player = player;
     }
 

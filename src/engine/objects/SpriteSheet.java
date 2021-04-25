@@ -14,10 +14,10 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class SpriteSheet {
-    private final String path;
     public Texture sheetTex;
-    List<Sprite> generatedSprites = new ArrayList<>();
-    int[] settings;
+    private final List<Sprite> generatedSprites = new ArrayList<>();
+    private final int[] settings;
+    public float aspectW = 1f, aspectH = 1f;
 
     /**
      * A constructor.
@@ -28,7 +28,6 @@ public class SpriteSheet {
      * @param marginh The height of the margin between each cell.
      */
     public SpriteSheet(String sheet, int cellw, int cellh, int marginw, int marginh) {
-        this.path = sheet;
         this.sheetTex = Loader.createTexture(sheet);
         this.settings = new int[] {cellw, cellh, marginw, marginh};
         gen();
@@ -38,23 +37,21 @@ public class SpriteSheet {
      * @param sheet The file path of the sheet's image, starting from the res folder.
      * @param settings An array, containing the values of:
      * <ol style="margin-top: 0px; padding-left: 10px;">
-     *     <li>The width of each cell.</li>
-     *     <li>The height of each cell.</li>
-     *     <li>The width of the margin between each cell.</li>
-     *     <li>The height of the margin between each cell.</li>
+     *     <li>The pixel width of each cell.</li>
+     *     <li>The pixel height of each cell.</li>
+     *     <li>The pixel width of the margin between each cell.</li>
+     *     <li>The pixel height of the margin between each cell.</li>
      * </ol>
      */
     public SpriteSheet(String sheet, int[] settings) {
-        this.path = sheet;
         this.sheetTex = Loader.createTexture(sheet);
         this.settings = settings;
-        gen();
     }
 
     /**
      * Generates the sprites from the sprite sheet.
      */
-    private void gen() {
+    public void gen() {
         //c = w / (t + m) : Gets count, and takes away the remainder.
         int tilesH = sheetTex.getImageWidth() / (settings[0] + settings[2]);
         int tilesV = sheetTex.getImageHeight() / (settings[1] + settings[3]);
@@ -62,12 +59,12 @@ public class SpriteSheet {
             for (int x = 0; x < tilesH; x++) {
                 float startX = x*(settings[0] + settings[2]);
                 float startY = y*(settings[1] + settings[3]);
-                generatedSprites.add(new Sprite(path, new float[]{
+                generatedSprites.add(new Sprite(sheetTex, new float[]{
                         //x = width / 64; y = height / 32
-                        (x * (settings[0] + settings[2])) / 64f, (y * (settings[1] + settings[3])) / 32f,
-                        (x * (settings[0] + settings[2])) / 64f, ((y+1f) * settings[1] + y * settings[3]) / 32f,
-                        ((x+1f) * settings[0] + x * settings[2]) / 64f, ((y+1f) * settings[1] + y * settings[3]) / 32f,
-                        ((x+1f) * settings[0] + x * settings[2]) / 64f, (y * (settings[1] + settings[3])) / 32f
+                        (x * (settings[0] + settings[2])) / (64f / aspectW), (y * (settings[1] + settings[3])) / (64f / aspectH),
+                        (x * (settings[0] + settings[2])) / (64f / aspectW), ((y+1f) * settings[1] + y * settings[3]) / (64f / aspectH),
+                        ((x+1f) * settings[0] + x * settings[2]) / (64f / aspectW), ((y+1f) * settings[1] + y * settings[3]) / (64f / aspectH),
+                        ((x+1f) * settings[0] + x * settings[2]) / (64f / aspectW), (y * (settings[1] + settings[3])) / (64f / aspectH)
                 }));
             }
         }
@@ -79,6 +76,6 @@ public class SpriteSheet {
      * @return The sprite of identifier;
      */
     public Sprite getSprite(int identifier) {
-        return generatedSprites.toArray(new Sprite[0])[identifier];
+        return generatedSprites.get(identifier);
     }
 }

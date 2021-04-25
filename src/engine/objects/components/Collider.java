@@ -3,7 +3,7 @@ package engine.objects.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.objects.GameObject;
+import engine.objects.BehaviouralGameObject;
 import engine.objects.Component;
 import engine.maths.Mathl;
 import engine.maths.Vector;
@@ -30,7 +30,7 @@ public class Collider extends Component {
 	 * The constructor for colliders.
 	 * @param parent The parent that the component belongs to.
 	 */
-	public Collider(GameObject parent, Rigidbody rb, boolean isStatic, boolean isTrigger) {
+	public Collider(BehaviouralGameObject parent, Rigidbody rb, boolean isStatic, boolean isTrigger) {
 		init(parent);
 		this.isStatic = isStatic;
 		this.isTrigger = isTrigger;
@@ -71,7 +71,7 @@ public class Collider extends Component {
 								Math.abs(getSide(col, 1, -1) - getSide(this, 1, 1))
 						};
 
-						// Deletes the force of the direction that the collider is colidding with.
+						// Deletes the force of the direction that the collider is colliding with.
 						int indexLargest = Mathl.minI(margins);
 						if (indexLargest == 0) {
 							//To the left

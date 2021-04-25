@@ -1,19 +1,20 @@
 package main.scripts;
 
+import engine.objects.BehaviouralGameObject;
 import engine.objects.GameObject;
 import engine.Script;
 import engine.objects.components.*;
 import engine.maths.Vector;
 import main.Main;
 
-public class Platform extends GameObject {
+public class Platform extends BehaviouralGameObject {
 	
 	/**
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Platform(Vector position) {
-		super(Main.window, position, new Vector(4, 2), new Vector(1, 1, 1, 1), 1, "ground");
+		super(position, new Vector(0.5f, 0.5f), new Vector(1, 1, 1, 1), 1, "block");
 	}
 
 	/**

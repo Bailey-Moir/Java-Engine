@@ -1,5 +1,6 @@
 package main.scripts;
 
+import engine.objects.BehaviouralGameObject;
 import engine.objects.GameObject;
 import engine.Script;
 import engine.objects.components.*;
@@ -7,7 +8,7 @@ import engine.maths.Vector;
 import main.Main;
 import org.lwjgl.glfw.GLFW;
 
-public class GateCover extends GameObject {
+public class GateCover extends BehaviouralGameObject {
     private Collider col;
 
     /**
@@ -15,7 +16,7 @@ public class GateCover extends GameObject {
      * The only thing you should touch in here are the variables in super().
      */
     public GateCover(Vector position) {
-        super(Main.window, position, new Vector(1, 4), new Vector(1, 1, 1, 1), 0, "portal");
+        super(position, new Vector(1, 4), new Vector(1, 1, 1, 1), 0, "block");
     }
 
     /**

@@ -2,27 +2,26 @@ package main.scripts;
 
 import engine.Animation;
 import engine.Animation.*;
-import engine.Script;
 import engine.maths.Vector;
+import engine.objects.BehaviouralGameObject;
 import engine.objects.SpriteSheet;
 import org.lwjgl.glfw.GLFW;
-import engine.objects.GameObject;
 import engine.objects.components.*;
 import main.Main;
 
-public class Player extends GameObject {
+public class Player extends BehaviouralGameObject {
 	private Rigidbody rb;
 	private Collider col, gravCol;
 	private AnimationController animController;
 	
-	private Vector startPos;
+	private final Vector startPos;
 
 	/**
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(Main.window, Vector.square(0, 2), new Vector(1.25f, 2.5f), new Vector(1, 1, 1, 1), 2, "player");
+		super(startPos, new Vector(1, 2), new Vector(1, 1, 1, 1), 0, "player");
 		this.startPos = startPos;
 	}
  
@@ -34,6 +33,8 @@ public class Player extends GameObject {
 			10, 20,
 			1, 1
 		});
+		spriteRenderer.spriteSheet.aspectH = 2f;
+		spriteRenderer.spriteSheet.gen();
 
 		rb = new Rigidbody(this);
 		col = new Collider(this, rb, false, false);
