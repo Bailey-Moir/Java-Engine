@@ -1,5 +1,8 @@
 package engine.objects;
 
+import engine.graphics.Loader;
+import org.newdawn.slick.opengl.Texture;
+
 /**
  * Represents the a texture at a higher level.
  *
@@ -8,8 +11,7 @@ package engine.objects;
 
 @SuppressWarnings("unused")
 public class Sprite {
-    public String image;
-    public String name;
+    public Texture texture;
     public float[] texCords;
 
     /**
@@ -18,9 +20,8 @@ public class Sprite {
      * @param texCords The texture coordinates.
      */
     public Sprite(String image, float[] texCords) {
-        this.image = image;
+        this.texture = Loader.createTexture(image);
         this.texCords = texCords;
-        this.name = "";
     }
 
     /**
@@ -28,13 +29,12 @@ public class Sprite {
      * @param image The file path of the sprite's image, starting from the res folder.
      */
     public Sprite(String image) {
-        this.image = image;
+        this.texture = Loader.createTexture(image);
         this.texCords = new float[]{
                 0, 0, //V0
                 0, 1, //V1
                 1, 1, //V2
                 1, 0  //V3
         };
-        this.name = "";
     }
 }

@@ -106,7 +106,7 @@ public class Main implements Runnable {
 
 		layers.forEach(layer -> layer.forEach(sr -> {
 				RawModel model = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
-				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.image));
+				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.texture));
 				TexturedModel texturedModel = new TexturedModel(model, texture);
 
 				Renderer.render(texturedModel);
