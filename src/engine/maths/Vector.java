@@ -16,22 +16,20 @@ public class Vector {
 
     /**
      * The default constructor. Defines the members.
-     * @param a_dimensions The value of each dimensions.
+     * @param dimensions The value of each dimensions.
      */
-    public Vector(float[] a_dimensions) {
-        for (float dimension : a_dimensions) {
-            dimensions.add(dimension);
+    public Vector(float... dimensions) {
+        for (float dimension : dimensions) {
+            this.dimensions.add(dimension);
         }
     }
 
     /**
      * A constructor. For assigning non-reference objects.
-     * @param Vector The vector you are copying.
+     * @param vec The vector you are copying.
      */
     public Vector(Vector vec) {
-        for (float dimension : vec.dimensions) {
-            dimensions.add(dimension);
-        }
+        dimensions.addAll(vec.dimensions);
     }
 
     /**

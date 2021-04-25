@@ -36,7 +36,7 @@ public class Collider extends Component {
 		this.isTrigger = isTrigger;
 		this.rb = rb;
 		
-		offset = new Vector(new float[]{0, 0});
+		offset = new Vector(0, 0);
 		size = new Vector(parent.transform.size);
 		
 		allColliders.add(this);

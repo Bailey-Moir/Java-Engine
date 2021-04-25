@@ -259,7 +259,7 @@ public class Window {
 
 			mouseMove = new GLFWCursorPosCallback() {
 				public void invoke(long window, double x, double y) {
-					mousePos = new Vector(new float[]{(float) x - getWIDTH() / (float) 2, (float) y - getHEIGHT() / (float) 2});
+					mousePos = new Vector((float) x - getWIDTH() / (float) 2, (float) y - getHEIGHT() / (float) 2);
 				}
 			};
 
@@ -271,7 +271,7 @@ public class Window {
 
 			mouseScroll = new GLFWScrollCallback() {
 				public void invoke(long window, double offsetX, double offsetY) {
-					scroll = new Vector(new float[]{(float) offsetX, (float)offsetY});
+					scroll = new Vector((float) offsetX, (float) offsetY);
 				}
 			};
 		}
@@ -378,7 +378,7 @@ public class Window {
 		 * @return the position of the mouse relative to the window.
 		 */
 		public Vector getMousePos() {
-			return (mousePos ==  null ? new Vector(new float[]{0, 0}) : mousePos);
+			return (mousePos ==  null ? new Vector(0, 0) : mousePos);
 		}
 
 		/**
@@ -399,7 +399,7 @@ public class Window {
 		 * @return the scroll offset relative to that at window creation.
 		 */
 		public Vector getScroll() {
-			return (scroll ==  null ? new Vector(new float[]{0, 0}) : scroll);
+			return (scroll ==  null ? new Vector(0, 0) : scroll);
 		}
 
 		/**

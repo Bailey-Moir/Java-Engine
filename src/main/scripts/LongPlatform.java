@@ -14,7 +14,7 @@ public class LongPlatform extends GameObject {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public LongPlatform(Vector position) {
-		super(Main.window, position, new Vector(new float[]{8, 2}), new Vector(new float[]{1, 1, 1, 1}), 1, "long ground");
+		super(Main.window, position, new Vector(8, 2), new Vector(1, 1, 1, 1), 1, "long ground");
 	}
 
 	/**

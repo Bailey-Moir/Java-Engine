@@ -22,7 +22,7 @@ public class Player extends GameObject {
 	 * The only thing you should touch in here are the variables in super().
 	 */
 	public Player(Vector startPos) {
-		super(Main.window, Vector.square(0, 2), new Vector(new float[]{1.25f, 2.5f}), new Vector(new float[]{1, 1, 1, 1}), 2, "player");
+		super(Main.window, Vector.square(0, 2), new Vector(1.25f, 2.5f), new Vector(1, 1, 1, 1), 2, "player");
 		this.startPos = startPos;
 	}
  
@@ -44,8 +44,8 @@ public class Player extends GameObject {
 
 		rb.isGravity = true;
 
-		gravCol.offset = new Vector(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
-		gravCol.size = new Vector(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
+		gravCol.offset = new Vector(0, -transform.size.getAxis(1) * 0.9f / 2);
+		gravCol.size = new Vector(transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f);
 
 		animController.addAnim(1f,"run",this, true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(1), 0),
@@ -99,12 +99,12 @@ public class Player extends GameObject {
 		}
 
 		//Basic movement
-		rb.addForce(new Vector(new float[]{Main.window.input.getAxisRaw("Horizontal"), 0}).times(0.5f));
+		rb.addForce(new Vector(Main.window.input.getAxisRaw("Horizontal"), 0).times(0.5f));
 		//Jumping
 		if (gravCol.isColliding) {
 			animController.setParam("isFalling", false);
 			if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_W) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_UP) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-				rb.addForce(new Vector(new float[]{0, 10f}));
+				rb.addForce(new Vector(0, 10f));
 			}
 		} else {
 			animController.setParam("isFalling", rb.velocity.getAxis(1) < 0f);

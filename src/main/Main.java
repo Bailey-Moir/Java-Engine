@@ -35,7 +35,7 @@ public class Main implements Runnable {
 	
 	final int WIDTH = 2560, HEIGHT = 1440;
 	final String TITLE = "Engine";
-	Vector background = new Vector(new float[]{0.1f, 0.1f, 0.12f, 1.0f});
+	Vector background = new Vector(0.1f, 0.1f, 0.12f, 1.0f);
 
 	private void start() {
 		game = new Thread(this, "game");
@@ -49,13 +49,13 @@ public class Main implements Runnable {
 
 		shader = new StaticShader();
 
-		new Gate(new Vector(new float[]{9.5f, 1.5f}));
-		new GateCover(new Vector(new float[]{10f, 1.5f}));
-		new Color(new Vector(new float[]{10.75f, 1.5f}), new Vector(new float[]{2, 4}), new Vector(background), 1);
-		new Platform(new Vector(new float[]{-5.5f, -4f}));
-		new Platform(new Vector(new float[]{0, -2f}));
-		new LongPlatform(new Vector(new float[]{7.5f, -1.5f}));
-		new CameraController(new Player(new Vector(new float[]{0, 0.5f})), window);
+		new Gate(new Vector(9.5f, 1.5f));
+		new GateCover(new Vector(10f, 1.5f));
+		new Color(new Vector(10.75f, 1.5f), new Vector(2, 4), new Vector(background), 1);
+		new Platform(new Vector(-5.5f, -4f));
+		new Platform(new Vector(0, -2f));
+		new LongPlatform(new Vector(7.5f, -1.5f));
+		new CameraController(new Player(new Vector(0, 0.5f)), window);
 
 		for (Script script : GameObject.scripts) {
 			script.Start();
@@ -104,14 +104,14 @@ public class Main implements Runnable {
 			layers.get(sr.layer).add(sr);
 		});
 
-		layers.forEach(layer -> { layer.forEach(sr -> {
+		layers.forEach(layer -> layer.forEach(sr -> {
 				RawModel model = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
 				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.image));
 				TexturedModel texturedModel = new TexturedModel(model, texture);
 
 				Renderer.render(texturedModel);
-			});
-		});
+			})
+		);
 
 		shader.stop();
 

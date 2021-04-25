@@ -13,7 +13,7 @@ import engine.maths.Vector;
 public class Rigidbody extends Component {
 	public float gravityModifier = 0.5f;
 	
-	public Vector net = Vector.square(0, 2), velocity = new Vector(new float[]{0, 0});
+	public Vector net = Vector.square(0, 2), velocity = new Vector(0, 0);
 	public float mass = 1;
 	
 	public boolean isGravity = false;
@@ -34,7 +34,7 @@ public class Rigidbody extends Component {
 	@Override
 	public void update() {
 		if (isGravity) {
-			addForce(new Vector(new float[]{0, -gravityModifier*mass}));
+			addForce(new Vector(0, -gravityModifier*mass));
 		}
 
 		// TODO uncomment this.
