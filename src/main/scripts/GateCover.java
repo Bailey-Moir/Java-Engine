@@ -1,12 +1,9 @@
 package main.scripts;
 
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 import engine.objects.BehaviouralGameObject;
-import engine.objects.GameObject;
-import engine.Script;
 import engine.objects.components.*;
-import engine.maths.Vector;
-import main.Main;
-import org.lwjgl.glfw.GLFW;
 
 public class GateCover extends BehaviouralGameObject {
     private Collider col;
@@ -15,15 +12,15 @@ public class GateCover extends BehaviouralGameObject {
      * The constructor.
      * The only thing you should touch in here are the variables in super().
      */
-    public GateCover(Vector position) {
-        super(position, new Vector(1, 4), new Vector(1, 1, 1, 1), 0, "block");
+    public GateCover(Vector2 position) {
+        super(position, new Vector2(1, 4), new Vector4(1), 0, "block");
     }
 
     /**
      * Runs once when the window is created.
      */
     public void Start() {
-        spriteRenderer.sprite.texCords = new float[] {
+        spriteRenderer.sprite.texCoords = new float[] {
                 0.5f, 0,
                 0.5f, 1,
                 1, 1,
@@ -33,8 +30,8 @@ public class GateCover extends BehaviouralGameObject {
         Rigidbody rb = new Rigidbody(this);
         col = new Collider(this, rb, true, true);
 
-        col.size.setAxis(0, transform.size.getAxis(0) / 2);
-        col.offset.setAxis(0, col.offset.getAxis(0) + transform.size.getAxis(0) / 2);
+        col.size.x = transform.size.x / 2;
+        col.offset.x = col.offset.x + transform.size.x / 2;
     }
 
     public void Update() {

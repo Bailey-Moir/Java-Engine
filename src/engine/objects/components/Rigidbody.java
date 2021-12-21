@@ -1,7 +1,7 @@
 package engine.objects.components;
+import engine.maths.Vector2;
 import engine.objects.Component;
 import engine.objects.BehaviouralGameObject;
-import engine.maths.Vector;
 
 /**
  * Handles the physics of an object.
@@ -13,7 +13,7 @@ import engine.maths.Vector;
 public class Rigidbody extends Component {
 	public float gravityModifier = 0.5f;
 	
-	public Vector net = Vector.square(0, 2), velocity = new Vector(0, 0);
+	public Vector2 net = Vector2.zero(), velocity = Vector2.zero();
 	public float mass = 1;
 	
 	public boolean isGravity = false;
@@ -34,26 +34,26 @@ public class Rigidbody extends Component {
 	@Override
 	public void update() {
 		if (isGravity) {
-			addForce(new Vector(0, -gravityModifier*mass));
+			addForce(new Vector2(0, -gravityModifier*mass));
 		}
 
 		// TODO uncomment this.
-		velocity = net/*.times((float) object.spriteRenderer.getWindow().time.deltaTime)*/.times(0.075f).times(1/mass); //F = a
+		velocity = net/*.times((float) object.spriteRenderer.getWindow().time.deltaTime)*/._times(0.075f)._times(1/mass); //F = a
 		
-		parent.transform.position = parent.transform.position.plus(velocity);
-		net = net.times(0.8f); //Two is the modifier of friction. TODO Use delta time here
+		parent.transform.position = parent.transform.position._plus(velocity);
+		net = net._times(0.8f); //Two is the modifier of friction. TODO Use delta time here
 
 		limZero(net);
 		limZero(velocity);
 
 	}
 
-	private void limZero(Vector vec) {
-		if (vec.getAxis(0) <= 0.1 && vec.getAxis(0) >= -0.1) {
-			vec.setAxis(0, 0f);
+	private void limZero(Vector2 vec) {
+		if (Math.abs(vec.x) <= 0.1) {
+			vec.x = 0;
 		}
-		if (vec.getAxis(1) <= 0.1 && vec.getAxis(1) >= -0.1) {
-			vec.setAxis(1, 0f);
+		if (Math.abs(vec.y) <= 0.1) {
+			vec.y = 0;
 		}
 	}
 
@@ -61,7 +61,7 @@ public class Rigidbody extends Component {
 	 * Adds a force to the object.
 	 * @param force The force to add to the net force of the object.
 	 */
-	public void addForce(Vector force) {
-		net = net.plus(force);
+	public void addForce(Vector2 force) {
+		net = net._plus(force);
 	}
 }

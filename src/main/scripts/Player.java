@@ -2,7 +2,8 @@ package main.scripts;
 
 import engine.Animation;
 import engine.Animation.*;
-import engine.maths.Vector;
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 import engine.objects.BehaviouralGameObject;
 import engine.objects.SpriteSheet;
 import org.lwjgl.glfw.GLFW;
@@ -14,14 +15,14 @@ public class Player extends BehaviouralGameObject {
 	private Collider col, gravCol;
 	private AnimationController animController;
 	
-	private final Vector startPos;
+	private final Vector2 startPos;
 
 	/**
 	 * The constructor.
 	 * The only thing you should touch in here are the variables in super().
 	 */
-	public Player(Vector startPos) {
-		super(startPos, new Vector(1, 2), new Vector(1, 1, 1, 1), 0, "player");
+	public Player(Vector2 startPos) {
+		super(startPos, new Vector2(1, 2), new Vector4(1), 0, "player");
 		this.startPos = startPos;
 	}
  
@@ -33,7 +34,6 @@ public class Player extends BehaviouralGameObject {
 			10, 20,
 			1, 1
 		});
-		spriteRenderer.spriteSheet.aspectH = 2f;
 		spriteRenderer.spriteSheet.gen();
 
 		rb = new Rigidbody(this);
@@ -45,10 +45,10 @@ public class Player extends BehaviouralGameObject {
 
 		rb.isGravity = true;
 
-		gravCol.offset = new Vector(0, -transform.size.getAxis(1) * 0.9f / 2);
-		gravCol.size = new Vector(transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f);
+		gravCol.offset = new Vector2(0, -transform.size.y * 0.45f);
+		gravCol.size = new Vector2(transform.size.x, transform.size.y * 0.1f);
 
-		animController.addAnim(1f,"run",this, true, new Frame[] {
+		animController.addAnim(5f,"run",this, true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(1), 0),
 				new Frame(spriteRenderer.spriteSheet.getSprite(0), 200),
 				new Frame(spriteRenderer.spriteSheet.getSprite(2), 400),
@@ -77,42 +77,42 @@ public class Player extends BehaviouralGameObject {
 
 		//Teleporting to spawn
 		if (Main.window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
-			rb.net.set(new float[]{0, 0});
+			rb.net.set(0, 0);
 			transform.position = startPos;
 		}
 		//Crouching
 		if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL)) {
-			if (transform.size.getAxis(1) == 2.5f) {
-				transform.size.setAxis(1, 1.25f);
-				col.size.setAxis(1, 1.25f);
-				gravCol.size.set(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
-				gravCol.offset.set(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
-				transform.position.setAxis(1, transform.position.getAxis(1) - 0.625f);
+			if (transform.size.y == 2.5f) {
+				transform.size.y = 1.25f;
+				col.size.y = 1.25f;
+				gravCol.size.set(transform.size.x, transform.size.y * 0.1f);
+				gravCol.offset.set(0, -transform.size.y * 0.9f / 2);
+				transform.position.y -= 0.625f;
 			}
 		} else {
-			if (transform.size.getAxis(1) == 1.25f) {
-				transform.size.setAxis(1, 2.5f);
-				col.size.setAxis(1, 2.5f);
-				gravCol.size.set(new float[]{transform.size.getAxis(0), transform.size.getAxis(1) * 0.1f});
-				gravCol.offset.set(new float[]{0, -transform.size.getAxis(1) * 0.9f / 2});
-				transform.position.setAxis(1, transform.position.getAxis(1) + 0.625f);
+			if (transform.size.y == 1.25f) {
+				transform.size.y = 2.5f;
+				col.size.y = 2.5f;
+				gravCol.size.set(transform.size.x, transform.size.y * 0.1f);
+				gravCol.offset.set(0, -transform.size.y * 0.9f / 2);
+				transform.position.y += 0.625f;
 			}
 		}
 
 		//Basic movement
-		rb.addForce(new Vector(Main.window.input.getAxisRaw("Horizontal"), 0).times(0.5f));
+		rb.addForce(new Vector2(Main.window.input.getAxisRaw("Horizontal"), 0)._times(0.5f));
 		//Jumping
 		if (gravCol.isColliding) {
 			animController.setParam("isFalling", false);
 			if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_W) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_UP) || Main.window.input.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-				rb.addForce(new Vector(0, 10f));
+				rb.addForce(new Vector2(0, 10f));
 			}
 		} else {
-			animController.setParam("isFalling", rb.velocity.getAxis(1) < 0f);
+			animController.setParam("isFalling", rb.velocity.y < 0f);
 		}
 
 		//Animation
-		animController.setParam("isRunning", rb.velocity.getAxis(0) > 0.01f || rb.velocity.getAxis(0) < -0.01f);
+		animController.setParam("isRunning", rb.velocity.x > 0.01f || rb.velocity.x < -0.01f);
 		if (Main.window.input.getAxisRaw("Horizontal") < 0) {
 			spriteRenderer.flipX = true;
 		} else if (Main.window.input.getAxisRaw("Horizontal") > 0) {

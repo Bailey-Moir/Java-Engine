@@ -36,7 +36,6 @@ public class Animation {
 
     public List<Frame> frames = new ArrayList<>();
 
-    public float multiplier;
     public boolean loop;
     public String name;
     private final GameObject object;
@@ -52,13 +51,16 @@ public class Animation {
      * @param frames The list of frames in the animation.
      */
     public Animation(float speed, String name, GameObject object, boolean loop, Frame[] frames) {
-        this.multiplier = speed;
         this.name = name;
         this.object = object;
         this.loop = loop;
         this.status = Status.STOPPED;
 
-        Collections.addAll(this.frames, frames);
+        this.frames.addAll(List.of(frames));
+
+        this.frames.forEach(frame -> {
+            frame.time /= speed;
+        });
     }
 
     /**

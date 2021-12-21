@@ -3,11 +3,10 @@ package main;
 import engine.GlobalStorage;
 import engine.Script;
 import engine.graphics.Loader;
-import engine.graphics.models.RawModel;
-import engine.graphics.models.TexturedModel;
+import engine.graphics.TexturedModel;
 import engine.graphics.shaders.StaticShader;
-import engine.graphics.textures.ModelTexture;
-import engine.maths.Vector;
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 import org.lwjgl.glfw.GLFW;
 
 import engine.objects.GameObject;
@@ -34,9 +33,9 @@ public class Main implements Runnable {
 
 	StaticShader shader;
 	
-	final int WIDTH = 2560, HEIGHT = 1440;
-	final String TITLE = "Engine";
-	Vector background = new Vector(0.1f, 0.1f, 0.12f, 1.0f);
+	final int WIDTH = 2000, HEIGHT = 1500;
+	final String TITLE = "Debugging";
+	Vector4 background = new Vector4(0.1f, 0.1f, 0.12f, 1.0f);
 
 	private void start() {
 		game = new Thread(this, "game");
@@ -52,9 +51,9 @@ public class Main implements Runnable {
 		shader = new StaticShader();
 
 		//new GateCover(new Vector(10f, 1.5f));
-		new Platform(new Vector(0, -2));
-		new CameraController(new Player(new Vector(0, 0.5f)), window);
-		new Map();
+		new Platform(new Vector2(0, -2));
+		new CameraController(new Player(new Vector2(0, 0.5f)), window);
+		//new Map();
 
 		for (Script script : GlobalStorage.scripts) {
 			script.Start();
@@ -104,9 +103,9 @@ public class Main implements Runnable {
 		});
 
 		layers.forEach(layer -> layer.forEach(sr -> {
-				RawModel model = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
-				ModelTexture texture = new ModelTexture(Loader.loadTexture(sr.sprite.texture));
-				TexturedModel texturedModel = new TexturedModel(model, texture);
+				int vaoID = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
+				int textureID = Loader.loadTexture(sr.sprite.image);
+				TexturedModel texturedModel = new TexturedModel(textureID, vaoID, indices.length);
 
 				Renderer.render(texturedModel);
 			})

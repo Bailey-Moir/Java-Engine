@@ -18,7 +18,7 @@ public class Mathl {
     public static float maxVX(float[] list) {
         float highest = 0;
         for (float item : list) {
-            if (item * item > highest * highest) {
+            if (Math.abs(item) > Math.abs(highest)) {
                 highest = item;
             }
         }
@@ -32,7 +32,7 @@ public class Mathl {
     public static double maxVX(double[] list) {
         double highest = 0;
         for (double item : list) {
-            if (item * item > highest * highest) {
+            if (Math.abs(item) > Math.abs(highest)) {
                 highest = item;
             }
         }
@@ -75,7 +75,7 @@ public class Mathl {
     public static int maxIX(float[] list) {
         int lowest = 0;
         for (int i = 0; i < list.length; i++) {
-            if (list[i] * list[i] > list[lowest] * list[lowest]) {
+            if (Math.abs(list[i] ) > Math.abs(list[lowest])) {
                 lowest = i;
             }
         }

@@ -1,6 +1,6 @@
 package engine.objects;
 
-import engine.maths.Vector;
+import engine.maths.Vector2;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 public abstract class TileMap {
-    public Vector scale;
+    public Vector2 scale;
     public Set<Tile> tiles = new HashSet<>();
     private final int layer;
     private final SpriteSheet spriteSheet;
@@ -30,7 +30,7 @@ public abstract class TileMap {
      * @param marginh The height in pixels of the margin between each sprite in the sprite sheet.
      */
     public TileMap(int width, int height, int layer, String sheet, int cellw, int cellh, int marginw, int marginh) {
-        this.scale = new Vector(width, height);
+        this.scale = new Vector2(width, height);
         this.layer = layer;
         spriteSheet = new SpriteSheet(sheet, cellw, cellh, marginw, marginh);
         spriteSheet.gen();
@@ -41,7 +41,7 @@ public abstract class TileMap {
      * @param cellPosition The cell that tile will be in.
      * @param id The identifier that the tile is sprite in the spriteSheet is based on. You can get this by counting left to right and top to bottom across the sprites in the spriteSheet.
      */
-    public void addTile(Vector cellPosition, int id) {
+    public void addTile(Vector2 cellPosition, int id) {
         tiles.add(new Tile(cellPosition, scale, layer,spriteSheet.getSprite(id)));
     }
 

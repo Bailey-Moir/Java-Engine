@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import engine.GlobalStorage;
 import engine.Script;
-import engine.io.Window;
-import engine.maths.Vector;
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 
 /**
  * Represents an advanced with potential for scripts and components game object.
@@ -24,14 +24,14 @@ public abstract class BehaviouralGameObject extends GameObject implements Script
 	 * @param size The starting size of the game object.
 	 * @param image The image to be displayed on the game object.
 	 */
-	public BehaviouralGameObject(Vector position, Vector size, Vector color, int layer, String image) {
+	public BehaviouralGameObject(Vector2 position, Vector2 size, Vector4 color, int layer, String image) {
 		super(position, size, color, layer, image);
 
 		GlobalStorage.scripts.add(this);
 	}
 
 	/**
-	 * Updates all of the components of the object.
+	 * Updates all the components of the object.
 	 */
 	public void updateComponents() {
 		components.forEach(Component::update);

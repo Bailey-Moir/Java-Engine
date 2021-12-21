@@ -3,13 +3,13 @@ package engine.objects.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.maths.Vector2;
 import engine.objects.BehaviouralGameObject;
 import engine.objects.Component;
 import engine.maths.Mathl;
-import engine.maths.Vector;
 
 /**
- * The collider of an parent.
+ * The collider of a parent.
  * 
  * @author Bailey
  */
@@ -21,7 +21,7 @@ public class Collider extends Component {
 	private static final List<Collider> allColliders = new ArrayList<>();
 
 	public List<Collider> collidingWith = new ArrayList<>();
-	public Vector offset, size;
+	public Vector2 offset, size;
 	
 	public final boolean isStatic;
 	public boolean isColliding = false, isTrigger;
@@ -36,8 +36,8 @@ public class Collider extends Component {
 		this.isTrigger = isTrigger;
 		this.rb = rb;
 		
-		offset = new Vector(0, 0);
-		size = new Vector(parent.transform.size);
+		offset = Vector2.zero();
+		size = new Vector2(parent.transform.size);
 		
 		allColliders.add(this);
 	}
@@ -52,7 +52,7 @@ public class Collider extends Component {
 		for (Collider col : allColliders) {
 			if (col.parent == this.parent) continue;
 			if (willIntercept(col)) {
-				//If is going to intercept and the other collider isn't a trigger, it registers.
+				//If it is going to intercept and the other collider isn't a trigger, it registers.
 				if (!col.isTrigger) {
 					isIntercepting = true;
 					collidingWith.add(col);
@@ -62,33 +62,54 @@ public class Collider extends Component {
 						//E.g. the bounds
 						double[] margins = {
 								//rightMargin
-								Math.abs(getSide(col, 0, -1) - getSide(this, 0, 1)),
+								Math.abs(getSide(col, false, -1) - getSide(this, false, 1)),
 								//leftMargin
-								Math.abs(getSide(this, 0, -1) - getSide(col, 0, 1)),
+								Math.abs(getSide(this, false, -1) - getSide(col, false, 1)),
 								//bottomMargin
-								Math.abs(getSide(this, 1, -1) - getSide(col, 1, 1)),
+								Math.abs(getSide(this, true, -1) - getSide(col, true, 1)),
 								//topMargin
-								Math.abs(getSide(col, 1, -1) - getSide(this, 1, 1))
+								Math.abs(getSide(col, true, -1) - getSide(this, true, 1))
 						};
 
 						// Deletes the force of the direction that the collider is colliding with.
 						int indexLargest = Mathl.minI(margins);
+						switch (Mathl.minI(margins)) {
+							case 0:
+								//To the left
+								if (rb.net.x > 0) rb.net.x = 0;
+								parent.transform.position.x = col.parent.transform.position.x + col.offset.x - col.size.x / 2 - size.x / 2 + offset.x;
+								break;
+							case 1:
+								//To the right
+								if (rb.net.x < 0) rb.net.x = 0;
+								parent.transform.position.x = col.parent.transform.position.x + col.offset.x + col.size.x / 2 + size.x / 2 + offset.x;
+								break;
+							case 2:
+								//Above
+								if (rb.net.y < 0) rb.net.y = 0;
+								parent.transform.position.y = col.parent.transform.position.y + col.offset.y + col.size.y / 2 + size.y / 2 + offset.y;
+
+								break;
+							case 3:
+
+								break;
+						}
 						if (indexLargest == 0) {
 							//To the left
-							if (rb.net.getAxis(0) > 0) rb.net.setAxis(0, 0);
-							parent.transform.position.setAxis(0, col.parent.transform.position.getAxis(0) + col.offset.getAxis(0) - col.size.getAxis(0) / 2 - size.getAxis(0) / 2 + offset.getAxis(0));
+							if (rb.net.x > 0) rb.net.x = 0;
+							parent.transform.position.x = col.parent.transform.position.x + col.offset.x - col.size.x / 2 - size.x / 2 + offset.x;
 						} else if (indexLargest == 1) {
 							//To the right
-							if (rb.net.getAxis(0) < 0) rb.net.setAxis(0, 0);
-							parent.transform.position.setAxis(0, col.parent.transform.position.getAxis(0) + col.offset.getAxis(0) + col.size.getAxis(0) / 2 + size.getAxis(0) / 2 + offset.getAxis(0));
+							if (rb.net.x < 0) rb.net.x = 0;
+							parent.transform.position.x = col.parent.transform.position.x + col.offset.x + col.size.x / 2 + size.x / 2 + offset.x;
 						} else if (indexLargest == 2) {
 							//Above
-							if (rb.net.getAxis(1) < 0) rb.net.setAxis(1, 0);
-							parent.transform.position.setAxis(1, col.parent.transform.position.getAxis(1) + col.offset.getAxis(1) + col.size.getAxis(1) / 2 + size.getAxis(1) / 2 + offset.getAxis(1));
+							if (rb.net.y < 0) rb.net.y = 0;
+							parent.transform.position.y = col.parent.transform.position.y + col.offset.y + col.size.y / 2 + size.y / 2 + offset.y;
 						} else if (indexLargest == 3) {
 							//Below
-							if (rb.net.getAxis(1) > 0) rb.net.setAxis(1, 0);
-							parent.transform.position.setAxis(1, col.parent.transform.position.getAxis(1) + col.offset.getAxis(1) - col.size.getAxis(1) / 2 - size.getAxis(1) / 2 + offset.getAxis(1));
+							if (rb.net.y > 0) rb.net.y = 0;
+							parent.transform.position.y = col.parent.transform.position.y + col.offset.y - col.size.y / 2 - size.y / 2 + offset.y;
 						}
 					}
 				}
@@ -98,13 +119,16 @@ public class Collider extends Component {
 	}
 
 	private boolean willIntercept(Collider col) {
-		return !((parent.transform.position.getAxis(0) + rb.velocity.getAxis(0) / 100 + offset.getAxis(0) + size.getAxis(0) / 2 < col.parent.transform.position.getAxis(0) + col.offset.getAxis(0) - col.size.getAxis(0) / 2
-				|| parent.transform.position.getAxis(0) + rb.velocity.getAxis(0) / 100 + offset.getAxis(0) - size.getAxis(0) / 2 > col.parent.transform.position.getAxis(0) + col.offset.getAxis(0) + col.size.getAxis(0) / 2)
-				|| (parent.transform.position.getAxis(1) + rb.velocity.getAxis(1) / 100 + offset.getAxis(1) + size.getAxis(1) / 2 < col.parent.transform.position.getAxis(1) + col.offset.getAxis(1) - col.size.getAxis(1) / 2
-				|| parent.transform.position.getAxis(1) + rb.velocity.getAxis(1) / 100 + offset.getAxis(1) - size.getAxis(1) / 2 > col.parent.transform.position.getAxis(1) + col.offset.getAxis(1) + col.size.getAxis(1) / 2));
+		return !((parent.transform.position.x + rb.velocity.x / 100 + offset.x + size.x / 2 < col.parent.transform.position.x + col.offset.x - col.size.x / 2
+				|| parent.transform.position.x + rb.velocity.x / 100 + offset.x - size.x / 2 > col.parent.transform.position.x + col.offset.x + col.size.x / 2)
+				|| (parent.transform.position.y + rb.velocity.y / 100 + offset.y + size.y / 2 < col.parent.transform.position.y + col.offset.y - col.size.y / 2
+				|| parent.transform.position.y + rb.velocity.y / 100 + offset.y - size.y / 2 > col.parent.transform.position.y + col.offset.y + col.size.y / 2));
 	}
 
-	private double getSide(Collider col, int axis, int side) {
-		return col.parent.transform.position.getAxis(axis) + col.offset.getAxis(axis) + side * col.size.getAxis(axis) / 2;
+	private double getSide(Collider col, boolean vertical, int side) {
+		return vertical ?
+				col.parent.transform.position.y + col.offset.y + side * col.size.y / 2
+			:
+				col.parent.transform.position.x + col.offset.x + side * col.size.x / 2;
 	}
 }

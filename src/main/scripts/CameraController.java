@@ -5,10 +5,8 @@ import engine.GlobalStorage;
 import engine.Script;
 import engine.graphics.Renderer;
 import engine.io.Window;
-import engine.maths.Vector;
+import engine.maths.Vector2;
 import org.lwjgl.glfw.GLFW;
-
-import static java.lang.Math.abs;
 
 /**
  * Controls the Camera
@@ -20,7 +18,7 @@ public class CameraController extends Camera implements Script {
     private final Player player;
 
     public CameraController(Player player, Window window) {
-        super(new Vector(0, 0), 1.5f, window);
+        super(Vector2.zero(), 1.5f, window);
         GlobalStorage.scripts.add(this);
         this.player = player;
     }
@@ -32,11 +30,11 @@ public class CameraController extends Camera implements Script {
 
     public void Update() {
         if (window.input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
-            position = Vector.square(0, 2);
+            position = Vector2.zero();
         }
 
         //camPos = camPos + (plyPos - camPos) * modifier
-        position = position.plus(player.transform.position.minus(position).times(1f / 10f)); //10 is moveSpeed
+        position = position._plus(player.transform.position._minus(position)._times(1f / 10f)); //10 is moveSpeed
         //scale = 3f - abs(position.minus(player.transform.position).largest() / 4);
     }
 }

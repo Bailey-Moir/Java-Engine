@@ -30,21 +30,11 @@ public class AnimationController extends Component {
             this.value = false;
         }
     }
+
     /**
      * Represents a transition.
      */
-    public static class Transition {
-        public final Animation state1, state2;
-        public final Parameter[] params;
-        public final boolean[] values;
-
-        public Transition(Animation state1, Animation state2, Parameter[] params, boolean[] values) {
-            this.state1 = state1;
-            this.state2 = state2;
-            this.params = params;
-            this.values = values;
-        }
-    }
+    public record Transition(Animation state1, Animation state2, Parameter[] params, boolean[] values) {}
 
     private final List<Parameter> parameters = new ArrayList<>();
     private final List<Transition> transitions = new ArrayList<>();
@@ -98,7 +88,7 @@ public class AnimationController extends Component {
      * Adds an animation to the controller.
      * @param speed The speed that the animation plays at, default 1.
      * @param name The name to reference the animation by.
-     * @param object The objeect that the animation acts on.
+     * @param object The object that the animation acts on.
      * @param frames The list of frames in the animation.
      */
     public void addAnim(float speed, String name, BehaviouralGameObject object, boolean loop, Animation.Frame[] frames) {

@@ -3,6 +3,7 @@ package engine.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 /**
  * Utilities to navigate the file system.
@@ -19,7 +20,14 @@ public class FileUtils {
 	 */
 	public static String loadAsString(String path) {
 		StringBuilder result = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(Class.class.getResourceAsStream(path)))) { //Makes a reader for a the resources, from inputted file.
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(
+						Objects.requireNonNull(
+								Class.class.getResourceAsStream(path)
+						)
+				)
+			)
+		) { // Makes a reader for the resources, from inputted file.
 			String line;
 			while ((line = reader.readLine()) != null) {
 				result.append(line).append("\n");

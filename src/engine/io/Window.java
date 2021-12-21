@@ -1,6 +1,7 @@
 package engine.io;
 
-import engine.maths.Vector;
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
@@ -89,7 +90,6 @@ public class Window {
 			public void invoke(long window, int w, int h) {
 				WIDTH = w;
 				HEIGHT = h;
-				
 				isResized = true;
 			}			
 		};
@@ -105,10 +105,10 @@ public class Window {
 	 * Sets the window color.
 	 * @param color The color to set the window to.
 	 */
-	public void setBackgroundColour(Vector color) {
-		bgR = color.getAxis(0);
-		bgG = color.getAxis(1);
-		bgB = color.getAxis(2);
+	public void setBackgroundColour(Vector4 color) {
+		bgR = color.x;
+		bgG = color.y;
+		bgB = color.z;
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class Window {
 	//Getters and Setters
 	
 	/**
-	 * @return Whether or not the window is full screened.
+	 * @return Whether the window is full screened.
 	 */
 	public boolean isFullscreen() {
 		return isFullscreen;
@@ -237,8 +237,8 @@ public class Window {
 
 		private final int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
 		private final int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
-		private Vector mousePos;
-		private Vector scroll;
+		private Vector2 mousePos;
+		private Vector2 scroll;
 
 		private final ArrayList<Axis> axes = new ArrayList<>();
 
@@ -259,7 +259,7 @@ public class Window {
 
 			mouseMove = new GLFWCursorPosCallback() {
 				public void invoke(long window, double x, double y) {
-					mousePos = new Vector((float) x - getWIDTH() / (float) 2, (float) y - getHEIGHT() / (float) 2);
+					mousePos = new Vector2((float) x - getWIDTH() / (float) 2, (float) y - getHEIGHT() / (float) 2);
 				}
 			};
 
@@ -271,7 +271,7 @@ public class Window {
 
 			mouseScroll = new GLFWScrollCallback() {
 				public void invoke(long window, double offsetX, double offsetY) {
-					scroll = new Vector((float) offsetX, (float) offsetY);
+					scroll = new Vector2((float) offsetX, (float) offsetY);
 				}
 			};
 		}
@@ -287,7 +287,7 @@ public class Window {
 		}
 
 		/**
-		 * Returns whether or not the specified key is down.
+		 * Returns whether the specified key is down.
 		 * @param key The integer of the key you are checking. E.g. 65, or more likely GLFW.GLFW_KEY_A.
 		 * @return If the key is being held down or not.
 		 */
@@ -296,7 +296,7 @@ public class Window {
 		}
 
 		/**
-		 * Returns whether or not the specified key was just pressed.
+		 * Returns whether the specified key was just pressed.
 		 * @param key The integer of the key you are checking. E.g. 65, or more likely GLFW.GLFW_KEY_A.
 		 * @return If the key was just pressed or not.
 		 */
@@ -305,7 +305,7 @@ public class Window {
 		}
 
 		/**
-		 * Returns whether or not the specified mouse button is down.
+		 * Returns whether the specified mouse button is down.
 		 * @param button The integer of the button you are checking. E.g. 1, or more likely GLFW.GLFW_MOUES_BUTTON_LEFT
 		 * @return If the button is being held down or not.
 		 */
@@ -319,7 +319,7 @@ public class Window {
 		}
 
 		/**
-		 * Returns whether or not the specified button was just pressed.
+		 * Returns whether the specified button was just pressed.
 		 * @param button The integer of the button you are checking. E.g. 1, or more likely GLFW.GLFW_MOUES_BUTTON_LEFT
 		 * @return If the button was just pressed or not.
 		 */
@@ -377,29 +377,29 @@ public class Window {
 		/**
 		 * @return the position of the mouse relative to the window.
 		 */
-		public Vector getMousePos() {
-			return (mousePos ==  null ? new Vector(0, 0) : mousePos);
+		public Vector2 getMousePos() {
+			return (mousePos ==  null ? Vector2.zero() : mousePos);
 		}
 
 		/**
 		 * @return the position of the mouse relative to the window.
 		 */
 		public float getMouseX() {
-			return (mousePos == null ? 0f : mousePos.getAxis(0));
+			return (mousePos == null ? 0f : mousePos.x);
 		}
 
 		/**
 		 * @return the position of the mouse relative to the window.
 		 */
 		public float getMouseY() {
-			return (mousePos == null ? 0f : mousePos.getAxis(1));
+			return (mousePos == null ? 0f : mousePos.y);
 		}
 
 		/**
 		 * @return the scroll offset relative to that at window creation.
 		 */
-		public Vector getScroll() {
-			return (scroll ==  null ? new Vector(0, 0) : scroll);
+		public Vector2 getScroll() {
+			return (scroll ==  null ? Vector2.zero() : scroll);
 		}
 
 		/**
@@ -439,7 +439,7 @@ public class Window {
 	 * Manages time.
 	 */
 	@SuppressWarnings("unused")
-	public class Time {
+	static public class Time {
 		public double deltaTime, deltaTimeSec;
 
 		private long last_time, last_time_sec;
@@ -454,7 +454,7 @@ public class Window {
 		public void update() {
 			long timeSec = System.currentTimeMillis() * 1000;
 			long time = System.nanoTime();
-			deltaTime = ((timeSec - last_time_sec) / (float) 1000000);
+			deltaTimeSec = ((timeSec - last_time_sec) / (float) 1000000);
 			deltaTime = ((time - last_time) / (float) 1000000);
 
 

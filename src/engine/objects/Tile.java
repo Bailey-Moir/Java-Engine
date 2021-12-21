@@ -1,7 +1,7 @@
 package engine.objects;
 
-import engine.maths.Vector;
-import org.newdawn.slick.opengl.Texture;
+import engine.maths.Vector2;
+import engine.maths.Vector4;
 
 /**
  * The preset for a tile.
@@ -10,7 +10,7 @@ import org.newdawn.slick.opengl.Texture;
  */
 
 @SuppressWarnings("unused")
-public class Tile extends GameObject{
+public class Tile extends GameObject {
     /**
      * The constructor for the Tile game object.
      * @param cellPosition The cell that tile will be in.
@@ -18,8 +18,8 @@ public class Tile extends GameObject{
      * @param layer The layer that the tile will be on.
      * @param sprite The sprite of the tile. This is derived from the TileMap class that calls this constructor.
      */
-    protected Tile(Vector cellPosition, Vector scale, int layer, Sprite sprite) {
-        super(cellPosition.times(scale), scale, new Vector(1, 1, 1, 1), layer, "block");
+    protected Tile(Vector2 cellPosition, Vector2 scale, int layer, Sprite sprite) {
+        super(cellPosition._times(scale), scale, new Vector4(1, 1, 1, 1), layer, "block");
         this.spriteRenderer.sprite = sprite;
     }
 }
