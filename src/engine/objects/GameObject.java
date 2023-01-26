@@ -1,6 +1,8 @@
 package engine.objects;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL30;
 
@@ -19,10 +21,12 @@ import engine.maths.Vector4;
  */
 
 @SuppressWarnings("unused")
-public abstract class GameObject {	
+public abstract class GameObject {
+	static public List<GameObject> all = new ArrayList<>();
+	
     public Transform transform;
     public SpriteRenderer spriteRenderer;
-
+    
     /**
      * Constructor.
      * @param position The starting position of the game object.
@@ -35,6 +39,8 @@ public abstract class GameObject {
 
         this.transform.position = position;
         this.transform.size = size;
+        
+        all.add(this);
     }
 
     /**
@@ -95,18 +101,24 @@ public abstract class GameObject {
             this.layer = layer;
             
             VAO = GL30.glGenVertexArrays(); //Creates an empty VAO.
-            Loader.VAOs.add(VAO);
             
             verticesVBO = GL30.glGenBuffers();
             textureCoordsVBO = GL30.glGenBuffers();
             colorVBO = GL30.glGenBuffers();
             indicesVBO = GL30.glGenBuffers();
-            Loader.VBOs.add(verticesVBO);
-            Loader.VBOs.add(textureCoordsVBO);
-            Loader.VBOs.add(colorVBO);
-            Loader.VBOs.add(indicesVBO);
             
             GlobalStorage.spriteRenders.add(this);
+        }
+        
+        /**
+         * Should be called when the GameObject is effectively destructed.
+         */
+        public void cleanUp() {
+        	GL30.glDeleteBuffers(verticesVBO);
+        	GL30.glDeleteBuffers(textureCoordsVBO);
+        	GL30.glDeleteBuffers(colorVBO);
+        	GL30.glDeleteBuffers(indicesVBO);
+            GL30.glDeleteVertexArrays(VAO);
         }
         
         /**

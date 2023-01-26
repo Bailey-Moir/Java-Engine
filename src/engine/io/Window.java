@@ -153,7 +153,7 @@ public class Window {
 	/**
 	 * Destroys the window
 	 */
-	public void destroy() {
+	public void cleanUp() {
 		input.destroy();
 		sizeCallback.free();
 		GLFW.glfwDestroyWindow(window);

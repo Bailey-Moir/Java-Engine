@@ -23,9 +23,6 @@ import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
 
 @SuppressWarnings("unused")
 public class Loader {
-    public static final List<Integer> VAOs = new ArrayList<>();
-    public static final List<Integer> VBOs = new ArrayList<>();
-
     /**
      * Creates an id for a texture.
      * @param image The location of the image.
@@ -54,18 +51,6 @@ public class Loader {
     }
 
     /**
-     * Deletes all the VAOs and VBOs from memory
-     */
-    static public void clear() {
-        for (int vao : VAOs) {
-            GL30.glDeleteVertexArrays(vao);
-        }
-        for (int VBO : VBOs) {
-            GL30.glDeleteBuffers(VBO);
-        }
-    }
-
-    /**
      * Stores data in one of the attribute lists of the VAO.
      * @param index The index of the attribute.
      * @param coordinateSize The vector size.
@@ -76,13 +61,6 @@ public class Loader {
         GL30.glBufferData(GL30.GL_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
 
         GL30.glVertexAttribPointer(index, coordinateSize, GL30.GL_FLOAT , false, 0, 0);
-    }
-    
-    /**
-     * Unbinds the VAO.
-     */
-    static private void unbindVAO() {
-        GL30.glBindVertexArray(0);
     }
 
     /**

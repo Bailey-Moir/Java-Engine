@@ -14,6 +14,7 @@ import engine.maths.Vector2;
 import engine.maths.Vector4;
 import engine.objects.GameObject;
 import main.scripts.CameraController;
+import main.scripts.Map;
 import main.scripts.Platform;
 import main.scripts.Player;
 
@@ -44,7 +45,6 @@ public class Main implements Runnable {
 	
 	private void init() {
 		window = new Window(WIDTH, HEIGHT, TITLE);
-		GlobalStorage.CurrentWindow = window;
 		window.setBackgroundColour(background);
 		window.init();
 
@@ -55,9 +55,7 @@ public class Main implements Runnable {
 		new CameraController(new Player(new Vector2(0, 0.5f)), window);
 		//new Map();
 
-		for (Script script : GlobalStorage.scripts) {
-			script.Start();
-		}
+		for (Script script : GlobalStorage.scripts) script.Start();
 
 		lastFPS = window.time.getTime();
 	}
@@ -110,9 +108,9 @@ public class Main implements Runnable {
 	}
 	
 	private void close() {
-		window.destroy();
-		Loader.clear();
-		shader.cleanUp();
+		shader.cleanUp();		
+		for (GameObject obj : GameObject.all) obj.spriteRenderer.cleanUp();
+		window.cleanUp();
 	}
 	
 	public static void main(String[] args) {
