@@ -23,24 +23,8 @@ import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
 
 @SuppressWarnings("unused")
 public class Loader {
-    static private final List<Integer> VAOs = new ArrayList<>();
-    static private final List<Integer> VBOs = new ArrayList<>();
-
-    /**
-     * Takes in position of the model's vertices, loads that data into a vao, and returns info about the vao as a raw model object.
-     * @param positions The positions of each vertex.
-     * @param indices The order at which to connect the vertices.
-     * @return The information about the model.
-     */
-    static public int loadToVAO(float[] positions, float[] textureCords, float[] colors, int[] indices) {
-        int vaoID = createVAO();
-        bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, 3, positions);
-        storeDataInAttributeList(1, 2, textureCords);
-        storeDataInAttributeList(2, 4, colors);
-        unbindVAO();
-        return vaoID;
-    }
+    public static final List<Integer> VAOs = new ArrayList<>();
+    public static final List<Integer> VBOs = new ArrayList<>();
 
     /**
      * Creates an id for a texture.
@@ -82,33 +66,16 @@ public class Loader {
     }
 
     /**
-     * Creates a vao and returns the id of said vao, as well as binding the vao.
-     *
-     * @return The ID of the vao.
-     */
-    static private int createVAO() {
-        int vaoID = GL30.glGenVertexArrays(); //Creates an empty VAO.
-        VAOs.add(vaoID);
-        GL30.glBindVertexArray(vaoID);
-        return vaoID;
-    }
-
-    /**
      * Stores data in one of the attribute lists of the VAO.
      * @param index The index of the attribute.
      * @param coordinateSize The vector size.
-     * @param data  the data to store in the vao.
+     * @param data  The data to store in the vao.
      */
-    static private void storeDataInAttributeList(int index, int coordinateSize, float[] data) {
-        int VBOid = GL30.glGenBuffers();
-        VBOs.add(VBOid);
-        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, VBOid);
+    static public void storeDataInAttributeList(int index, int coordinateSize, float[] data) {        
         FloatBuffer buffer = storeDataInFloatBuffer(data);
         GL30.glBufferData(GL30.GL_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
 
         GL30.glVertexAttribPointer(index, coordinateSize, GL30.GL_FLOAT , false, 0, 0);
-
-        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
     }
     
     /**
@@ -116,17 +83,6 @@ public class Loader {
      */
     static private void unbindVAO() {
         GL30.glBindVertexArray(0);
-    }
-
-    /**
-     * Binds indices buffer to the VAO.
-     */
-    static private void bindIndicesBuffer(int[] indices) {
-        int VBOid = GL30.glGenBuffers();
-        VBOs.add(VBOid);
-        GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, VBOid);
-        IntBuffer buffer = storeDataInIntBuffer(indices);
-        GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
     }
 
     /**
@@ -147,7 +103,7 @@ public class Loader {
      * @param data The data to store.
      * @return The buffer with the data in it.
      */
-    static private IntBuffer storeDataInIntBuffer(int[] data) {
+    public static IntBuffer storeDataInIntBuffer(int[] data) {
         IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
         buffer.flip(); //Swaps from writing mode to reading mode.

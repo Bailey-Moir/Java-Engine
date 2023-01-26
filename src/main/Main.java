@@ -1,21 +1,21 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.glfw.GLFW;
+
 import engine.GlobalStorage;
 import engine.Script;
 import engine.graphics.Loader;
-import engine.graphics.TexturedModel;
 import engine.graphics.shaders.StaticShader;
+import engine.io.Window;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
-import org.lwjgl.glfw.GLFW;
-
 import engine.objects.GameObject;
-import engine.graphics.Renderer;
-import engine.io.Window;
-import main.scripts.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import main.scripts.CameraController;
+import main.scripts.Platform;
+import main.scripts.Player;
 
 /**
  * The starting off point.
@@ -82,34 +82,20 @@ public class Main implements Runnable {
 		}
 		
 		window.update();
-		window.time.update();
 	}
 	
 	private void render() {
 		shader.start();
-		int[] indices = {
-				0, 1, 3,
-				3, 1, 2
-		};
 
 		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
 
 		GlobalStorage.spriteRenders.forEach(sr -> {
-			while (sr.layer > layers.size() || sr.layer == layers.size()) {
-				layers.add(new ArrayList<>());
-			}
+			while (sr.layer > layers.size() || sr.layer == layers.size()) layers.add(new ArrayList<>());
 
 			layers.get(sr.layer).add(sr);
 		});
 
-		layers.forEach(layer -> layer.forEach(sr -> {
-				int vaoID = Loader.loadToVAO(sr.calculateVertices(), sr.calculateTextureCoords(), sr.calculateColorCoords(), indices);
-				int textureID = Loader.loadTexture(sr.sprite.image);
-				TexturedModel texturedModel = new TexturedModel(textureID, vaoID, indices.length);
-
-				Renderer.render(texturedModel);
-			})
-		);
+		layers.forEach(layer -> layer.forEach(sr -> sr.render()));
 
 		shader.stop();
 

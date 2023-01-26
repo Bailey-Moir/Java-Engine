@@ -1,6 +1,7 @@
 package engine.objects;
 
 import engine.graphics.Texture;
+import engine.objects.GameObject.SpriteRenderer;
 
 import java.io.IOException;
 
@@ -13,10 +14,11 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class Sprite {
     public String image;
-    public float[] texCoords;
+    private float[] texCoords;
+    public boolean texCoordsChanged = true;
 
     /**
-     * The constructor for a sprite with special texture coords.
+     * The constructor for a sprite with special texture coordinates.
      * @param image The file path of the sprite's image, starting from the res folder.
      * @param texCoords The texture coordinates.
      */
@@ -26,7 +28,7 @@ public class Sprite {
     }
 
     /**
-     * The constructor for a sprite with the default texture coords.
+     * The constructor for a sprite with the default texture coordinates.
      * @param image The file path of the sprite's image, starting from the res folder.
      */
     public Sprite(String image) {
@@ -37,5 +39,23 @@ public class Sprite {
                 1, 1, //V2
                 1, 0  //V3
         };
+    }
+    
+    // GETTERS & SETTERS
+    
+    /**
+     * Get the Texture Coordinates of the sprite.
+     * @return Texture Coordinates
+     */
+    public float[] getTextureCoordinates() {
+    	return texCoords;
+    }
+    /**
+     * Set the Texture Coordinates of the sprite.
+     * @param texCoords new Texture Coordinates.
+     */
+    public void setTextureCoordinates(float[] texCoords) {
+    	this.texCoords = texCoords;
+    	texCoordsChanged = true;
     }
 }

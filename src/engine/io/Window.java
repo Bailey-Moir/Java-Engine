@@ -124,6 +124,8 @@ public class Window {
 		GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT); //Or bit
 		
 		GLFW.glfwPollEvents(); //Gets all the callbacks connected to the window.
+		
+		time.update();
 	}
 	
 	/**

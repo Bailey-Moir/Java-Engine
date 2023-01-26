@@ -1,7 +1,13 @@
 package engine.objects;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.opengl.GL30;
+
 import engine.GlobalStorage;
+import engine.graphics.Loader;
 import engine.graphics.Renderer;
+import engine.graphics.TexturedModel;
 import engine.io.Window;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
@@ -13,7 +19,7 @@ import engine.maths.Vector4;
  */
 
 @SuppressWarnings("unused")
-public abstract class GameObject {
+public abstract class GameObject {	
     public Transform transform;
     public SpriteRenderer spriteRenderer;
 
@@ -29,8 +35,6 @@ public abstract class GameObject {
 
         this.transform.position = position;
         this.transform.size = size;
-
-        GlobalStorage.spriteRenders.add(spriteRenderer);
     }
 
     /**
@@ -42,7 +46,7 @@ public abstract class GameObject {
         //public float rotation;
 
         public Vector2 position, size;
-
+        
         /**
          * Moves the object, including delta time.
          * @param delta How much it is going to change by.
@@ -53,18 +57,31 @@ public abstract class GameObject {
     }
 
     static public class SpriteRenderer {
-        public GameObject object;
+    	public GameObject object;
         private final Window window;
 
-        public Sprite sprite;
         public SpriteSheet spriteSheet;
         public boolean flipX = false, flipY = false;
         public int layer;
-        public Vector4 color;
+
+        private Sprite sprite;
+        private Vector4 color;
+        private int[] indices = {
+			0, 1, 3,
+			3, 1, 2
+    	};
+
+        private boolean	colorChanged = true;
+        private boolean indicesChanged = true;
+        
+        private int VAO = 0;
+        private int	verticesVBO = 0;
+        private int	textureCoordsVBO = 0;
+        private int	colorVBO = 0;
+        private int	indicesVBO = 0;
 
         /**
          * Constructor.
-         *
          * @param color The 4 dimension color vector.
          * @param image The file path of the image (if there is any).
          * @param layer The layer to render the sprite on.
@@ -76,13 +93,71 @@ public abstract class GameObject {
             this.window = GlobalStorage.CurrentWindow;
             this.object = object;
             this.layer = layer;
+            
+            VAO = GL30.glGenVertexArrays(); //Creates an empty VAO.
+            Loader.VAOs.add(VAO);
+            
+            verticesVBO = GL30.glGenBuffers();
+            textureCoordsVBO = GL30.glGenBuffers();
+            colorVBO = GL30.glGenBuffers();
+            indicesVBO = GL30.glGenBuffers();
+            Loader.VBOs.add(verticesVBO);
+            Loader.VBOs.add(textureCoordsVBO);
+            Loader.VBOs.add(colorVBO);
+            Loader.VBOs.add(indicesVBO);
+            
+            GlobalStorage.spriteRenders.add(this);
+        }
+        
+        /**
+         * Renders the Object to the window.
+         */
+        public void render() {
+        	GL30.glBindVertexArray(VAO);
+            
+            GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, verticesVBO);
+            Loader.storeDataInAttributeList(0, 3, calculateVertices());
+            if (sprite.texCoordsChanged) {
+	            GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, textureCoordsVBO);
+	            Loader.storeDataInAttributeList(1, 2, calculateTextureCoords());
+	            sprite.texCoordsChanged = false;
+            }
+            if (colorChanged) {
+	            GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, colorVBO);            
+	            Loader.storeDataInAttributeList(2, 4, calculateColorCoords());
+	            colorChanged = false;
+            }
+            if (indicesChanged) {
+	            GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, indicesVBO);
+	            IntBuffer buffer = Loader.storeDataInIntBuffer(indices);
+	            GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
+	            indicesChanged = false;
+            }
+            GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
+            
+            int textureID = Loader.loadTexture(sprite.image);            
+            
+	        GL30.glEnableVertexAttribArray(0); //position
+	        GL30.glEnableVertexAttribArray(1); //tex coords
+	        GL30.glEnableVertexAttribArray(2); //color
+
+	        GL30.glActiveTexture(GL30.GL_TEXTURE0); //What texture bank.
+	        GL30.glBindTexture(GL30.GL_TEXTURE_2D, textureID);
+	        GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_NEAREST);
+	        GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MAG_FILTER, GL30.GL_NEAREST);
+	        GL30.glDrawElements(GL30.GL_TRIANGLES, indices.length, GL30.GL_UNSIGNED_INT, 0);
+
+	        GL30.glDisableVertexAttribArray(0);
+	        GL30.glDisableVertexAttribArray(1);
+	        GL30.glDisableVertexAttribArray(2);
+	        GL30.glBindVertexArray(0);
         }
 
         /**
          * Calculates the vertices for displaying the image.
          * @return The vertices.
          */
-        public float[] calculateVertices() {
+        public float[] calculateVertices() {        	
             return new float[] {
                     ((object.transform.position.x - Renderer.camera.position.x - object.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.y - Renderer.camera.position.y + object.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Left
                     ((object.transform.position.x - Renderer.camera.position.x - object.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((object.transform.position.y - Renderer.camera.position.y - object.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Bottom Left
@@ -95,11 +170,12 @@ public abstract class GameObject {
          * @return Texture Coordinates.
          */
         public float[] calculateTextureCoords() {
+        	float[] coords = sprite.getTextureCoordinates();
             return new float[]{
-                    (flipX ? sprite.texCoords[6] : sprite.texCoords[0]), (flipY ? sprite.texCoords[3] : sprite.texCoords[1]), //V0
-                    (flipX ? sprite.texCoords[4] : sprite.texCoords[2]), (flipY ? sprite.texCoords[1] : sprite.texCoords[3]), //V1
-                    (flipX ? sprite.texCoords[2] : sprite.texCoords[6]), (flipY ? sprite.texCoords[7] : sprite.texCoords[5]), //V2
-                    (flipX ? sprite.texCoords[0] : sprite.texCoords[6]), (flipY ? sprite.texCoords[5] : sprite.texCoords[7])  //V3
+                    (flipX ? coords[6] : coords[0]), (flipY ? coords[3] : coords[1]), //V0
+                    (flipX ? coords[4] : coords[2]), (flipY ? coords[1] : coords[3]), //V1
+                    (flipX ? coords[2] : coords[6]), (flipY ? coords[7] : coords[5]), //V2
+                    (flipX ? coords[0] : coords[6]), (flipY ? coords[5] : coords[7])  //V3
             };
         }
         /**
@@ -114,13 +190,63 @@ public abstract class GameObject {
                     color.x, color.y, color.z, color.w,
             };
         }
-
+        
+        // GETTERS & SETTERS
+        
         /**
          * Default getter for the window.
          * @return The window (class).
          */
         public Window getWindow() {
             return window;
+        }
+        
+        /**
+         * Get the current indices of the object for rendering.
+         * @return Indices.
+         */
+        public int[] getIndices() {
+        	return indices;
+        }
+        /**
+         * Set the indices of the object for rendering.
+         * @param v Indices.
+         */
+        public void setIndices(int[] v) {
+        	indices = v;
+        	indicesChanged = true;
+        }
+
+        /**
+         * Get the current color of the object.
+         * @return Color.
+         */
+        public Vector4 getColor() {
+        	return color;
+        }
+        /**
+         * Set the color of the object.
+         * @param v Color.
+         */
+        public void setColor(Vector4 v) {
+        	color = v;
+        	colorChanged = true;
+        }
+        
+        /**
+         * Get the current sprite of the object for rendering.
+         * @return Sprite.
+         */
+        public Sprite getSprite() {
+        	return sprite;
+        }
+        /**
+         * Set the sprite of the object for rendering.
+         * @param v new Sprite.
+         */
+        public void setSprite(Sprite v) {
+        	sprite = v;
+        	sprite.texCoordsChanged = true;
         }
     }
 }

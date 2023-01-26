@@ -25,9 +25,9 @@ public class SacrificePlatform extends BehaviouralGameObject {
         });
         spriteRenderer.spriteSheet.gen();
 
-        spriteRenderer.sprite = spriteRenderer.spriteSheet.getSprite(0);
+        spriteRenderer.setSprite(spriteRenderer.spriteSheet.getSprite(0));
         new Collider(this, new Rigidbody(this), true, false);
     }
 
-    public void Update() {	}
+    public void Update() {}
 }

@@ -34,7 +34,6 @@ public class Player extends BehaviouralGameObject {
 			10, 20,
 			1, 1
 		});
-		spriteRenderer.spriteSheet.gen();
 
 		rb = new Rigidbody(this);
 		col = new Collider(this, rb, false, false);

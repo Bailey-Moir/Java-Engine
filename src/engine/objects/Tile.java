@@ -20,6 +20,6 @@ public class Tile extends GameObject {
      */
     protected Tile(Vector2 cellPosition, Vector2 scale, int layer, Sprite sprite) {
         super(cellPosition._times(scale), scale, new Vector4(1, 1, 1, 1), layer, "block");
-        this.spriteRenderer.sprite = sprite;
+        this.spriteRenderer.setSprite(sprite);
     }
 }

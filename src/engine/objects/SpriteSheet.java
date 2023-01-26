@@ -1,6 +1,7 @@
 package engine.objects;
 
 import engine.graphics.Texture;
+import engine.objects.GameObject.SpriteRenderer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -48,6 +49,7 @@ public class SpriteSheet {
     public SpriteSheet(String sheet, int[] settings) {
         this.sheet = sheet;
         this.settings = settings;
+        gen();
     }
 
     /**

@@ -20,12 +20,12 @@ public class GateCover extends BehaviouralGameObject {
      * Runs once when the window is created.
      */
     public void Start() {
-        spriteRenderer.sprite.texCoords = new float[] {
+        spriteRenderer.getSprite().setTextureCoordinates(new float[] {
                 0.5f, 0,
                 0.5f, 1,
                 1, 1,
                 1, 0
-        };
+        });
 
         Rigidbody rb = new Rigidbody(this);
         col = new Collider(this, rb, true, true);
