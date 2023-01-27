@@ -14,9 +14,7 @@ public class Transform extends Component {
 
     public Vector2 position, size;
     
-    public Transform(GameObject object) {
-    	init(object);
-    }
+    public Transform(GameObject object) { super(object); }
     
     /**
      * Moves the object, including delta time.

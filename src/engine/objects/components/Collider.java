@@ -31,7 +31,7 @@ public class Collider extends Component {
 	 * @param parent The parent that the component belongs to.
 	 */
 	public Collider(GameObject parent, Rigidbody rb, boolean isStatic, boolean isTrigger) {
-		init(parent);
+		super(parent);
 		this.isStatic = isStatic;
 		this.isTrigger = isTrigger;
 		this.rb = rb;

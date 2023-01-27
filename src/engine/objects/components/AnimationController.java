@@ -47,7 +47,7 @@ public class AnimationController extends Component {
      * @param object The parent object.
      */
     public AnimationController(GameObject object, Animation defaultState) {
-        init(object);
+        super(object);
         animations.add(defaultState);
         current = defaultState;
     }

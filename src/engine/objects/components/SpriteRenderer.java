@@ -48,6 +48,7 @@ public class SpriteRenderer extends Component {
      * @param object Parent object of the SpriteRenderer.
      */
     public SpriteRenderer(Vector4 color, String image, int layer, GameObject object) {
+        super(object);
         this.color = color;
         this.sprite = new Sprite(image);
         this.window = Window.current;
@@ -61,7 +62,6 @@ public class SpriteRenderer extends Component {
         indicesVBO = GL30.glGenBuffers();
         
         all.add(this);
-        init(object);
     }
     
     /**

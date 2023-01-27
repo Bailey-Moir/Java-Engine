@@ -23,7 +23,7 @@ public class Rigidbody extends Component {
 	 * @param parent The obj that the component belongs to.
 	 */
 	public Rigidbody(GameObject parent) {
-		init(parent);
+		super(parent);
 	}
 
 	/**

@@ -12,7 +12,7 @@ public abstract class Component {
     
     public void update() {}
 
-    public final void init(GameObject parent) {
+    protected Component(GameObject parent) {
         this.parent = parent;
         parent.components.add(this);
     }
