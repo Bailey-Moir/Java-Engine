@@ -7,8 +7,6 @@ import engine.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 /**
  * Component that controls animations.
@@ -16,12 +14,11 @@ import java.util.stream.Stream;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class AnimationController extends Component {
     /**
      * Represents a parameter.
      */
-    public static class Parameter {
+    public class Parameter {
         public final String name;
         public boolean value;
 
@@ -68,11 +65,11 @@ public class AnimationController extends Component {
             if (transition.state1 == current && paramsPassed) {
                 current.stop();
                 current = transition.state2;
-                current.play();
+                current.play(parent);
             }
         });
         if (current.loop && current.status == Status.STOPPED) {
-            current.play();
+            current.play(parent);
         }
     }
 
@@ -86,13 +83,11 @@ public class AnimationController extends Component {
 
     /**
      * Adds an animation to the controller.
-     * @param speed The speed that the animation plays at, default 1.
      * @param name The name to reference the animation by.
-     * @param object The object that the animation acts on.
      * @param frames The list of frames in the animation.
      */
-    public void addAnim(float speed, String name, GameObject object, boolean loop, Animation.Frame[] frames) {
-        this.animations.add(new Animation(speed, name, object, loop, frames));
+    public void addAnim(String name, boolean loop, Animation.Frame[] frames) {
+        this.animations.add(new Animation(name, loop, frames));
     }
 
     /**
@@ -110,25 +105,19 @@ public class AnimationController extends Component {
      */
     public void setParam(String name, boolean value) {
         parameters.forEach((parameter) -> {
-            if (parameter.name.equals(name)) {
-                parameter.value = value;
-            }
+            if (parameter.name.equals(name)) parameter.value = value;
         });
     }
 
     /**
      * Allows you to see the value of a parameter.
      * @param name The name of the parameter.
-     * @return The value of the parameter.
+     * @return The value of the parameter. If nothing is found, it returns false.
      */
     public boolean checkParam(String name) {
-        AtomicReference<Boolean> toReturn = new AtomicReference<>(false);
-        parameters.forEach((parameter) -> {
-            if (parameter.name.equals(name)) {
-                toReturn.set(parameter.value);
-            }
-        });
-        return toReturn.get();
+        for (Parameter parameter : parameters)
+            if (parameter.name.equals(name)) return parameter.value;
+        return false;
     }
     /**
      * Adds a transition between two animations/states.
@@ -138,22 +127,16 @@ public class AnimationController extends Component {
      * @param value The value that the parameter needs to be inorder for a transition to occur.
      */
     public void addTransition(String state1, String state2, String[] localParams, boolean[] value) {
-        AtomicReference<Animation> anim1 = new AtomicReference<>(null);
-        AtomicReference<Animation> anim2 = new AtomicReference<>(null);
-        AtomicReference<List<Parameter>> params = new AtomicReference<>(new ArrayList<>());
-        animations.forEach(animation -> {
-            if (animation.name.equals(state1)) {
-                anim1.set(animation);
-            } else if (animation.name.equals(state2)) {
-                anim2.set(animation);
-            }
-        });
-        parameters.forEach(parameterObj -> Stream.of(localParams).forEach(parameterStr -> {
-                if (parameterObj.name.equals(parameterStr)) {
-                    params.get().add(parameterObj);
-                }
-        }));
+        Animation anim1 = null;
+        Animation anim2 = null;
+        List<Parameter> params = new ArrayList<>();
+        for (Animation animation : animations)
+            if (animation.name.equals(state1)) anim1 = animation;
+            else if (animation.name.equals(state2)) anim2 = animation;
+        for (Parameter parameterObj : parameters)
+        	for (String parameterStr : localParams)
+	            if (parameterObj.name.equals(parameterStr)) params.add(parameterObj);
 
-        transitions.add(new Transition(anim1.get(), anim2.get(), params.get().toArray(new Parameter[0]), value));
+        transitions.add(new Transition(anim1, anim2, params.toArray(new Parameter[0]), value));
     }
 }

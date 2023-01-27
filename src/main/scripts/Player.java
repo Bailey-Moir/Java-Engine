@@ -38,7 +38,7 @@ public class Player extends GameObject {
 		rb = new Rigidbody(this);
 		col = new Collider(this, rb, false, false);
 		gravCol = new Collider(this, rb, false, true);
-		animController = new AnimationController(this, new Animation(1f,"idle",this, true, new Frame[] {
+		animController = new AnimationController(this, new Animation("idle", true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(0), 0f)
 		}));
 
@@ -47,14 +47,14 @@ public class Player extends GameObject {
 		gravCol.offset = new Vector2(0, -transform.size.y * 0.45f);
 		gravCol.size = new Vector2(transform.size.x, transform.size.y * 0.1f);
 
-		animController.addAnim(5f,"run",this, true, new Frame[] {
+		animController.addAnim("run", true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(1), 0),
-				new Frame(spriteRenderer.spriteSheet.getSprite(0), 200),
-				new Frame(spriteRenderer.spriteSheet.getSprite(2), 400),
-				new Frame(spriteRenderer.spriteSheet.getSprite(0), 600),
-				new Frame(spriteRenderer.spriteSheet.getSprite(0), 800)
+				new Frame(spriteRenderer.spriteSheet.getSprite(0), 40),
+				new Frame(spriteRenderer.spriteSheet.getSprite(2), 80),
+				new Frame(spriteRenderer.spriteSheet.getSprite(0), 120),
+				new Frame(spriteRenderer.spriteSheet.getSprite(0), 160)
 		});
-		animController.addAnim(1f,"fall",this, true, new Frame[] {
+		animController.addAnim("fall", true, new Frame[] {
 				new Frame(spriteRenderer.spriteSheet.getSprite(3), 0),
 				new Frame(spriteRenderer.spriteSheet.getSprite(4), 100),
 				new Frame(spriteRenderer.spriteSheet.getSprite(4), 200)

@@ -4,7 +4,6 @@ import engine.objects.Sprite;
 import engine.objects.GameObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,8 +11,6 @@ import java.util.List;
  *
  * @author Bailey
  */
-
-@SuppressWarnings("unused")
 public class Animation {
     /**
      * The different states of status.
@@ -22,24 +19,16 @@ public class Animation {
         PLAYING, STOPPED
     }
     /**
-     * The class that represents a frame.
-     */
-    public static class Frame {
-        public Frame(Sprite sprite, float time) {
-            this.sprite = sprite;
-            this.time = time;
-        }
-
-        public float time;
-        public Sprite sprite;
-    }
+     * Represents a frame.
+     */    
+    public record Frame(Sprite sprite, float time) {}
 
     public List<Frame> frames = new ArrayList<>();
 
     public boolean loop;
     public String name;
-    private final GameObject object;
     public Status status;
+    public long speed = 1;
 
     private Thread animThread;
 
@@ -47,33 +36,28 @@ public class Animation {
      * The constructor for an animation.
      * @param speed The speed that the animation plays at, default 1.
      * @param name The name to reference the animation by.
-     * @param object The object that the animation acts on.
      * @param frames The list of frames in the animation.
      */
-    public Animation(float speed, String name, GameObject object, boolean loop, Frame[] frames) {
+    public Animation(String name, boolean loop, Frame[] frames) {
         this.name = name;
-        this.object = object;
         this.loop = loop;
         this.status = Status.STOPPED;
 
         this.frames.addAll(List.of(frames));
-
-        this.frames.forEach(frame -> {
-            frame.time /= speed;
-        });
     }
 
     /**
      * Plays the animation
+     * @param object The object to play the animation on.
      */
-    public void play() {
+    public void play(GameObject object) {
         status = Status.PLAYING;
         //Creates new thread for this animation
         animThread = new Thread(() -> {
             long start = System.currentTimeMillis();
             for (Frame frame : frames) {
             	try {
-                    long diff = start + (long) frame.time - System.currentTimeMillis();
+                    long diff = start + (long) frame.time/speed - System.currentTimeMillis();
                     if (diff > 0) Thread.sleep(diff);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
