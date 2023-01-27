@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
-import engine.GlobalStorage;
 import engine.Script;
-import engine.graphics.Loader;
 import engine.graphics.shaders.StaticShader;
 import engine.io.Window;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
 import engine.objects.GameObject;
+import engine.objects.GameObject.SpriteRenderer;
 import main.scripts.CameraController;
-import main.scripts.Map;
 import main.scripts.Platform;
 import main.scripts.Player;
 
@@ -55,7 +53,7 @@ public class Main implements Runnable {
 		new CameraController(new Player(new Vector2(0, 0.5f)), window);
 		//new Map();
 
-		for (Script script : GlobalStorage.scripts) script.Start();
+		for (Script script : GameObject.scripts) script.Start();
 
 		lastFPS = window.time.getTime();
 	}
@@ -68,16 +66,15 @@ public class Main implements Runnable {
 			update();
 			render();
 		}
+		
 		close();
 	}
 
 	long lastFPS, fps = 0;
 	private void update() {
 		if (window.input.isKeyPressed(GLFW.GLFW_KEY_F11)) window.setFullscreen(!window.isFullscreen());
-				
-		for (Script object : GlobalStorage.scripts) {
-			object.Update();
-		}
+		
+		for (Script object : GameObject.scripts) object.Update();
 		
 		window.update();
 	}
@@ -85,13 +82,13 @@ public class Main implements Runnable {
 	private void render() {
 		shader.start();
 
-		List<List<GameObject.SpriteRenderer>> layers = new ArrayList<>();
-
-		GlobalStorage.spriteRenders.forEach(sr -> {
+		List<List<SpriteRenderer>> layers = new ArrayList<>();
+		
+		for (SpriteRenderer sr : SpriteRenderer.all) {
 			while (sr.layer > layers.size() || sr.layer == layers.size()) layers.add(new ArrayList<>());
-
+			
 			layers.get(sr.layer).add(sr);
-		});
+		}
 
 		layers.forEach(layer -> layer.forEach(sr -> sr.render()));
 

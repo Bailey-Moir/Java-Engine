@@ -3,7 +3,6 @@ package engine.objects;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import engine.GlobalStorage;
 import engine.Script;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
@@ -14,7 +13,6 @@ import engine.maths.Vector4;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public abstract class BehaviouralGameObject extends GameObject implements Script {
 	public Collection<Component> components = new ArrayList<>();
 
@@ -26,8 +24,8 @@ public abstract class BehaviouralGameObject extends GameObject implements Script
 	 */
 	public BehaviouralGameObject(Vector2 position, Vector2 size, Vector4 color, int layer, String image) {
 		super(position, size, color, layer, image);
-
-		GlobalStorage.scripts.add(this);
+		
+		GameObject.scripts.add(this);
 	}
 
 	/**

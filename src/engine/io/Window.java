@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class Window {
+	public static Window current;
+	
 	private int WIDTH, HEIGHT;
 	private int windowPosX, windowPosY;
 	private final String TITLE;
@@ -42,6 +44,7 @@ public class Window {
 		this.WIDTH = width;
 		this.HEIGHT = height;
 		this.TITLE = title;
+		current = this;
 	}
 	
 	/**

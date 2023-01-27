@@ -2,14 +2,14 @@ package engine.objects;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.lwjgl.opengl.GL30;
 
-import engine.GlobalStorage;
+import engine.Script;
 import engine.graphics.Loader;
 import engine.graphics.Renderer;
-import engine.graphics.TexturedModel;
 import engine.io.Window;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
@@ -20,9 +20,9 @@ import engine.maths.Vector4;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public abstract class GameObject {
 	static public List<GameObject> all = new ArrayList<>();
+    public static Collection<Script> scripts = new ArrayList<>();
 	
     public Transform transform;
     public SpriteRenderer spriteRenderer;
@@ -63,6 +63,8 @@ public abstract class GameObject {
     }
 
     static public class SpriteRenderer {
+    	public static List<SpriteRenderer> all = new ArrayList<>();
+    	
     	public GameObject object;
         private final Window window;
 
@@ -76,7 +78,7 @@ public abstract class GameObject {
 			0, 1, 3,
 			3, 1, 2
     	};
-
+        
         private boolean	colorChanged = true;
         private boolean indicesChanged = true;
         
@@ -96,7 +98,7 @@ public abstract class GameObject {
         public SpriteRenderer(Vector4 color, String image, int layer, GameObject object) {
             this.color = color;
             this.sprite = new Sprite(image);
-            this.window = GlobalStorage.CurrentWindow;
+            this.window = Window.current;
             this.object = object;
             this.layer = layer;
             
@@ -107,7 +109,7 @@ public abstract class GameObject {
             colorVBO = GL30.glGenBuffers();
             indicesVBO = GL30.glGenBuffers();
             
-            GlobalStorage.spriteRenders.add(this);
+            all.add(this);
         }
         
         /**
