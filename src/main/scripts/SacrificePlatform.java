@@ -2,11 +2,11 @@ package main.scripts;
 
 import engine.maths.Vector2;
 import engine.maths.Vector4;
-import engine.objects.BehaviouralGameObject;
+import engine.objects.GameObject;
 import engine.objects.SpriteSheet;
 import engine.objects.components.*;
 
-public class SacrificePlatform extends BehaviouralGameObject {
+public class SacrificePlatform extends GameObject {
     /**
      * The constructor.
      * The only thing you should touch in here are the variables in super().

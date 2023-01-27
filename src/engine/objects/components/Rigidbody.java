@@ -1,7 +1,7 @@
 package engine.objects.components;
 import engine.maths.Vector2;
 import engine.objects.Component;
-import engine.objects.BehaviouralGameObject;
+import engine.objects.GameObject;
 
 /**
  * Handles the physics of an object.
@@ -22,7 +22,7 @@ public class Rigidbody extends Component {
 	 * The constructor.
 	 * @param parent The obj that the component belongs to.
 	 */
-	public Rigidbody(BehaviouralGameObject parent) {
+	public Rigidbody(GameObject parent) {
 		init(parent);
 	}
 

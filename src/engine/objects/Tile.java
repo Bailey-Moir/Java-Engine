@@ -22,4 +22,7 @@ public class Tile extends GameObject {
         super(cellPosition._times(scale), scale, new Vector4(1, 1, 1, 1), layer, "block");
         this.spriteRenderer.setSprite(sprite);
     }
+    
+    public void Start() {}
+    public void Update() {}
 }

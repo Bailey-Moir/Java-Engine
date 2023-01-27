@@ -12,4 +12,7 @@ public class Color extends GameObject {
     public Color(Vector2 position, Vector2 size, Vector4 color, int layer) {
         super(position, size, color, layer, "block");
     }
+    
+    public void Start() {}
+    public void Update() {}
 }

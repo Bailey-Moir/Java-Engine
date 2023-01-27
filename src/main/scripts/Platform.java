@@ -2,10 +2,10 @@ package main.scripts;
 
 import engine.maths.Vector2;
 import engine.maths.Vector4;
-import engine.objects.BehaviouralGameObject;
+import engine.objects.GameObject;
 import engine.objects.components.*;
 
-public class Platform extends BehaviouralGameObject {
+public class Platform extends GameObject {
 	
 	/**
 	 * The constructor.

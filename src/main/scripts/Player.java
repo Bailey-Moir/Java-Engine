@@ -4,13 +4,13 @@ import engine.Animation;
 import engine.Animation.*;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
-import engine.objects.BehaviouralGameObject;
+import engine.objects.GameObject;
 import engine.objects.SpriteSheet;
 import org.lwjgl.glfw.GLFW;
 import engine.objects.components.*;
 import main.Main;
 
-public class Player extends BehaviouralGameObject {
+public class Player extends GameObject {
 	private Rigidbody rb;
 	private Collider col, gravCol;
 	private AnimationController animController;

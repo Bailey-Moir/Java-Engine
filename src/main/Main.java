@@ -11,7 +11,7 @@ import engine.io.Window;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
 import engine.objects.GameObject;
-import engine.objects.GameObject.SpriteRenderer;
+import engine.objects.components.SpriteRenderer;
 import main.scripts.CameraController;
 import main.scripts.Platform;
 import main.scripts.Player;

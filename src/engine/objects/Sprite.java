@@ -1,7 +1,7 @@
 package engine.objects;
 
 import engine.graphics.Texture;
-import engine.objects.GameObject.SpriteRenderer;
+import engine.objects.components.SpriteRenderer;
 
 import java.io.IOException;
 

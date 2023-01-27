@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.maths.Vector2;
-import engine.objects.BehaviouralGameObject;
 import engine.objects.Component;
+import engine.objects.GameObject;
 import engine.maths.Mathl;
 
 /**
@@ -30,7 +30,7 @@ public class Collider extends Component {
 	 * The constructor for colliders.
 	 * @param parent The parent that the component belongs to.
 	 */
-	public Collider(BehaviouralGameObject parent, Rigidbody rb, boolean isStatic, boolean isTrigger) {
+	public Collider(GameObject parent, Rigidbody rb, boolean isStatic, boolean isTrigger) {
 		init(parent);
 		this.isStatic = isStatic;
 		this.isTrigger = isTrigger;
