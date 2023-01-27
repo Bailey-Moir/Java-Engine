@@ -2,7 +2,6 @@ package main.scripts;
 
 import engine.Camera;
 import engine.Script;
-import engine.graphics.Renderer;
 import engine.io.Window;
 import engine.maths.Vector2;
 import engine.objects.GameObject;
@@ -19,13 +18,13 @@ public class CameraController extends Camera implements Script {
     private final Player player;
 
     public CameraController(Player player, Window window) {
-        super(Vector2.zero(), 1.5f, window);
+        super(Vector2.zero(), 1.5f);
         GameObject.scripts.add(this);
         this.player = player;
     }
 
     public void Start() {
-        Renderer.camera = this;
+        Window.activeCamera = this;
         scale = 2.5f;
     }
 

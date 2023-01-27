@@ -7,7 +7,6 @@ import java.util.List;
 import org.lwjgl.opengl.GL30;
 
 import engine.graphics.Loader;
-import engine.graphics.Renderer;
 import engine.io.Window;
 import engine.maths.Vector4;
 import engine.objects.Component;
@@ -125,10 +124,10 @@ public class SpriteRenderer extends Component {
      */
     public float[] calculateVertices() {        	
         return new float[] {
-                ((parent.transform.position.x - Renderer.camera.position.x - parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((parent.transform.position.y - Renderer.camera.position.y + parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Left
-                ((parent.transform.position.x - Renderer.camera.position.x - parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((parent.transform.position.y - Renderer.camera.position.y - parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Bottom Left
-                ((parent.transform.position.x - Renderer.camera.position.x + parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((parent.transform.position.y - Renderer.camera.position.y - parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0, //Top Right
-                ((parent.transform.position.x - Renderer.camera.position.x + parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Renderer.camera.scale, ((parent.transform.position.y - Renderer.camera.position.y + parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Renderer.camera.scale, 0  //Bottom Right
+                ((parent.transform.position.x - Window.activeCamera.position.x - parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Window.activeCamera.scale, ((parent.transform.position.y - Window.activeCamera.position.y + parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Window.activeCamera.scale, 0, //Top Left
+                ((parent.transform.position.x - Window.activeCamera.position.x - parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Window.activeCamera.scale, ((parent.transform.position.y - Window.activeCamera.position.y - parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Window.activeCamera.scale, 0, //Bottom Left
+                ((parent.transform.position.x - Window.activeCamera.position.x + parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Window.activeCamera.scale, ((parent.transform.position.y - Window.activeCamera.position.y - parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Window.activeCamera.scale, 0, //Top Right
+                ((parent.transform.position.x - Window.activeCamera.position.x + parent.transform.size.x / 2) / getWindow().getWIDTH() * 160) * Window.activeCamera.scale, ((parent.transform.position.y - Window.activeCamera.position.y + parent.transform.size.y / 2) / getWindow().getHEIGHT() * 160) * Window.activeCamera.scale, 0  //Bottom Right
         };
     }
     /**

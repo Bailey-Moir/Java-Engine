@@ -1,5 +1,6 @@
 package engine.io;
 
+import engine.Camera;
 import engine.maths.Vector2;
 import engine.maths.Vector4;
 import org.lwjgl.glfw.*;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class Window {
 	public static Window current;
+	static public Camera activeCamera;
 	
 	private int WIDTH, HEIGHT;
 	private int windowPosX, windowPosY;

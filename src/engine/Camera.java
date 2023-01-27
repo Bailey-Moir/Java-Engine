@@ -9,7 +9,6 @@ import engine.maths.Vector2;
  * @author Bailey Moir
  */
 
-@SuppressWarnings("unused")
 public class Camera {
 	public Window window;
 	public Vector2 position;
@@ -17,11 +16,12 @@ public class Camera {
 
 	/**
 	 * The default constructor.
-	 * @param pos The start position of the camera
+	 * @param pos The start position of the camera.
+	 * @param scale The scale (FOV) of the camera.
 	 */
-	public Camera(Vector2 pos, float scale, Window window) {
+	public Camera(Vector2 pos, float scale) {
 		this.position = pos;
-		this.window = window;
+		this.window = Window.current;
 		this.scale = scale;
 	}
 }
