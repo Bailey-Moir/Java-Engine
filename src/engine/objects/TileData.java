@@ -8,7 +8,6 @@ import engine.maths.Vector2;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class TileData {
     public Vector2 position;
     public int id;

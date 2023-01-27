@@ -6,7 +6,6 @@ package engine.maths;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Vector3 {
     public float x, y, z;
 

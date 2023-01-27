@@ -12,7 +12,6 @@ import java.io.IOException;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public abstract class ShaderProgram {
 
     private final int programID;

@@ -6,7 +6,6 @@ package engine.maths;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Vector2 {
     public float x, y;
 

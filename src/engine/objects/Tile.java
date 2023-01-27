@@ -9,7 +9,6 @@ import engine.maths.Vector4;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Tile extends GameObject {
     /**
      * The constructor for the Tile game object.

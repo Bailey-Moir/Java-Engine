@@ -8,7 +8,6 @@ package engine.maths;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Mathl {
     /**
      * Gets an array of floats and returns the largest value exclusive of positive or negative.

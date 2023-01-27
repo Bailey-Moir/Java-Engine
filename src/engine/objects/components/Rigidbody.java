@@ -9,7 +9,6 @@ import engine.objects.GameObject;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Rigidbody extends Component {
 	public float gravityModifier = 0.5f;
 	

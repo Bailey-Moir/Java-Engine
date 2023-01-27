@@ -11,7 +11,6 @@ import java.util.Set;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public abstract class TileMap {
     public Vector2 scale;
     public Set<Tile> tiles = new HashSet<>();

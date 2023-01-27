@@ -10,7 +10,6 @@ import engine.objects.TileMap;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Map extends TileMap {
     public Map() {
         super(1, 1, 1, "tileSet", 16, 16, 1, 1);

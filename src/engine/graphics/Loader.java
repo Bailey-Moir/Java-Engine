@@ -7,11 +7,8 @@ import org.lwjgl.stb.STBImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
 
@@ -21,7 +18,6 @@ import static org.lwjgl.stb.STBImage.STBI_rgb_alpha;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Loader {
     /**
      * Creates an id for a texture.

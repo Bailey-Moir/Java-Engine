@@ -14,7 +14,6 @@ import engine.maths.Mathl;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public class Collider extends Component {
 	public Rigidbody rb;
 	

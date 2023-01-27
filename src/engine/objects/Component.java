@@ -6,7 +6,6 @@ package engine.objects;
  * @author Bailey
  */
 
-@SuppressWarnings("unused")
 public abstract class Component {
     public GameObject parent;
     

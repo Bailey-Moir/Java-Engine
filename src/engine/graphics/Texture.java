@@ -20,7 +20,7 @@ public class Texture extends BufferedImage {
     public Texture(String image, BufferedImage buffer) {
         super(buffer.getWidth(), buffer.getHeight(), buffer.getType());
 
-        super.setData(buffer.getData());
+        setData(buffer.getData());
 
         this.image = image;
     }
