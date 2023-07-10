@@ -42,6 +42,7 @@ public class AnimationController extends Component {
     /**
      * The constructor.
      * @param object The parent object.
+     * @param defaultState The default animation to be playing (idle animation).
      */
     public AnimationController(GameObject object, Animation defaultState) {
         super(object);

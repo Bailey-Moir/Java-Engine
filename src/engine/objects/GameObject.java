@@ -17,13 +17,13 @@ import engine.objects.components.Transform;
  */
 
 public abstract class GameObject implements Script {
-	public static List<GameObject> all = new ArrayList<>();
-    public static Collection<Script> scripts = new ArrayList<>();
+	public static final List<GameObject> all = new ArrayList<>();
+    public static final Collection<Script> scripts = new ArrayList<>();
     
-	public Collection<Component> components = new ArrayList<>();
+	public final Collection<Component> components = new ArrayList<>();
 	
-    public Transform transform;
-    public SpriteRenderer spriteRenderer;
+    public final Transform transform;
+    public final SpriteRenderer spriteRenderer;
     
     /**
      * Constructor.

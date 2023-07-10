@@ -12,12 +12,11 @@ import java.io.IOException;
  * @author Bailey
  */
 
-public abstract class ShaderProgram {
-
-    private final int programID;
+public abstract class ShaderProgram {	
+	private final int programID;
     private final int vertexShaderID;
     private final int fragmentShaderID;
-
+    
     /**
      * The constructor.
      * @param vertexFile The location of the vertex shader.

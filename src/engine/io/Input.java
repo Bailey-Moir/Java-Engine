@@ -14,15 +14,13 @@ import engine.maths.Vector2;
  * Manages input, i.e. mouse position, mouse buttons, scroll, and keyboard keys.
  */
 public class Input {
-	
 	//Turn buttons to int and make it 0-2
 	private record Axis(String name, int[] keys) {}
 	
 	private final int[] keys = new int[GLFW.GLFW_KEY_LAST+1]; //The int length is the amount of keys
 	private final int[] buttons = new int[GLFW.GLFW_MOUSE_BUTTON_LAST]; //The boolean length is the amount of mouse buttons
-	private Vector2 mousePos;
-	private Vector2 scroll;
-	public final Window window;
+	private Vector2 mousePos = Vector2.zero();
+	private Vector2 scroll = Vector2.zero();
 
 	private final ArrayList<Axis> axes = new ArrayList<>();
 
@@ -30,6 +28,8 @@ public class Input {
 	private final GLFWCursorPosCallback mouseMove;
 	private final GLFWMouseButtonCallback mouseButtons;
 	private final GLFWScrollCallback mouseScroll;
+	
+	public final Window window;
 
 	/**
 	 * The default constructor, sets input callback functions.
@@ -45,7 +45,7 @@ public class Input {
 
 		mouseMove = new GLFWCursorPosCallback() {
 			public void invoke(long glfwWindow, double x, double y) {
-				mousePos = new Vector2((float) x - window.getWIDTH() / (float) 2, (float) y - window.getHEIGHT() / (float) 2);
+				mousePos = new Vector2((float) x - window.getWIDTH() / 2f, (float) y - window.getHEIGHT() / 2f);
 			}
 		};
 
@@ -78,7 +78,7 @@ public class Input {
 	 * @return If the key is being held down or not.
 	 */
 	public boolean isKeyDown(int key) {
-		return (this.keys[key] == 2 || this.keys[key] == 1); //2 = Held down, 1 == Pressed
+		return (this.keys[key] > 0); //2 = Held down, 1 == Pressed
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Input {
 	 */
 	public boolean isButtonDown(int button) {
 		try {
-			return (this.buttons[button] == 2 || this.buttons[button] == 1);
+			return (this.buttons[button] > 0);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return false;
@@ -110,7 +110,7 @@ public class Input {
 	 * @return If the button was just pressed or not.
 	 */
 	public boolean isButtonPressed(int button) {
-		return this.buttons[button] == 1;
+		return (this.buttons[button] == 1);
 	}
 
 	/**
@@ -121,31 +121,18 @@ public class Input {
 	 * @return The value of the axis.
 	 */
 	public float getAxisRaw(String a_axis) {
-		try {
-			for (Axis axis : axes) {
-				if (axis.keys.length % 2 != 0) {
-					throw new IndexOutOfBoundsException("Odd number of keys given.");
+		for (Axis axis : axes) {
+			if (axis.name.equals(a_axis)) {
+				int pos = 0, neg = 0;
+				for (int i = 0; i < axis.keys.length; i += 2) {
+					if (this.isKeyDown(axis.keys[i + 1])) pos = 1;
+					if (this.isKeyDown(axis.keys[i])) neg = 1;
 				}
-
-				if (axis.name.equals(a_axis)) {
-					int positive = 0;
-					int negative = 0;
-					for (int i = 0; i < axis.keys.length; i += 2) {
-						if (this.isKeyDown(axis.keys[i + 1])) {
-							positive = 1;
-						}
-						if (this.isKeyDown(axis.keys[i])) {
-							negative = 1;
-						}
-					}
-					return positive - negative;
-				}
+				return pos - neg;
 			}
-			throw new StringIndexOutOfBoundsException("\"" + a_axis + "\" is not a valid axis.");
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			return 0;
 		}
+		new StringIndexOutOfBoundsException("\"" + a_axis + "\" is not a valid axis.").printStackTrace();
+		return 0;
 	}
 
 	/**
@@ -155,6 +142,7 @@ public class Input {
 	 */
 	public void createAxis(String name, int[] keys) {
 		Axis localAxis = new Axis(name, keys);
+		if (localAxis.keys.length % 2 == 1) throw new IndexOutOfBoundsException("Odd number of keys given.");
 		axes.add(localAxis);
 	}
 
@@ -164,28 +152,28 @@ public class Input {
 	 * @return the position of the mouse relative to the window.
 	 */
 	public Vector2 getMousePos() {
-		return (mousePos ==  null ? Vector2.zero() : mousePos);
+		return mousePos;
 	}
 
 	/**
 	 * @return the position of the mouse relative to the window.
 	 */
 	public float getMouseX() {
-		return (mousePos == null ? 0f : mousePos.x);
+		return mousePos.x;
 	}
 
 	/**
 	 * @return the position of the mouse relative to the window.
 	 */
 	public float getMouseY() {
-		return (mousePos == null ? 0f : mousePos.y);
+		return mousePos.y;
 	}
 
 	/**
 	 * @return the scroll offset relative to that at window creation.
 	 */
 	public Vector2 getScroll() {
-		return (scroll ==  null ? Vector2.zero() : scroll);
+		return scroll;
 	}
 
 	/**

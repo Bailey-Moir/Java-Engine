@@ -1,13 +1,21 @@
 package engine.io;
 
 import engine.Camera;
+import engine.Script;
+import engine.graphics.shaders.DefaultShader;
 import engine.maths.Vector2;
+import engine.maths.Vector3;
 import engine.maths.Vector4;
+import engine.objects.GameObject;
+import engine.objects.components.SpriteRenderer;
+
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * For a computer window.
@@ -20,10 +28,14 @@ public class Window {
 	public static Window current;
 	public static Camera activeCamera;
 	
-	private int WIDTH, HEIGHT;
-	private int windowPosX, windowPosY;
+	private int WIDTH, HEIGHT,
+				windowPosX, windowPosY;
 	private final String TITLE;
 	private float bgR, bgG, bgB;
+
+	private long lastFPS = 0,
+				 fpsCounter = 0,
+				 fps = 0;
 	
 	private long window;
 
@@ -47,12 +59,7 @@ public class Window {
 		this.HEIGHT = height;
 		this.TITLE = title;
 		current = this;
-	}
-	
-	/**
-	 * Initializes (in a non-literal sense) the window.
-	 */
-	public void init() {
+		
 		if (!GLFW.glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
 		
 		time = new Time();
@@ -85,6 +92,75 @@ public class Window {
 		GLFW.glfwShowWindow(window);
 		
 		GLFW.glfwSwapInterval(1); //Limits to 60fps
+		
+		DefaultShader.instance = new DefaultShader();
+		
+		lastFPS = time.getTime();
+	}
+	
+	/**
+	 * Updates the window. Should be run every frame.
+	 */
+	public void update() {
+		if (isResized) {
+			GL30.glViewport(0, 0, WIDTH, HEIGHT);
+			isResized = false;
+		}
+		//Clears the screen and sets the background color
+		GL30.glClearColor(bgR, bgG, bgB, 1);
+		GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT); //Or bit
+		
+		if (input.isKeyPressed(GLFW.GLFW_KEY_F11)) setFullscreen(!isFullscreen);
+
+		for (Script object : GameObject.scripts) object.Update();
+		
+		time.update();
+		
+		if (time.getTime() - lastFPS > 1000) {
+			fps = fpsCounter;
+			fpsCounter = 0;
+			lastFPS = time.getTime();
+		}
+		fpsCounter++;
+		
+		// RENDERING
+		
+		DefaultShader.instance.start();
+
+		Collections.sort(SpriteRenderer.all);
+		SpriteRenderer.all.forEach(SpriteRenderer::render);
+
+		DefaultShader.instance.stop();
+
+		GLFW.glfwSwapBuffers(window); //Swaps the buffers of the window, and colours it correctly.
+		
+		GLFW.glfwPollEvents(); //Gets all the callbacks connected to the window.
+	}
+	
+	/**
+	 * @return If the window should close.
+	 */
+	public boolean shouldClose() {
+		return GLFW.glfwWindowShouldClose(window) || shouldClose;
+	}
+
+	/**
+	 * Closes the window.
+	 */
+	public void close() {
+		//GLFW.glfwSetWindowShouldClose(window, true);
+		shouldClose = true;
+	}
+	
+	/**
+	 * Destroys the window
+	 */
+	public void cleanUp() {
+		input.destroy();
+		sizeCallback.free();
+		DefaultShader.instance.cleanUp();
+		GLFW.glfwDestroyWindow(window);
+		GLFW.glfwTerminate();
 	}
 
 	/**
@@ -106,65 +182,6 @@ public class Window {
 		GLFW.glfwSetWindowSizeCallback(window, sizeCallback);
 	}
 	
-	/**
-	 * Sets the window color.
-	 * @param color The color to set the window to.
-	 */
-	public void setBackgroundColour(Vector4 color) {
-		bgR = color.x;
-		bgG = color.y;
-		bgB = color.z;
-	}
-	
-	/**
-	 * Updates the window. Should be run every frame.
-	 */
-	public void update() {
-		if (isResized) {
-			GL30.glViewport(0, 0, WIDTH, HEIGHT);
-			isResized = false;
-		}
-		//Clears the screen and sets the background color
-		GL30.glClearColor(bgR, bgG, bgB, 1f);
-		GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT); //Or bit
-		
-		GLFW.glfwPollEvents(); //Gets all the callbacks connected to the window.
-		
-		time.update();
-	}
-	
-	/**
-	 * @return If the window should close.
-	 */
-	public boolean shouldClose() {
-		return GLFW.glfwWindowShouldClose(window) || shouldClose;
-	}
-
-	/**
-	 * Closes the window.
-	 */
-	public void close() {
-		//GLFW.glfwSetWindowShouldClose(window, true);
-		shouldClose = true;
-	}
-
-	/**
-	 * Swaps the buffers of window, you should know what a buffer is.
-	 */
-	public void swapBuffers() {
-		GLFW.glfwSwapBuffers(window); //Swaps the buffers of the window, and colours it correctly.
-	}
-	
-	/**
-	 * Destroys the window
-	 */
-	public void cleanUp() {
-		input.destroy();
-		sizeCallback.free();
-		GLFW.glfwDestroyWindow(window);
-		GLFW.glfwTerminate();
-	}
-
 	// GETTERS & SETTERS
 	
 	/**
@@ -200,7 +217,14 @@ public class Window {
 	 */
 	public long getWindow() {
 		return window;
-	}	
+	}
+	
+	/**
+	 * @return the current frames per second of the window.
+	 */
+	public long getFps() {
+		return fps;
+	}
 
 	/**
 	 * Sets if the window is fullscreen or not.
@@ -215,6 +239,17 @@ public class Window {
 			GLFW.glfwSetWindowMonitor(window, 0, windowPosX, windowPosY	, WIDTH, HEIGHT, 0);
 		}
 	}
+	
+	/**
+	 * Sets the window color.
+	 * @param color The color to set the window to.
+	 */
+	public void setBackgroundColour(Vector3 color) {
+		bgR = color.x;
+		bgG = color.y;
+		bgB = color.z;
+	}
+	
 
 	public void setTitle(String title) {
 		GLFW.glfwSetWindowTitle(window, title);

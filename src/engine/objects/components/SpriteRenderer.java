@@ -14,9 +14,8 @@ import engine.objects.GameObject;
 import engine.objects.Sprite;
 import engine.objects.SpriteSheet;
 
-public class SpriteRenderer extends Component {
+public class SpriteRenderer extends Component implements Comparable<SpriteRenderer> {
 	public static List<SpriteRenderer> all = new ArrayList<>();
-	
     private final Window window;
 
     public SpriteSheet spriteSheet;
@@ -213,4 +212,9 @@ public class SpriteRenderer extends Component {
     	sprite = v;
     	sprite.texCoordsChanged = true;
     }
+
+	@Override
+	public int compareTo(SpriteRenderer v) {
+		return this.layer - v.layer;
+	}
 }
