@@ -118,5 +118,13 @@ public class Player extends GameObject {
 			spriteRenderer.flipX = false;
 		}
 		spriteRenderer.flipY = Main.window.input.isKeyDown(GLFW.GLFW_KEY_S);
+		
+		//Rotation
+		if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_E)) {
+			transform.rotation += 0.002*Main.window.time.deltaTime;
+		}
+		if (Main.window.input.isKeyDown(GLFW.GLFW_KEY_Q)) {
+			transform.rotation -= 0.002*Main.window.time.deltaTime;
+		}
 	}
 }

@@ -71,6 +71,7 @@ public class Vector4 {
      * Returns a string for debugging purposes.
      * @return a string containing the values of each axis in the format of "<b>x, y, z, w<b>".
      */
+    @Override
     public String toString() {
         return x + ", " + y + ", " + z + ", " + w;
     }

@@ -10,7 +10,7 @@ import engine.objects.GameObject;
  * @author Bailey
  */
 public class Transform extends Component {
-    //public float rotation;
+    public float rotation = 0;
 
     public Vector2 position, size;
     
